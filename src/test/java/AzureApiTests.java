@@ -19,8 +19,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-@ExtendWith(MockitoExtension.class)
-class AzureApiTests {
+
+public class AzureApiTests {
     @Mock
     AzureApi api;
 
