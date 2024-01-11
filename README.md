@@ -15,11 +15,11 @@ An Unofficial Java library for translating text using Azure AI Cognitive Service
 The following example translates a simple Hello World to French.
 
 ```java
-import tech.brenoepic.at4j.AzureApi;
-import tech.brenoepic.at4j.AzureApiBuilder;
-import tech.brenoepic.at4j.azure.BaseURL;
-import tech.brenoepic.at4j.data.request.TranslateParams;
-import tech.brenoepic.at4j.data.response.TranslationResponse;
+import com.github.brenoepics.at4j.AzureApi;
+import com.github.brenoepics.at4j.AzureApiBuilder;
+import com.github.brenoepics.at4j.azure.BaseURL;
+import com.github.brenoepics.at4j.data.request.TranslateParams;
+import com.github.brenoepics.at4j.data.response.TranslationResponse;
 
 public class Main {
 
@@ -62,7 +62,7 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 
 ```gradle
 repositories { mavenCentral() }
-dependencies { implementation 'tech.brenoepic:at4j:0.0.1' }
+dependencies { implementation 'com.github.brenoepics:at4j:0.0.1' }
 ```
 
 #### Maven
@@ -71,7 +71,7 @@ Add the following dependency to your `pom.xml`:
 
 ```xml
 <dependency>
-    <groupId>tech.brenoepic</groupId>
+    <groupId>com.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
     <version>0.0.1</version>
 </dependency>

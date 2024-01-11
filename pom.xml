@@ -4,7 +4,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>tech.brenoepic</groupId>
+    <groupId>com.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
     <version>0.0.1</version>
     <name>Azure Translator For Java</name>
@@ -74,7 +74,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>tech.brenoepic.at4j.AT4J</mainClass>
+                            <mainClass>com.github.brenoepics.at4j.AT4J</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
