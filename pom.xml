@@ -13,7 +13,19 @@
         Fast and easy to configure.
     </description>
     <url>https://github.com/brenoepics/at4j</url>
-
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://github.com/brenoepics/at4j/blob/main/LICENSE</url>
+        </license>
+    </licenses>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/brenoepics/at4j</url>
+        </repository>
+    </distributionManagement>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>9</maven.compiler.source>
