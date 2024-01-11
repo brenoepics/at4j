@@ -8,8 +8,6 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.github.brenoepics.at4j.core.exceptions.*;
-
 /**
  * An enum with all rest request result codes as defined by <a
  * href="https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-reference#errors">Azure
