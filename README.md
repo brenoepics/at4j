@@ -62,7 +62,10 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 #### Gradle
 
 ```gradle
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
 dependencies { implementation 'com.github.brenoepics:at4j:0.0.1' }
 ```
 
