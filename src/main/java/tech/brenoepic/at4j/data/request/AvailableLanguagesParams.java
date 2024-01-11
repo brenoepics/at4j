@@ -1,30 +1,29 @@
 package tech.brenoepic.at4j.data.request;
 
-import tech.brenoepic.at4j.data.request.optional.LanguageScope;
-
 import java.util.Collections;
 import java.util.List;
+import tech.brenoepic.at4j.data.request.optional.LanguageScope;
 
 public class AvailableLanguagesParams {
-    private List<LanguageScope> scope = List.of(LanguageScope.TRANSLATION);
-    private String sourceLanguage;
+  private List<LanguageScope> scope = List.of(LanguageScope.TRANSLATION);
+  private String sourceLanguage;
 
-    public String getScope() {
-        return String.join(",", scope.stream().map(LanguageScope::getValue).toArray(String[]::new));
-    }
+  public String getScope() {
+    return String.join(",", scope.stream().map(LanguageScope::getValue).toArray(String[]::new));
+  }
 
-    public AvailableLanguagesParams setScope(LanguageScope... scopes) {
-        this.scope.clear();
-        Collections.addAll(this.scope, scopes);
-        return this;
-    }
+  public AvailableLanguagesParams setScope(LanguageScope... scopes) {
+    this.scope.clear();
+    Collections.addAll(this.scope, scopes);
+    return this;
+  }
 
-    public String getSourceLanguage() {
-        return sourceLanguage;
-    }
+  public String getSourceLanguage() {
+    return sourceLanguage;
+  }
 
-    public AvailableLanguagesParams setSourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
-        return this;
-    }
+  public AvailableLanguagesParams setSourceLanguage(String sourceLanguage) {
+    this.sourceLanguage = sourceLanguage;
+    return this;
+  }
 }
