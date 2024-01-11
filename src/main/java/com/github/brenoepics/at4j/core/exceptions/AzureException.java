@@ -4,9 +4,6 @@ import com.github.brenoepics.at4j.util.rest.RestRequestInformation;
 import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
 import java.util.Optional;
 
-import java.util.Optional;
-
-
 /** This exception is always thrown whenever a request to azure failed. */
 public class AzureException extends Exception {
 
