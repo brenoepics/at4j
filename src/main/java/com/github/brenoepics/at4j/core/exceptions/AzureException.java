@@ -2,6 +2,7 @@ package com.github.brenoepics.at4j.core.exceptions;
 
 import com.github.brenoepics.at4j.util.rest.RestRequestInformation;
 import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
+import java.util.Optional;
 
 import java.util.Optional;
 
