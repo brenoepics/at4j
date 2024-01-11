@@ -1,9 +1,8 @@
 package com.github.brenoepics.at4j.data.request;
 
+import com.github.brenoepics.at4j.data.request.optional.LanguageScope;
 import java.util.Collections;
 import java.util.List;
-
-import com.github.brenoepics.at4j.data.request.optional.LanguageScope;
 
 public class AvailableLanguagesParams {
   private List<LanguageScope> scope = List.of(LanguageScope.TRANSLATION);

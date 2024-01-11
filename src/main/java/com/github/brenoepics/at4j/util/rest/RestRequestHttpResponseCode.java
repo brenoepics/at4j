@@ -1,16 +1,15 @@
 package com.github.brenoepics.at4j.util.rest;
 
+import com.github.brenoepics.at4j.core.exceptions.AzureException;
+import com.github.brenoepics.at4j.core.exceptions.AzureExceptionInstantiator;
+import com.github.brenoepics.at4j.core.exceptions.BadRequestException;
+import com.github.brenoepics.at4j.core.exceptions.NotFoundException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.github.brenoepics.at4j.core.exceptions.AzureException;
-import com.github.brenoepics.at4j.core.exceptions.BadRequestException;
-import com.github.brenoepics.at4j.core.exceptions.NotFoundException;
-import com.github.brenoepics.at4j.core.exceptions.AzureExceptionInstantiator;
 
 /**
  * An enum with all rest request result codes as defined by <a

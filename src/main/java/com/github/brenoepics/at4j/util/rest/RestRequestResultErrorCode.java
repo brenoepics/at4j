@@ -1,13 +1,12 @@
 package com.github.brenoepics.at4j.util.rest;
 
+import com.github.brenoepics.at4j.core.exceptions.*;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import com.github.brenoepics.at4j.core.exceptions.*;
 import tech.brenoepic.at4j.core.exceptions.*;
 
 /**

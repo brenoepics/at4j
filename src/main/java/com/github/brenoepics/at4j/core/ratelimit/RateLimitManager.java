@@ -1,19 +1,18 @@
 package com.github.brenoepics.at4j.core.ratelimit;
 
+import com.github.brenoepics.at4j.core.AzureApiImpl;
+import com.github.brenoepics.at4j.core.exceptions.AzureException;
+import com.github.brenoepics.at4j.util.logging.LoggerUtil;
+import com.github.brenoepics.at4j.util.rest.RestRequest;
+import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformationImpl;
+import com.github.brenoepics.at4j.util.rest.RestRequestResult;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-
-import com.github.brenoepics.at4j.util.logging.LoggerUtil;
 import okhttp3.Response;
 import org.apache.logging.log4j.Logger;
-import com.github.brenoepics.at4j.core.AzureApiImpl;
-import com.github.brenoepics.at4j.core.exceptions.AzureException;
-import com.github.brenoepics.at4j.util.rest.RestRequest;
-import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformationImpl;
-import com.github.brenoepics.at4j.util.rest.RestRequestResult;
 
 /** This class manages rate-limits and keeps track of them. */
 public class RateLimitManager {

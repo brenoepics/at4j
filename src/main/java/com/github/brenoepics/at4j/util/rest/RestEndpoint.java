@@ -1,8 +1,7 @@
 package com.github.brenoepics.at4j.util.rest;
 
-import java.util.Optional;
-
 import com.github.brenoepics.at4j.azure.BaseURL;
+import java.util.Optional;
 import okhttp3.HttpUrl;
 
 /** This enum contains all endpoints that we may use. */

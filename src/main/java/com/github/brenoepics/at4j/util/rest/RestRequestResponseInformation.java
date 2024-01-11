@@ -1,8 +1,7 @@
 package com.github.brenoepics.at4j.util.rest;
 
-import java.util.Optional;
-
 import com.github.brenoepics.at4j.AzureApi;
+import java.util.Optional;
 
 /** Some information about a rest request response. */
 public interface RestRequestResponseInformation {

@@ -1,7 +1,7 @@
 package com.github.brenoepics.at4j.core.exceptions;
 
-import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
 import com.github.brenoepics.at4j.util.rest.RestRequestInformation;
+import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
 
 /** When we sent a bad request (HTTP response code 400). */
 public class BadRequestException extends AzureException {

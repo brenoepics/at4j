@@ -4,13 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.github.brenoepics.at4j.azure.lang.Language;
 import com.github.brenoepics.at4j.data.request.optional.ProfanityAction;
 import com.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import com.github.brenoepics.at4j.data.request.optional.TextType;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class TranslateParams {
   private String text;

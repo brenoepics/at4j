@@ -2,18 +2,17 @@ package com.github.brenoepics.at4j;
 
 import static org.junit.Assert.*;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CompletionException;
-
 import com.github.brenoepics.at4j.azure.BaseURL;
-import okhttp3.OkHttpClient;
-import org.junit.Test;
 import com.github.brenoepics.at4j.azure.lang.Language;
 import com.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import com.github.brenoepics.at4j.data.request.TranslateParams;
 import com.github.brenoepics.at4j.data.response.TranslationResponse;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import okhttp3.OkHttpClient;
+import org.junit.Test;
 
 public class AzureApiTest {
 

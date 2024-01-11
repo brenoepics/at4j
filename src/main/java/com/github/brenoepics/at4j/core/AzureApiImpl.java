@@ -3,20 +3,14 @@ package com.github.brenoepics.at4j.core;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-
 import com.github.brenoepics.at4j.AzureApi;
 import com.github.brenoepics.at4j.azure.BaseURL;
+import com.github.brenoepics.at4j.azure.lang.Language;
 import com.github.brenoepics.at4j.core.ratelimit.RateLimitManager;
 import com.github.brenoepics.at4j.core.thread.ThreadPool;
+import com.github.brenoepics.at4j.core.thread.ThreadPoolImpl;
 import com.github.brenoepics.at4j.data.DetectedLanguage;
 import com.github.brenoepics.at4j.data.Translation;
-import okhttp3.OkHttpClient;
-import com.github.brenoepics.at4j.azure.lang.Language;
-import com.github.brenoepics.at4j.core.thread.ThreadPoolImpl;
 import com.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import com.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import com.github.brenoepics.at4j.data.request.TranslateParams;
@@ -24,6 +18,11 @@ import com.github.brenoepics.at4j.data.response.TranslationResponse;
 import com.github.brenoepics.at4j.util.rest.RestEndpoint;
 import com.github.brenoepics.at4j.util.rest.RestMethod;
 import com.github.brenoepics.at4j.util.rest.RestRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import okhttp3.OkHttpClient;
 
 public class AzureApiImpl implements AzureApi {
 
