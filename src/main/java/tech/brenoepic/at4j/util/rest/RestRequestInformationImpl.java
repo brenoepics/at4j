@@ -6,6 +6,7 @@ import tech.brenoepic.at4j.AzureApi;
 
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class RestRequestInformationImpl implements RestRequestInformation {
         this.api = api;
         this.url = url;
         this.queryParameters = queryParameter;
-        this.headers = headers;
+        this.headers = new HashMap<>(headers);
         this.body = body;
     }
 
