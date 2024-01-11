@@ -1,17 +1,18 @@
 package tech.brenoepic.at4j.azure.lang;
 
 public enum LanguageDirection {
-    LTR, RTL;
+  LTR,
+  RTL;
 
-    public static LanguageDirection fromString(String value) {
-        if (value.equalsIgnoreCase("ltr")) {
-            return LTR;
-        }
-
-        if (value.equalsIgnoreCase("rtl")) {
-            return RTL;
-        }
-
-        throw new IllegalArgumentException("Invalid value for LanguageDirection: " + value);
+  public static LanguageDirection fromString(String value) {
+    if (value.equalsIgnoreCase("ltr")) {
+      return LTR;
     }
+
+    if (value.equalsIgnoreCase("rtl")) {
+      return RTL;
+    }
+
+    throw new IllegalArgumentException("Invalid value for LanguageDirection: " + value);
+  }
 }
