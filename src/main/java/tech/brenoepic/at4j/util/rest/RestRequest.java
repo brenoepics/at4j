@@ -104,7 +104,7 @@ public class RestRequest<T> {
    * @return An array with all used url parameters.
    */
   public String[] getUrlParameters() {
-    return urlParameters;
+    return urlParameters.clone();
   }
 
   /**

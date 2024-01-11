@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import tech.brenoepic.at4j.AzureApi;
@@ -35,7 +36,7 @@ public class RestRequestInformationImpl implements RestRequestInformation {
     this.api = api;
     this.url = url;
     this.queryParameters = queryParameter;
-    this.headers = headers;
+    this.headers = new HashMap<>(headers);
     this.body = body;
   }
 
