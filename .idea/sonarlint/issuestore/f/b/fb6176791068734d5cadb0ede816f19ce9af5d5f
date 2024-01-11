@@ -1,0 +1,13 @@
+
+{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(æÊÂ‘ûÿÿÿÿ8—¦åÇÏ1
+{	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ù´Œíúÿÿÿÿ8—¦åÇÏ1
+L	java:S106."+Replace this use of System.out by a logger.(Å­Ëİúÿÿÿÿ8Ÿ¦åÇÏ1
+Z
+java:S1854J"8Remove this useless assignment to local variable "from".(“ü®±şÿÿÿÿ8¡¦åÇÏ1
+G	java:S106B"+Replace this use of System.out by a logger.(áÉ³š8®¦åÇÏ1
+G	java:S106F"+Replace this use of System.out by a logger.(ıÇ÷‰8°¦åÇÏ1
+L	java:S106H"+Replace this use of System.out by a logger.(á»¢Úùÿÿÿÿ8±¦åÇÏ1
+K
+java:S1481J")Remove this unused "from" local variable.(“ü®±şÿÿÿÿ8²¦åÇÏ1
+L	java:S106R"+Replace this use of System.out by a logger.(¡şËáüÿÿÿÿ8´¦åÇÏ1
+L	java:S106T"+Replace this use of System.out by a logger.(Ä½Âûÿÿÿÿ8·¦åÇÏ1
