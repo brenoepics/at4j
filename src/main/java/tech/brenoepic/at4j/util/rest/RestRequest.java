@@ -14,6 +14,7 @@ import tech.brenoepic.at4j.util.logging.LoggerUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -116,7 +117,7 @@ public class RestRequest<T> {
      * @return An array with all used url parameters.
      */
     public String[] getUrlParameters() {
-        return urlParameters;
+        return urlParameters.clone();
     }
 
     /**
