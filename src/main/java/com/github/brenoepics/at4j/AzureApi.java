@@ -1,17 +1,16 @@
 package com.github.brenoepics.at4j;
 
-import java.util.Collection;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-
 import com.github.brenoepics.at4j.azure.BaseURL;
-import com.github.brenoepics.at4j.data.DetectedLanguage;
 import com.github.brenoepics.at4j.azure.lang.Language;
 import com.github.brenoepics.at4j.core.thread.ThreadPool;
+import com.github.brenoepics.at4j.data.DetectedLanguage;
 import com.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import com.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import com.github.brenoepics.at4j.data.request.TranslateParams;
 import com.github.brenoepics.at4j.data.response.TranslationResponse;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * This class is the most important class of AT4J, as it contains the main methods for translating

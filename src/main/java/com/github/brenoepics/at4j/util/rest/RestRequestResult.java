@@ -4,10 +4,9 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
+import com.github.brenoepics.at4j.util.logging.LoggerUtil;
 import java.io.IOException;
 import java.util.Optional;
-
-import com.github.brenoepics.at4j.util.logging.LoggerUtil;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import org.apache.logging.log4j.Logger;

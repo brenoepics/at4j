@@ -1,10 +1,9 @@
 package com.github.brenoepics.at4j.data.response;
 
-import java.util.Collection;
-import javax.annotation.Nullable;
-
 import com.github.brenoepics.at4j.data.DetectedLanguage;
 import com.github.brenoepics.at4j.data.Translation;
+import java.util.Collection;
+import javax.annotation.Nullable;
 
 public class TranslationResponse {
 
