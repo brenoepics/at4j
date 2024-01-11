@@ -1,7 +1,7 @@
+package tech.brenoepic.at4j;
+
 import okhttp3.OkHttpClient;
 import org.junit.Test;
-import tech.brenoepic.at4j.AzureApi;
-import tech.brenoepic.at4j.AzureApiBuilder;
 import tech.brenoepic.at4j.azure.BaseURL;
 import tech.brenoepic.at4j.azure.lang.Language;
 import tech.brenoepic.at4j.data.request.AvailableLanguagesParams;
@@ -16,9 +16,8 @@ import java.util.concurrent.CompletionException;
 import static org.junit.Assert.*;
 
 
-public class AzureApiTests {
-
-    AzureApi api;
+public class AzureApiTest {
+    
 
     @Test
     public void BuildNullKey() {
@@ -34,7 +33,7 @@ public class AzureApiTests {
 
     @Test
     public void buildApi() {
-        api = new AzureApiBuilder().setSubscriptionKey("test").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
+        AzureApi api = new AzureApiBuilder().setSubscriptionKey("test").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
         assertNotNull(api);
         api.getThreadPool().getExecutorService().shutdown();
     }
@@ -52,7 +51,7 @@ public class AzureApiTests {
 
     @Test
     public void getLanguagesEmptyKey() {
-        api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
+        AzureApi api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
 
         CompletableFuture<Optional<Collection<Language>>> languages = api.getAvailableLanguages(new AvailableLanguagesParams());
         languages.whenComplete((s, throwable) -> assertNull(throwable));
@@ -61,7 +60,7 @@ public class AzureApiTests {
 
     @Test
     public void getLanguagesEmptySourceLanguage() {
-        api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("test").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
+        AzureApi api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("test").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
 
         CompletableFuture<Optional<Collection<Language>>> languages = api.getAvailableLanguages(new AvailableLanguagesParams());
         languages.whenComplete((s, throwable) -> assertNull(throwable));
@@ -70,7 +69,7 @@ public class AzureApiTests {
 
     @Test
     public void translateEmptyKey() {
-        api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
+        AzureApi api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("").setSubscriptionRegion("test").setOkHttpClient(new OkHttpClient()).build();
 
         TranslateParams params = new TranslateParams("test").setSourceLanguage("en").setTargetLanguages("pt");
         CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
@@ -80,7 +79,7 @@ public class AzureApiTests {
 
     @Test
     public void translateEmptyText() {
-        api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("test").setOkHttpClient(new OkHttpClient()).build();
+        AzureApi api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("test").setOkHttpClient(new OkHttpClient()).build();
 
         TranslateParams params = new TranslateParams("").setSourceLanguage("en").setTargetLanguages("pt");
         CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
@@ -91,7 +90,7 @@ public class AzureApiTests {
 
     @Test
     public void translateEmptySourceLanguage() {
-        api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("test").setOkHttpClient(new OkHttpClient()).build();
+        AzureApi api = new AzureApiBuilder().setBaseURL(BaseURL.GLOBAL).setSubscriptionKey("test").setOkHttpClient(new OkHttpClient()).build();
 
         TranslateParams params = new TranslateParams("").setTargetLanguages("pt");
         CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
