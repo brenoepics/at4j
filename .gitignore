@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 at4j.iml
+.idea/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
