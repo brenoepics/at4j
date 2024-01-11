@@ -8,7 +8,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.github.brenoepics.at4j.core.exceptions.*;
-import tech.brenoepic.at4j.core.exceptions.*;
 
 /**
  * An enum with all rest request result codes as defined by <a
