@@ -2,8 +2,9 @@ package com.github.brenoepics.at4j.core.exceptions;
 
 import com.github.brenoepics.at4j.util.rest.RestRequestInformation;
 import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
+
 import java.util.Optional;
-import tech.brenoepic.at4j.util.rest.*;
+
 
 /** This exception is always thrown whenever a request to azure failed. */
 public class AzureException extends Exception {
