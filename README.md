@@ -51,6 +51,7 @@ public class Main {
 }
 ```
 
+### Other basic usage here [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
 
 ## 📦 Download / Installation
 
@@ -61,11 +62,22 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 #### Gradle
 
 ```gradle
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
 dependencies { implementation 'com.github.brenoepics:at4j:0.0.1' }
 ```
 
-#### Maven
+#### [Maven](https://github.com/brenoepics/at4j/packages/2037740)
+Add the GitHub Maven Repository to your `pom.xml`:
+
+```xml
+<repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+</repository>
+```
 
 Add the following dependency to your `pom.xml`:
 
