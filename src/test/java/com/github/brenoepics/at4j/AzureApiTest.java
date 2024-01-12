@@ -24,7 +24,7 @@ public class AzureApiTest {
 
   @Test
   public void BuildNullHttpClient() {
-    AzureApiBuilder builder = new AzureApiBuilder().setSubscriptionKey("");
+    AzureApiBuilder builder = new AzureApiBuilder().setKey("");
     assertThrows("HTTP client cannot be null", IllegalArgumentException.class, builder::build);
   }
 
@@ -32,9 +32,9 @@ public class AzureApiTest {
   public void buildApi() {
     AzureApi api =
         new AzureApiBuilder()
-            .setSubscriptionKey("test")
-            .setSubscriptionRegion("test")
-            .setOkHttpClient(new OkHttpClient())
+                .setKey("test")
+            .region("test")
+            .httpClient(new OkHttpClient())
             .build();
     assertNotNull(api);
     api.getThreadPool().getExecutorService().shutdown();
@@ -44,10 +44,10 @@ public class AzureApiTest {
   public void getLanguages() {
     AzureApi api =
         new AzureApiBuilder()
-            .setBaseURL(BaseURL.GLOBAL)
-            .setSubscriptionKey("test")
-            .setSubscriptionRegion("test")
-            .setOkHttpClient(new OkHttpClient())
+            .baseURL(BaseURL.GLOBAL)
+            .setKey("test")
+            .region("test")
+            .httpClient(new OkHttpClient())
             .build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
@@ -61,10 +61,10 @@ public class AzureApiTest {
   public void getLanguagesEmptyKey() {
     AzureApi api =
         new AzureApiBuilder()
-            .setBaseURL(BaseURL.GLOBAL)
-            .setSubscriptionKey("")
-            .setSubscriptionRegion("test")
-            .setOkHttpClient(new OkHttpClient())
+            .baseURL(BaseURL.GLOBAL)
+            .setKey("")
+            .region("test")
+            .httpClient(new OkHttpClient())
             .build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
@@ -77,10 +77,10 @@ public class AzureApiTest {
   public void getLanguagesEmptySourceLanguage() {
     AzureApi api =
         new AzureApiBuilder()
-            .setBaseURL(BaseURL.GLOBAL)
-            .setSubscriptionKey("test")
-            .setSubscriptionRegion("test")
-            .setOkHttpClient(new OkHttpClient())
+            .baseURL(BaseURL.GLOBAL)
+            .setKey("test")
+            .region("test")
+            .httpClient(new OkHttpClient())
             .build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
@@ -93,10 +93,10 @@ public class AzureApiTest {
   public void translateEmptyKey() {
     AzureApi api =
         new AzureApiBuilder()
-            .setBaseURL(BaseURL.GLOBAL)
-            .setSubscriptionKey("")
-            .setSubscriptionRegion("test")
-            .setOkHttpClient(new OkHttpClient())
+            .baseURL(BaseURL.GLOBAL)
+            .setKey("")
+            .region("test")
+            .httpClient(new OkHttpClient())
             .build();
 
     TranslateParams params =
@@ -110,9 +110,9 @@ public class AzureApiTest {
   public void translateEmptyText() {
     AzureApi api =
         new AzureApiBuilder()
-            .setBaseURL(BaseURL.GLOBAL)
-            .setSubscriptionKey("test")
-            .setOkHttpClient(new OkHttpClient())
+            .baseURL(BaseURL.GLOBAL)
+            .setKey("test")
+            .httpClient(new OkHttpClient())
             .build();
 
     TranslateParams params =
@@ -127,9 +127,9 @@ public class AzureApiTest {
   public void translateEmptySourceLanguage() {
     AzureApi api =
         new AzureApiBuilder()
-            .setBaseURL(BaseURL.GLOBAL)
-            .setSubscriptionKey("test")
-            .setOkHttpClient(new OkHttpClient())
+            .baseURL(BaseURL.GLOBAL)
+            .setKey("test")
+            .httpClient(new OkHttpClient())
             .build();
 
     TranslateParams params = new TranslateParams("").setTargetLanguages("pt");

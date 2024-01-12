@@ -35,7 +35,7 @@ public class AzureApiBuilder {
    * @return The current instance of AzureApiBuilder for method chaining.
    * @see <a href="https://square.github.io/okhttp/">OkHttp</a>
    */
-  public AzureApiBuilder setOkHttpClient(OkHttpClient httpClient) {
+  public AzureApiBuilder httpClient(OkHttpClient httpClient) {
     this.httpClient = httpClient;
     return this;
   }
@@ -47,7 +47,7 @@ public class AzureApiBuilder {
    * @return The current instance of AzureApiBuilder for method chaining.
    * @see BaseURL
    */
-  public AzureApiBuilder setBaseURL(BaseURL baseURL) {
+  public AzureApiBuilder baseURL(BaseURL baseURL) {
     this.baseURL = baseURL;
     return this;
   }
@@ -61,7 +61,7 @@ public class AzureApiBuilder {
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/create-translator-resource#authentication-keys-and-endpoint-url">Authentication
    *     keys and endpoint URL</a>
    */
-  public AzureApiBuilder setSubscriptionKey(String subscriptionKey) {
+  public AzureApiBuilder setKey(String subscriptionKey) {
     this.subscriptionKey = subscriptionKey;
     return this;
   }
@@ -74,7 +74,7 @@ public class AzureApiBuilder {
    * @see <a href="https://github.com/brenoepics/at4j/main/docs/azure_datacenter_list.json">Azure
    *     Datacenter List</a>
    */
-  public AzureApiBuilder setSubscriptionRegion(String subscriptionRegion) {
+  public AzureApiBuilder region(String subscriptionRegion) {
     this.subscriptionRegion = subscriptionRegion;
     return this;
   }
