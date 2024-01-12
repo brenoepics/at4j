@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * This class represents the parameters for a language detection request.
- * It contains a single field, 'text', which is the text to be analyzed for language detection.
+ * This class represents the parameters for a language detection request. It contains a single
+ * field, 'text', which is the text to be analyzed for language detection.
  */
 public class DetectLanguageParams {
 
@@ -32,10 +32,9 @@ public class DetectLanguageParams {
   }
 
   /**
-   * Returns the body of the request as an ArrayNode.
-   * If the text is null or empty, it returns null.
-   * Otherwise, it creates an ObjectNode with a single field 'Text' containing the text,
-   * and adds this ObjectNode to an ArrayNode.
+   * Returns the body of the request as an ArrayNode. If the text is null or empty, it returns null.
+   * Otherwise, it creates an ObjectNode with a single field 'Text' containing the text, and adds
+   * this ObjectNode to an ArrayNode.
    *
    * @return the body of the request as an ArrayNode, or null if the text is null or empty
    */

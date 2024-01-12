@@ -2,9 +2,7 @@ package com.github.brenoepics.at4j.data;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-/**
- * A translation of a text. This class is immutable.
- */
+/** A translation of a text. This class is immutable. */
 public class Translation {
 
   // The language code for the translation
