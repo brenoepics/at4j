@@ -2,7 +2,9 @@ package com.github.brenoepics.at4j;
 
 import com.github.brenoepics.at4j.azure.BaseURL;
 import com.github.brenoepics.at4j.core.AzureApiImpl;
+import com.github.brenoepics.at4j.util.logging.LoggerUtil;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Builder class for constructing instances of AzureApi.
@@ -10,9 +12,6 @@ import okhttp3.OkHttpClient;
  * @see AzureApi
  */
 public class AzureApiBuilder {
-
-  // The HTTP client used by the Azure API.
-  private OkHttpClient httpClient;
 
   // The base URL for the Azure API.
   private BaseURL baseURL;
@@ -26,18 +25,6 @@ public class AzureApiBuilder {
   /** Default constructor initializes the base URL to the global endpoint. */
   public AzureApiBuilder() {
     this.baseURL = BaseURL.GLOBAL;
-  }
-
-  /**
-   * Sets the HTTP client used by the Azure API.
-   *
-   * @param httpClient The HTTP client used by the Azure API.
-   * @return The current instance of AzureApiBuilder for method chaining.
-   * @see <a href="https://square.github.io/okhttp/">OkHttp</a>
-   */
-  public AzureApiBuilder httpClient(OkHttpClient httpClient) {
-    this.httpClient = httpClient;
-    return this;
   }
 
   /**
@@ -90,10 +77,21 @@ public class AzureApiBuilder {
       throw new IllegalArgumentException("Subscription key cannot be null");
     }
 
-    if (httpClient == null) {
-      throw new IllegalArgumentException("HTTP client cannot be null");
-    }
-
+    // The HTTP client used by the Azure API.
+    OkHttpClient httpClient =
+        new OkHttpClient.Builder()
+            .addInterceptor(
+                chain ->
+                    chain.proceed(
+                        chain
+                            .request()
+                            .newBuilder()
+                            .addHeader("User-Agent", AT4J.USER_AGENT)
+                            .build()))
+            .addInterceptor(
+                new HttpLoggingInterceptor(LoggerUtil.getLogger(OkHttpClient.class)::trace)
+                    .setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build();
     return new AzureApiImpl(httpClient, baseURL, subscriptionKey, subscriptionRegion);
   }
 }

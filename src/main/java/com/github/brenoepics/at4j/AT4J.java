@@ -41,7 +41,8 @@ public class AT4J {
 
   static {
     Properties versionProperties = new Properties();
-    try (InputStream versionPropertiesStream = AT4J.class.getResourceAsStream("/git.properties")) {
+    try (InputStream versionPropertiesStream =
+        AT4J.class.getClassLoader().getResourceAsStream("git.properties")) {
       versionProperties.load(versionPropertiesStream);
     } catch (IOException ignored) {
       // ignored
@@ -61,6 +62,9 @@ public class AT4J {
 
   /** The GitHub url of AT4J. */
   public static final String GITHUB_URL = "https://github.com/brenoepics/at4j";
+
+  /** The user agent used for requests. */
+  public static final String USER_AGENT = "AT4J (" + GITHUB_URL + ", v" + DISPLAY_VERSION + ")";
 
   /**
    * The API version from Azure Translator which we are using. The reference can be found <a
