@@ -2,13 +2,13 @@
 
 An Unofficial Java library for translating text using Azure AI Cognitive Services. It is fast and easy to configure.
 
-## Features
+## ✨ Features
 
-- Translation of text from one language to another
-- Language detection
-- Profanity handling
-- Support for both plain text and HTML text translation
-- more
+- Text Translation: Translate text from one language (or detect) to another or to a list of languages.
+- Language Detection: Detect the language of a given text.
+- Profanity Handling: Options for handling profanity in translations.
+- Text Type Support: We support both plain text and HTML text translation.
+- And more.
 
 ## 🎉 Basic Usage
 
@@ -156,7 +156,7 @@ best to deprecate it before removing it. We are unable to guarantee this though,
 something due to changes made by Azure, which we are unable to control. Usually you can expect a deprecated method or
 class to stay for at least 6 months before it finally gets removed, but this is not guaranteed.
 
-## ✨ Contributing
+## 🧑‍💻 Contributing
 
 Contributions of any kind are welcome. You can start contributing to this library by creating issues, submitting pull requests or giving a star to the project.
 
