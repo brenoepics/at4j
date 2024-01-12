@@ -31,11 +31,7 @@ public class AzureApiTest {
   @Test
   public void buildApi() {
     AzureApi api =
-        new AzureApiBuilder()
-                .setKey("test")
-            .region("test")
-            .httpClient(new OkHttpClient())
-            .build();
+        new AzureApiBuilder().setKey("test").region("test").httpClient(new OkHttpClient()).build();
     assertNotNull(api);
     api.getThreadPool().getExecutorService().shutdown();
   }
