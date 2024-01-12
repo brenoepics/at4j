@@ -2,25 +2,48 @@ package com.github.brenoepics.at4j.data;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-/** Represents a detected language. */
+/**
+ * Represents a detected language.
+ */
 public class DetectedLanguage {
 
+  // The language code of the detected language
   private final String languageCode;
+
+  // The confidence score of the detected language
   private final float score;
+
+  // A boolean indicating if the language is supported for translation
   private boolean isTranslationSupported = false;
+
+  // A boolean indicating if the language is supported for transliteration
   private boolean isTransliterationSupported = false;
 
+  /**
+   * Constructor for DetectedLanguage class.
+   *
+   * @param languageCode The language code of the detected language.
+   * @param score The confidence score of the detected language.
+   * @param isTranslationSupported A boolean indicating if the language is supported for translation.
+   * @param isTransliterationSupported A boolean indicating if the language is supported for transliteration.
+   */
   public DetectedLanguage(
-      String languageCode,
-      float score,
-      boolean isTranslationSupported,
-      boolean isTransliterationSupported) {
+          String languageCode,
+          float score,
+          boolean isTranslationSupported,
+          boolean isTransliterationSupported) {
     this.languageCode = languageCode;
     this.score = score;
     this.isTranslationSupported = isTranslationSupported;
     this.isTransliterationSupported = isTransliterationSupported;
   }
 
+  /**
+   * Constructor for DetectedLanguage class.
+   *
+   * @param languageCode The language code of the detected language.
+   * @param score The confidence score of the detected language.
+   */
   public DetectedLanguage(String languageCode, float score) {
     this.languageCode = languageCode;
     this.score = score;
@@ -36,7 +59,7 @@ public class DetectedLanguage {
     if (jsonNode == null || !jsonNode.has("language") || !jsonNode.has("score")) return null;
 
     DetectedLanguage detected =
-        new DetectedLanguage(jsonNode.get("language").asText(), jsonNode.get("score").floatValue());
+            new DetectedLanguage(jsonNode.get("language").asText(), jsonNode.get("score").floatValue());
 
     if (jsonNode.has("isTranslationSupported"))
       detected.isTranslationSupported = jsonNode.get("isTranslationSupported").asBoolean();
@@ -82,18 +105,23 @@ public class DetectedLanguage {
     return isTransliterationSupported;
   }
 
+  /**
+   * Returns a string representation of the DetectedLanguage object.
+   *
+   * @return A string representation of the DetectedLanguage object.
+   */
   @Override
   public String toString() {
     return "DetectedLanguage{"
-        + "language='"
-        + languageCode
-        + '\''
-        + ", score="
-        + score
-        + ", isTranslationSupported="
-        + isTranslationSupported
-        + ", isTransliterationSupported="
-        + isTransliterationSupported
-        + '}';
+            + "language='"
+            + languageCode
+            + '\''
+            + ", score="
+            + score
+            + ", isTranslationSupported="
+            + isTranslationSupported
+            + ", isTransliterationSupported="
+            + isTransliterationSupported
+            + '}';
   }
 }
