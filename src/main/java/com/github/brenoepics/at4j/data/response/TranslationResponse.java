@@ -6,8 +6,8 @@ import java.util.Collection;
 import javax.annotation.Nullable;
 
 /**
- * This class represents a response from a translation service.
- * It contains the detected language of the input and a collection of translations.
+ * This class represents a response from a translation service. It contains the detected language of
+ * the input and a collection of translations.
  */
 public class TranslationResponse {
 
@@ -24,14 +24,14 @@ public class TranslationResponse {
    * @param translations A collection of translations for the input text.
    */
   public TranslationResponse(
-          @Nullable DetectedLanguage detectedLanguage, Collection<Translation> translations) {
+      @Nullable DetectedLanguage detectedLanguage, Collection<Translation> translations) {
     this.detectedLanguage = detectedLanguage;
     this.translations = translations;
   }
 
   /**
-   * Constructs a TranslationResponse with a collection of translations.
-   * The detected language is set to null.
+   * Constructs a TranslationResponse with a collection of translations. The detected language is
+   * set to null.
    *
    * @param translations A collection of translations for the input text.
    */

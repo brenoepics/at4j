@@ -12,9 +12,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class represents the parameters for a translation request.
- * It includes options for handling profanity, text type, alignment,
- * sentence length, source language, target languages, and a fallback language.
+ * This class represents the parameters for a translation request. It includes options for handling
+ * profanity, text type, alignment, sentence length, source language, target languages, and a
+ * fallback language.
  */
 public class TranslateParams {
   private String text;
