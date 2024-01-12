@@ -1,8 +1,16 @@
 package tech.brenoepic.at4j;
 
+<<<<<<< Updated upstream:src/main/java/tech/brenoepic/at4j/AzureApiBuilder.java
 import okhttp3.OkHttpClient;
 import tech.brenoepic.at4j.azure.BaseURL;
 import tech.brenoepic.at4j.core.AzureApiImpl;
+=======
+import com.github.brenoepics.at4j.azure.BaseURL;
+import com.github.brenoepics.at4j.core.AzureApiImpl;
+import com.github.brenoepics.at4j.util.logging.LoggerUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+>>>>>>> Stashed changes:src/main/java/com/github/brenoepics/at4j/AzureApiBuilder.java
 
 /**
  * Builder class for constructing instances of AzureApi.
@@ -10,9 +18,6 @@ import tech.brenoepic.at4j.core.AzureApiImpl;
  * @see AzureApi
  */
 public class AzureApiBuilder {
-
-  // The HTTP client used by the Azure API.
-  private OkHttpClient httpClient;
 
   // The base URL for the Azure API.
   private BaseURL baseURL;
@@ -29,6 +34,7 @@ public class AzureApiBuilder {
   }
 
   /**
+<<<<<<< Updated upstream:src/main/java/tech/brenoepic/at4j/AzureApiBuilder.java
    * Sets the HTTP client used by the Azure API.
    *
    * @param httpClient The HTTP client used by the Azure API.
@@ -41,6 +47,8 @@ public class AzureApiBuilder {
   }
 
   /**
+=======
+>>>>>>> Stashed changes:src/main/java/com/github/brenoepics/at4j/AzureApiBuilder.java
    * Sets the base URL for the Azure API.
    *
    * @param baseURL The base URL for the Azure API.
@@ -90,9 +98,21 @@ public class AzureApiBuilder {
       throw new IllegalArgumentException("Subscription key cannot be null");
     }
 
-    if (httpClient == null) {
-      throw new IllegalArgumentException("HTTP client cannot be null");
-    }
+    // The HTTP client used by the Azure API.
+    OkHttpClient httpClient =
+        new OkHttpClient.Builder()
+            .addInterceptor(
+                chain ->
+                    chain.proceed(
+                        chain
+                            .request()
+                            .newBuilder()
+                            .addHeader("User-Agent", AT4J.USER_AGENT)
+                            .build()))
+            .addInterceptor(
+                new HttpLoggingInterceptor(LoggerUtil.getLogger(OkHttpClient.class)::trace)
+                    .setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build();
 
     return new AzureApiImpl(httpClient, baseURL, subscriptionKey, subscriptionRegion);
   }

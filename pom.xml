@@ -6,7 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>tech.brenoepic</groupId>
     <artifactId>at4j</artifactId>
+<<<<<<< Updated upstream
     <version>0.0.1</version>
+=======
+    <version>0.0.4</version>
+>>>>>>> Stashed changes
     <name>Azure Translator For Java</name>
     <description>
         A simple Java library to translate text using Azure AI Cognitive Services.
@@ -27,13 +31,14 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
-            <version>2.22.1</version>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>logging-interceptor</artifactId>
+            <version>4.12.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-core</artifactId>
+            <artifactId>log4j-api</artifactId>
             <version>2.22.1</version>
         </dependency>
         <dependency>
@@ -79,6 +84,18 @@
                     </archive>
                 </configuration>
             </plugin>
+                <plugin>
+                    <groupId>com.spotify.fmt</groupId>
+                    <artifactId>fmt-maven-plugin</artifactId>
+                    <version>2.21.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>format</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
         </plugins>
     </build>
 </project>

@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import okhttp3.OkHttpClient;
 import org.junit.Test;
 import tech.brenoepic.at4j.azure.BaseURL;
 import tech.brenoepic.at4j.azure.lang.Language;
@@ -23,6 +22,7 @@ public class AzureApiTest {
   }
 
   @Test
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
   public void BuildNullHttpClient() {
     AzureApiBuilder builder = new AzureApiBuilder().setSubscriptionKey("");
     assertThrows("HTTP client cannot be null", IllegalArgumentException.class, builder::build);
@@ -36,6 +36,10 @@ public class AzureApiTest {
             .setSubscriptionRegion("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+  public void buildApi() {
+    AzureApi api = new AzureApiBuilder().setKey("test").region("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
     assertNotNull(api);
     api.getThreadPool().getExecutorService().shutdown();
   }
@@ -43,12 +47,16 @@ public class AzureApiTest {
   @Test
   public void getLanguages() {
     AzureApi api =
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
         new AzureApiBuilder()
             .setBaseURL(BaseURL.GLOBAL)
             .setSubscriptionKey("test")
             .setSubscriptionRegion("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+        new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams().setSourceLanguage("en"));
@@ -59,6 +67,7 @@ public class AzureApiTest {
 
   @Test
   public void getLanguagesEmptyKey() {
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
     AzureApi api =
         new AzureApiBuilder()
             .setBaseURL(BaseURL.GLOBAL)
@@ -66,6 +75,9 @@ public class AzureApiTest {
             .setSubscriptionRegion("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams());
@@ -76,12 +88,16 @@ public class AzureApiTest {
   @Test
   public void getLanguagesEmptySourceLanguage() {
     AzureApi api =
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
         new AzureApiBuilder()
             .setBaseURL(BaseURL.GLOBAL)
             .setSubscriptionKey("test")
             .setSubscriptionRegion("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+        new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams());
@@ -91,6 +107,7 @@ public class AzureApiTest {
 
   @Test
   public void translateEmptyKey() {
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
     AzureApi api =
         new AzureApiBuilder()
             .setBaseURL(BaseURL.GLOBAL)
@@ -98,6 +115,9 @@ public class AzureApiTest {
             .setSubscriptionRegion("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
 
     TranslateParams params =
         new TranslateParams("test").setSourceLanguage("en").setTargetLanguages("pt");
@@ -108,12 +128,16 @@ public class AzureApiTest {
 
   @Test
   public void translateEmptyText() {
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
     AzureApi api =
         new AzureApiBuilder()
             .setBaseURL(BaseURL.GLOBAL)
             .setSubscriptionKey("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
 
     TranslateParams params =
         new TranslateParams("").setSourceLanguage("en").setTargetLanguages("pt");
@@ -125,12 +149,16 @@ public class AzureApiTest {
 
   @Test
   public void translateEmptySourceLanguage() {
+<<<<<<< Updated upstream:src/test/java/tech/brenoepic/at4j/AzureApiTest.java
     AzureApi api =
         new AzureApiBuilder()
             .setBaseURL(BaseURL.GLOBAL)
             .setSubscriptionKey("test")
             .setOkHttpClient(new OkHttpClient())
             .build();
+=======
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
+>>>>>>> Stashed changes:src/test/java/com/github/brenoepics/at4j/AzureApiTest.java
 
     TranslateParams params = new TranslateParams("").setTargetLanguages("pt");
     CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
