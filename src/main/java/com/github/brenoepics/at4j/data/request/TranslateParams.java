@@ -11,6 +11,11 @@ import com.github.brenoepics.at4j.data.request.optional.TextType;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * This class represents the parameters for a translation request.
+ * It includes options for handling profanity, text type, alignment,
+ * sentence length, source language, target languages, and a fallback language.
+ */
 public class TranslateParams {
   private String text;
   private TextType textType;
@@ -22,10 +27,21 @@ public class TranslateParams {
   private Collection<String> targetLanguages;
   private String suggestedFromLanguage;
 
+  /**
+   * Constructor that initializes the text to be translated.
+   *
+   * @param text The text to be translated.
+   */
   public TranslateParams(String text) {
     this.text = text;
   }
 
+  /**
+   * Sets the text to be translated.
+   *
+   * @param text The text to be translated.
+   * @return This instance.
+   */
   public TranslateParams setText(String text) {
     this.text = text;
     return this;
@@ -170,6 +186,11 @@ public class TranslateParams {
     return targetLanguages;
   }
 
+  /**
+   * Returns the parameters as a map.
+   *
+   * @return A map of query parameters.
+   */
   public Map<String, String> getQueryParameters() {
     Map<String, String> params = new HashMap<>();
     if (getSourceLanguage() != null) {
@@ -201,6 +222,11 @@ public class TranslateParams {
     return params;
   }
 
+  /**
+   * Returns the body of the request as a JSON node.
+   *
+   * @return The body of the request.
+   */
   public JsonNode getBody() {
     ArrayNode body = JsonNodeFactory.instance.arrayNode();
     if (getText() != null && !getText().isEmpty()) {
