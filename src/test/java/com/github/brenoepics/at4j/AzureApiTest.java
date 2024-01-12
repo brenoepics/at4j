@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import okhttp3.OkHttpClient;
 import org.junit.Test;
 
 public class AzureApiTest {
@@ -23,15 +22,8 @@ public class AzureApiTest {
   }
 
   @Test
-  public void BuildNullHttpClient() {
-    AzureApiBuilder builder = new AzureApiBuilder().setKey("");
-    assertThrows("HTTP client cannot be null", IllegalArgumentException.class, builder::build);
-  }
-
-  @Test
   public void buildApi() {
-    AzureApi api =
-        new AzureApiBuilder().setKey("test").region("test").httpClient(new OkHttpClient()).build();
+    AzureApi api = new AzureApiBuilder().setKey("test").region("test").build();
     assertNotNull(api);
     api.getThreadPool().getExecutorService().shutdown();
   }
@@ -39,12 +31,7 @@ public class AzureApiTest {
   @Test
   public void getLanguages() {
     AzureApi api =
-        new AzureApiBuilder()
-            .baseURL(BaseURL.GLOBAL)
-            .setKey("test")
-            .region("test")
-            .httpClient(new OkHttpClient())
-            .build();
+        new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams().setSourceLanguage("en"));
@@ -55,13 +42,7 @@ public class AzureApiTest {
 
   @Test
   public void getLanguagesEmptyKey() {
-    AzureApi api =
-        new AzureApiBuilder()
-            .baseURL(BaseURL.GLOBAL)
-            .setKey("")
-            .region("test")
-            .httpClient(new OkHttpClient())
-            .build();
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams());
@@ -72,12 +53,7 @@ public class AzureApiTest {
   @Test
   public void getLanguagesEmptySourceLanguage() {
     AzureApi api =
-        new AzureApiBuilder()
-            .baseURL(BaseURL.GLOBAL)
-            .setKey("test")
-            .region("test")
-            .httpClient(new OkHttpClient())
-            .build();
+        new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams());
@@ -87,13 +63,7 @@ public class AzureApiTest {
 
   @Test
   public void translateEmptyKey() {
-    AzureApi api =
-        new AzureApiBuilder()
-            .baseURL(BaseURL.GLOBAL)
-            .setKey("")
-            .region("test")
-            .httpClient(new OkHttpClient())
-            .build();
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     TranslateParams params =
         new TranslateParams("test").setSourceLanguage("en").setTargetLanguages("pt");
@@ -104,12 +74,7 @@ public class AzureApiTest {
 
   @Test
   public void translateEmptyText() {
-    AzureApi api =
-        new AzureApiBuilder()
-            .baseURL(BaseURL.GLOBAL)
-            .setKey("test")
-            .httpClient(new OkHttpClient())
-            .build();
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
     TranslateParams params =
         new TranslateParams("").setSourceLanguage("en").setTargetLanguages("pt");
@@ -121,12 +86,7 @@ public class AzureApiTest {
 
   @Test
   public void translateEmptySourceLanguage() {
-    AzureApi api =
-        new AzureApiBuilder()
-            .baseURL(BaseURL.GLOBAL)
-            .setKey("test")
-            .httpClient(new OkHttpClient())
-            .build();
+    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
     TranslateParams params = new TranslateParams("").setTargetLanguages("pt");
     CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
