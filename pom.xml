@@ -80,6 +80,12 @@
     </dependencies>
     <build>
         <plugins>
+            <!-- Maven Javadoc Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+            </plugin>
             <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -116,10 +122,11 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Maven Resources Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <version>3.2.0</version> <!-- Use the latest version -->
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>copy-resources</id>
