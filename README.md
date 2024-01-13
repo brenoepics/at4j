@@ -61,11 +61,10 @@ public class Main {
 
 The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 
-### [AT4J Dependency](https://github.com/brenoepics/at4j/packages/2037740)
+### AT4J Dependency
 
-#### Gradle
 <details>
-  <summary>Adding dependency</summary>
+  <summary>Gradle</summary>
     
 ```gradle
 repositories {
@@ -75,10 +74,8 @@ repositories {
 dependencies { implementation 'com.github.brenoepics:at4j:0.0.1' }
 ```
 </details>
-
-#### Maven
 <details>
-  <summary>Adding dependency</summary>
+  <summary>Maven</summary>
 Add the Jit Pack repository to your `pom.xml`:
 
 ```xml
