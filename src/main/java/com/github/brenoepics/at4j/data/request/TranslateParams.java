@@ -185,8 +185,6 @@ public class TranslateParams {
     return this;
   }
 
-
-
   public String getText() {
     return text;
   }
