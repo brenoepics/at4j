@@ -17,14 +17,23 @@ import java.util.stream.Collectors;
  * fallback language.
  */
 public class TranslateParams {
+  // The text to be translated
   private String text;
+  // The type of the text to be translated (plain or HTML)
   private TextType textType;
+  // The action to be taken on profanities in the text
   private ProfanityAction profanityAction;
+  // The marker to be used for profanities in the text
   private ProfanityMarker profanityMarker;
+  // Whether to include alignment in the translation
   private Boolean includeAlignment;
+  // Whether to include sentence length in the translation
   private Boolean includeSentenceLength;
+  // The source language of the text
   private String sourceLanguage;
+  // The target languages for the translation
   private Collection<String> targetLanguages;
+  // The suggested language if the source language can't be identified
   private String suggestedFromLanguage;
 
   /**
@@ -35,6 +44,8 @@ public class TranslateParams {
   public TranslateParams(String text) {
     this.text = text;
   }
+
+  // Setter methods for the class fields
 
   /**
    * Sets the text to be translated.
@@ -113,10 +124,6 @@ public class TranslateParams {
     return this;
   }
 
-  public String getSuggestedFromLanguage() {
-    return suggestedFromLanguage;
-  }
-
   /**
    * Specifies a fallback language if the language of the input text can't be identified. <br>
    * Language autodetection is applied when the from parameter is omitted. If detection fails, the
@@ -130,16 +137,34 @@ public class TranslateParams {
     return this;
   }
 
+  /**
+   * Sets the source language for the translation.
+   *
+   * @param sourceLanguage The source language for the translation.
+   * @return This instance.
+   */
   public TranslateParams setSourceLanguage(Language sourceLanguage) {
     this.sourceLanguage = sourceLanguage.getCode();
     return this;
   }
 
+  /**
+   * Sets the source language for the translation.
+   *
+   * @param sourceLanguage The source language for the translation.
+   * @return This instance.
+   */
   public TranslateParams setSourceLanguage(String sourceLanguage) {
     this.sourceLanguage = sourceLanguage;
     return this;
   }
 
+  /**
+   * Sets the target languages for the translation.
+   *
+   * @param targetLanguages The target languages for the translation.
+   * @return This instance.
+   */
   public TranslateParams setTargetLanguages(Collection<Language> targetLanguages) {
     this.targetLanguages =
         Collections.unmodifiableCollection(
@@ -149,10 +174,18 @@ public class TranslateParams {
     return this;
   }
 
+  /**
+   * Sets the target languages for the translation.
+   *
+   * @param targetLanguages The target languages for the translation.
+   * @return This instance.
+   */
   public TranslateParams setTargetLanguages(String... targetLanguages) {
     this.targetLanguages = List.of(targetLanguages);
     return this;
   }
+
+  // Getter methods for the class fields
 
   public String getText() {
     return text;
@@ -184,6 +217,10 @@ public class TranslateParams {
 
   public Collection<String> getTargetLanguages() {
     return targetLanguages;
+  }
+
+  public String getSuggestedFromLanguage() {
+    return suggestedFromLanguage;
   }
 
   /**

@@ -3,6 +3,7 @@ package com.github.brenoepics.at4j.core.exceptions;
 import com.github.brenoepics.at4j.util.rest.RestRequestInformation;
 import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
 
+/** When we sent a bad request (HTTP response code 400). */
 public class UnsupportedMediaTypeException extends AzureException {
 
   /**

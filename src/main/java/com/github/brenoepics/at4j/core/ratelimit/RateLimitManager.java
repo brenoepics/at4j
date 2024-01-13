@@ -24,7 +24,7 @@ public class RateLimitManager {
   private final AzureApiImpl api;
 
   /** All buckets. */
-  private final Set<RatelimitBucket> buckets = new HashSet<>();
+  private final Set<RateLimitBucket> buckets = new HashSet<>();
 
   /**
    * Creates a new rate-limit manager.
@@ -40,7 +40,7 @@ public class RateLimitManager {
    *
    * @return All rate-limit buckets.
    */
-  public Set<RatelimitBucket> getBuckets() {
+  public Set<RateLimitBucket> getBuckets() {
     return buckets;
   }
 
@@ -51,7 +51,7 @@ public class RateLimitManager {
    * @param request The request to queue.
    */
   public void queueRequest(RestRequest<?> request) {
-    final RatelimitBucket bucket;
+    final RateLimitBucket bucket;
     final boolean alreadyInQueue;
     synchronized (buckets) {
       // Search for a bucket that fits to this request
@@ -62,7 +62,7 @@ public class RateLimitManager {
               .findAny()
               .orElseGet(
                   () ->
-                      new RatelimitBucket(
+                      new RateLimitBucket(
                           api, request.getEndpoint(), request.getMajorUrlParameter().orElse(null)));
 
       // Must be executed BEFORE adding the request to the queue
@@ -170,7 +170,7 @@ public class RateLimitManager {
   private void handleResponse(
       RestRequest<?> request,
       RestRequestResult result,
-      RatelimitBucket bucket,
+      RateLimitBucket bucket,
       long responseTimestamp) {
     if (result == null || result.getResponse() == null) {
       return;
@@ -194,7 +194,7 @@ public class RateLimitManager {
                 + "amount of invalid requests.");
         long retryAfter =
             Long.parseLong(Objects.requireNonNull(response.header("Retry-after"))) * 1000;
-        RatelimitBucket.setGlobalRatelimitResetTimestamp(api, responseTimestamp + retryAfter);
+        RateLimitBucket.setGlobalRateLimitResetTimestamp(api, responseTimestamp + retryAfter);
         return;
       }
       long retryAfter =
@@ -207,13 +207,13 @@ public class RateLimitManager {
         logger.warn(
             "Hit a global rate-limit! This means you were sending a very large "
                 + "amount within a very short time frame.");
-        RatelimitBucket.setGlobalRatelimitResetTimestamp(api, responseTimestamp + retryAfter);
+        RateLimitBucket.setGlobalRateLimitResetTimestamp(api, responseTimestamp + retryAfter);
       } else {
         logger.debug("Received a 429 response from Discord! Recalculating time offset...");
 
         // Update the bucket information
-        bucket.setRatelimitRemaining(0);
-        bucket.setRatelimitResetTimestamp(responseTimestamp + retryAfter);
+        bucket.setRateLimitRemaining(0);
+        bucket.setRateLimitResetTimestamp(responseTimestamp + retryAfter);
       }
     } else {
       // Check if we didn't already complete it exceptionally.
@@ -223,8 +223,8 @@ public class RateLimitManager {
       }
 
       // Update bucket information
-      bucket.setRatelimitRemaining(remaining);
-      bucket.setRatelimitResetTimestamp(reset);
+      bucket.setRateLimitRemaining(remaining);
+      bucket.setRateLimitResetTimestamp(reset);
     }
   }
 }

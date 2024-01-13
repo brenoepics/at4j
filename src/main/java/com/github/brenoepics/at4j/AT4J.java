@@ -5,25 +5,24 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.util.Properties;
 
+/**
+ * This class contains constants related to the AT4J version, commit ID, build timestamp, display
+ * version, GitHub URL, user agent, and Azure Translator API version. The values of these constants
+ * are loaded from a properties file at runtime.
+ */
 public class AT4J {
-  /**
-   * The current AT4J version.
-   *
-   * @see #DISPLAY_VERSION
-   */
+  /** The current AT4J version. This is loaded from the properties file at runtime. */
   public static final String VERSION;
 
   /**
-   * The commit ID from which the current AT4J version was built.
-   *
-   * @see #DISPLAY_VERSION
+   * The commit ID from which the current AT4J version was built. This is loaded from the properties
+   * file at runtime.
    */
   public static final String COMMIT_ID;
 
   /**
-   * The build timestamp at which the current AT4J version was built.
-   *
-   * @see #DISPLAY_VERSION
+   * The build timestamp at which the current AT4J version was built. This is loaded from the
+   * properties file at runtime.
    */
   public static final Instant BUILD_TIMESTAMP;
 
@@ -32,10 +31,6 @@ public class AT4J {
    * version, it is equal to {@link #VERSION}. If the current AT4J version is a snapshot version, it
    * consists of the {@link #VERSION}, the {@link #COMMIT_ID}, and the {@link #BUILD_TIMESTAMP}. For
    * displaying the version somewhere, it is best to use this constant.
-   *
-   * @see #VERSION
-   * @see #COMMIT_ID
-   * @see #BUILD_TIMESTAMP
    */
   public static final String DISPLAY_VERSION;
 
@@ -63,7 +58,10 @@ public class AT4J {
   /** The GitHub url of AT4J. */
   public static final String GITHUB_URL = "https://github.com/brenoepics/at4j";
 
-  /** The user agent used for requests. */
+  /**
+   * The user agent used for requests. It is composed of the GitHub URL and the display version of
+   * AT4J.
+   */
   public static final String USER_AGENT = "AT4J (" + GITHUB_URL + ", v" + DISPLAY_VERSION + ")";
 
   /**
@@ -72,6 +70,7 @@ public class AT4J {
    */
   public static final String AZURE_TRANSLATOR_API_VERSION = "3.0";
 
+  /** Private constructor to prevent instantiation of this utility class. */
   private AT4J() {
     throw new UnsupportedOperationException();
   }

@@ -4,10 +4,17 @@ import com.github.brenoepics.at4j.azure.BaseURL;
 import java.util.Optional;
 import okhttp3.HttpUrl;
 
-/** This enum contains all endpoints that we may use. */
+/**
+ * This enum contains all endpoints that we may use. Each endpoint is represented as an enum
+ * constant with its associated URL.
+ */
 public enum RestEndpoint {
+
+  /** The translation endpoint. */
   TRANSLATE("/translate"),
+  /** The language list endpoint. */
   LANGUAGES("/languages"),
+  /** The dictionary endpoint. */
   DETECT("/detect");
 
   /** The endpoint url (only including the base, not the BaseURL). */
@@ -19,10 +26,21 @@ public enum RestEndpoint {
    */
   private final int majorParameterPosition;
 
+  /**
+   * Constructor for creating an endpoint with a URL and no major parameter.
+   *
+   * @param endpointUrl The URL of the endpoint.
+   */
   RestEndpoint(String endpointUrl) {
     this(endpointUrl, -1);
   }
 
+  /**
+   * Constructor for creating an endpoint with a URL and a major parameter.
+   *
+   * @param endpointUrl The URL of the endpoint.
+   * @param majorParameterPosition The position of the major parameter.
+   */
   RestEndpoint(String endpointUrl, int majorParameterPosition) {
     this.endpointUrl = endpointUrl;
     this.majorParameterPosition = majorParameterPosition;
@@ -53,6 +71,7 @@ public enum RestEndpoint {
   /**
    * Gets the full url of the endpoint. Parameters which are "too much" are added to the end.
    *
+   * @param baseURL The base url of the endpoint.
    * @param parameters The parameters of the url. E.g., for channel ids.
    * @return The full url of the endpoint.
    */
@@ -75,6 +94,7 @@ public enum RestEndpoint {
    * Gets the full {@link HttpUrl http url} of the endpoint. Parameters which are "too much" are
    * added to the end.
    *
+   * @param baseURL The base url of the endpoint.
    * @param parameters The parameters of the url. E.g., for channel ids.
    * @return The full http url of the endpoint.
    */

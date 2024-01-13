@@ -293,7 +293,9 @@ public class RestRequest<T> {
    * Executes the request blocking.
    *
    * @return The result of the request.
-   * @throws AzureException or IOException Thrown if something goes wrong.
+   * @throws AzureException Thrown in case of an error while requesting azure.
+   * @throws IOException Thrown if OkHttp {@link OkHttpClient#newCall(Request)} throws an {@link
+   *     IOException}.
    */
   public RestRequestResult executeBlocking() throws AzureException, IOException {
     Request.Builder requestBuilder = new Request.Builder();

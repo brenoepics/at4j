@@ -24,6 +24,10 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.OkHttpClient;
 
+/**
+ * This class is an implementation of the AzureApi interface. It provides methods to interact with
+ * Azure's translation API.
+ */
 public class AzureApiImpl implements AzureApi {
 
   /** The Http Client for this instance. */
@@ -174,14 +178,29 @@ public class AzureApiImpl implements AzureApi {
         });
   }
 
+  /**
+   * Gets the used OkHttpClient.
+   *
+   * @return OkHttpClient - The used OkHttpClient.
+   */
   public OkHttpClient getHttpClient() {
     return this.httpClient;
   }
 
+  /**
+   * Gets the used ObjectMapper.
+   *
+   * @return ObjectMapper - The used ObjectMapper.
+   */
   public ObjectMapper getObjectMapper() {
     return objectMapper;
   }
 
+  /**
+   * Gets the used RateLimitManager.
+   *
+   * @return RateLimitManager - The used RateLimitManager.
+   */
   public RateLimitManager getRatelimitManager() {
     return ratelimitManager;
   }

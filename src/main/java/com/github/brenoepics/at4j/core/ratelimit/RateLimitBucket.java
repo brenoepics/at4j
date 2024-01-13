@@ -8,10 +8,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class RatelimitBucket {
+/**
+ * This class represents a rate limit bucket for Azure API requests. It manages the rate limit for
+ * each endpoint and major URL parameter combination.
+ */
+public class RateLimitBucket {
 
-  // The key is the subscription key, as global ratelimits are shared across the same account.
-  private static final Map<String, Long> globalRatelimitResetTimestamp = new ConcurrentHashMap<>();
+  // The key is the subscription key, as global rate-limits are shared across the same account.
+  private static final Map<String, Long> globalRateLimitResetTimestamp = new ConcurrentHashMap<>();
 
   private final AzureApiImpl api;
 
@@ -20,40 +24,40 @@ public class RatelimitBucket {
   private final RestEndpoint endpoint;
   private final String majorUrlParameter;
 
-  private volatile long ratelimitResetTimestamp = 0;
-  private volatile int ratelimitRemaining = 1;
+  private volatile long rateLimitResetTimestamp = 0;
+  private volatile int rateLimitRemaining = 1;
 
   /**
-   * Creates a RatelimitBucket for the given endpoint / parameter combination.
+   * Creates a RateLimitBucket for the given endpoint / parameter combination.
    *
    * @param api The api/shard to use.
-   * @param endpoint The REST endpoint the ratelimit is tracked for.
+   * @param endpoint The REST endpoint the rate-limit is tracked for.
    */
-  public RatelimitBucket(AzureApi api, RestEndpoint endpoint) {
+  public RateLimitBucket(AzureApi api, RestEndpoint endpoint) {
     this(api, endpoint, null);
   }
 
   /**
-   * Creates a RatelimitBucket for the given endpoint / parameter combination.
+   * Creates a RateLimitBucket for the given endpoint / parameter combination.
    *
    * @param api The api/shard to use.
-   * @param endpoint The REST endpoint the ratelimit is tracked for.
+   * @param endpoint The REST endpoint the rate-limit is tracked for.
    * @param majorUrlParameter The url parameter this bucket is specific for. May be null.
    */
-  public RatelimitBucket(AzureApi api, RestEndpoint endpoint, String majorUrlParameter) {
+  public RateLimitBucket(AzureApi api, RestEndpoint endpoint, String majorUrlParameter) {
     this.api = (AzureApiImpl) api;
     this.endpoint = endpoint;
     this.majorUrlParameter = majorUrlParameter;
   }
 
   /**
-   * Sets a global ratelimit.
+   * Sets a global rate-limit.
    *
    * @param api A azure api instance.
-   * @param resetTimestamp The reset timestamp of the global ratelimit.
+   * @param resetTimestamp The reset timestamp of the global rate-limit.
    */
-  public static void setGlobalRatelimitResetTimestamp(AzureApi api, long resetTimestamp) {
-    globalRatelimitResetTimestamp.put(api.getSubscriptionKey(), resetTimestamp);
+  public static void setGlobalRateLimitResetTimestamp(AzureApi api, long resetTimestamp) {
+    globalRateLimitResetTimestamp.put(api.getSubscriptionKey(), resetTimestamp);
   }
 
   /**
@@ -65,13 +69,9 @@ public class RatelimitBucket {
     requestQueue.add(request);
   }
 
-  /**
-   * Polls a request from the bucket's queue.
-   *
-   * @return The polled request.
-   */
-  public RestRequest<?> pollRequestFromQueue() {
-    return requestQueue.poll();
+  /** Polls a request from the bucket's queue. */
+  public void pollRequestFromQueue() {
+    requestQueue.poll();
   }
 
   /**
@@ -84,21 +84,21 @@ public class RatelimitBucket {
   }
 
   /**
-   * Sets the remaining requests till ratelimit.
+   * Sets the remaining requests till rate-limit.
    *
-   * @param ratelimitRemaining The remaining requests till ratelimit.
+   * @param rateLimitRemaining The remaining requests till rate-limit.
    */
-  public void setRatelimitRemaining(int ratelimitRemaining) {
-    this.ratelimitRemaining = ratelimitRemaining;
+  public void setRateLimitRemaining(int rateLimitRemaining) {
+    this.rateLimitRemaining = rateLimitRemaining;
   }
 
   /**
-   * Sets the ratelimit reset timestamp.
+   * Sets the rate-limit reset timestamp.
    *
-   * @param ratelimitResetTimestamp The ratelimit reset timestamp.
+   * @param rateLimitResetTimestamp The rate-limit reset timestamp.
    */
-  public void setRatelimitResetTimestamp(long ratelimitResetTimestamp) {
-    this.ratelimitResetTimestamp = ratelimitResetTimestamp;
+  public void setRateLimitResetTimestamp(long rateLimitResetTimestamp) {
+    this.rateLimitResetTimestamp = rateLimitResetTimestamp;
   }
 
   /**
@@ -108,12 +108,12 @@ public class RatelimitBucket {
    */
   public int getTimeTillSpaceGetsAvailable() {
     long globalRLResetTimestamp =
-        RatelimitBucket.globalRatelimitResetTimestamp.getOrDefault(api.getSubscriptionKey(), 0L);
+        RateLimitBucket.globalRateLimitResetTimestamp.getOrDefault(api.getSubscriptionKey(), 0L);
     long timestamp = System.currentTimeMillis();
-    if (ratelimitRemaining > 0 && (globalRLResetTimestamp - timestamp) <= 0) {
+    if (rateLimitRemaining > 0 && (globalRLResetTimestamp - timestamp) <= 0) {
       return 0;
     }
-    return (int) (Math.max(ratelimitResetTimestamp, globalRLResetTimestamp) - timestamp);
+    return (int) (Math.max(rateLimitResetTimestamp, globalRLResetTimestamp) - timestamp);
   }
 
   /**
@@ -134,10 +134,10 @@ public class RatelimitBucket {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof RatelimitBucket)) {
+    if (!(obj instanceof RateLimitBucket)) {
       return false;
     }
-    RatelimitBucket otherBucket = (RatelimitBucket) obj;
+    RateLimitBucket otherBucket = (RateLimitBucket) obj;
     return equals(otherBucket.endpoint, otherBucket.majorUrlParameter);
   }
 

@@ -3,6 +3,7 @@ package com.github.brenoepics.at4j.core.exceptions;
 import com.github.brenoepics.at4j.util.rest.RestRequestInformation;
 import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
 
+/** This exception is thrown when the Azure API returns a 403 Forbidden response. */
 public class InternalServerErrorException extends AzureException {
 
   /**
