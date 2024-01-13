@@ -44,7 +44,7 @@ public interface AzureApi {
    * multi-service or regional translator resource. This value is optional when using a global
    * translator resource.
    *
-   * @return Optional<String> - The used subscription region.
+   * @return String - The used subscription region.
    * @see <a href="https://github.com/brenoepics/at4j/main/docs/azure_datacenter_list.json">Azure
    *     Datacenter List</a>
    */
@@ -61,8 +61,7 @@ public interface AzureApi {
    * Translates the given text from the given source language to the given target language.
    *
    * @param params The {@link TranslateParams} to translate.
-   * @return CompletableFuture<Optional<TranslationResponse>> - A CompletableFuture containing the
-   *     TranslationResponse.
+   * @return The {@link TranslationResponse} containing the translation.
    */
   CompletableFuture<Optional<TranslationResponse>> translate(TranslateParams params);
 
@@ -70,8 +69,7 @@ public interface AzureApi {
    * Gets the available languages for translation.
    *
    * @param params The {@link AvailableLanguagesParams} to get the available languages.
-   * @return CompletableFuture<Optional<Collection<Language>>> - The available languages for
-   *     translation.
+   * @return Collection of languages - The available languages.
    * @see <a
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/language-support">Language
    *     Support</a>
@@ -85,7 +83,7 @@ public interface AzureApi {
    * The entire text included in the request can't exceed 50,000 characters including spaces.
    *
    * @param params The {@link DetectLanguageParams} to detect the language.
-   * @return CompletableFuture<Optional<DetectedLanguage>> - The detected language.
+   * @return DetectedLanguage - The detected language.
    * @see <a
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-detect">Language
    *     Detection</a>

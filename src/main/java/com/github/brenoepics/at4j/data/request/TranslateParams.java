@@ -185,7 +185,7 @@ public class TranslateParams {
     return this;
   }
 
-  // Getter methods for the class fields
+
 
   public String getText() {
     return text;
