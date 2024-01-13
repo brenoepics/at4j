@@ -61,10 +61,12 @@ public class Main {
 
 The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 
-### AT4J Dependency
+### [AT4J Dependency](https://github.com/brenoepics/at4j/packages/2037740)
 
 #### Gradle
-
+<details>
+  <summary>Adding dependency</summary>
+    
 ```gradle
 repositories {
     mavenCentral()
@@ -72,9 +74,12 @@ repositories {
 }
 dependencies { implementation 'com.github.brenoepics:at4j:0.0.1' }
 ```
+</details>
 
-#### [Maven](https://github.com/brenoepics/at4j/packages/2037740)
-Add the GitHub Maven Repository to your `pom.xml`:
+#### Maven
+<details>
+  <summary>Adding dependency</summary>
+Add the Jit Pack repository to your `pom.xml`:
 
 ```xml
 <repository>
@@ -83,7 +88,7 @@ Add the GitHub Maven Repository to your `pom.xml`:
 </repository>
 ```
 
-Add the following dependency to your `pom.xml`:
+And the following dependency`:
 
 ```xml
 <dependency>
@@ -92,7 +97,9 @@ Add the following dependency to your `pom.xml`:
     <version>0.0.1</version>
 </dependency>
 ```
-#### 🔑 Azure Translator Keys
+</details>
+
+### 🔑 Azure Translator Keys
 > tl;dr [Generate Here](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/TextTranslation).
 <details>
   <summary>How to generate my own keys?</summary>
@@ -109,7 +116,7 @@ Add the following dependency to your `pom.xml`:
    - Name: Enter a unique name for your resource.
    - Subscription: Select the Azure subscription that you want to use.
    - Resource Group: You can create a new resource group or select an existing one.
-   - Pricing tier: Select the pricing tier that suits your needs. (Free Tier Limits)[#### 🗄️ Azure Free Tier]
+   - Pricing tier: Select the pricing tier that suits your needs.
 6. Click on the "Review + create" button.
 
 7. Review your settings and click on the "Create" button.
