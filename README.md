@@ -11,6 +11,10 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 - Text Type Support: We support both plain text and HTML text translation.
 - And more.
 
+## 📝 Documentation
+
+- [JavaDoc](https://brenoepics.github.io/at4j/javadoc/)
+
 ## 🎉 Basic Usage
 > Example repository [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
 
@@ -140,7 +144,6 @@ For example, Log4j Core in Gradle
 ```gradle
 dependencies { runtimeOnly 'org.apache.logging.log4j:log4j-core:2.19.0' }
 ```
-
 
 ## 📋 Version Numbers
 
