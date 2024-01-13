@@ -1,6 +1,7 @@
-# Azure Translator For Java (AT4J) [![Latest version](https://shields.io/github/release/brenoepics/at4j.svg?label=Version&colorB=brightgreen&style=flat-square)](https://github.com/brenoepics/at4j/releases/latest)
+# Azure Translator For Java (AT4J) [![Latest version](https://shields.io/github/release/brenoepics/at4j.svg?label=Version&colorB=brightgreen&style=flat-square)](https://github.com/brenoepics/at4j/releases/latest) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/brenoepics/at4j/maven.yml) ![GitHub Repo stars](https://img.shields.io/github/stars/brenoepics/at4j)
 
-An Unofficial Java library for translating text using Azure AI Cognitive Services. It is fast and easy to configure.
+
+An unofficial Java library for translating text using Azure AI Cognitive Services.
 
 ## ✨ Features
 
@@ -11,6 +12,7 @@ An Unofficial Java library for translating text using Azure AI Cognitive Service
 - And more.
 
 ## 🎉 Basic Usage
+> Example repository [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
 
 The following example translates a simple Hello World to French.
 
@@ -51,8 +53,6 @@ public class Main {
 }
 ```
 
-### Other basic usage here [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
-
 ## 📦 Download / Installation
 
 The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
@@ -88,10 +88,12 @@ Add the following dependency to your `pom.xml`:
     <version>0.0.1</version>
 </dependency>
 ```
+#### 🔑 Azure Translator Keys
+> tl;dr [Generate Here](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/TextTranslation).
+<details>
+  <summary>How to generate my own keys?</summary>
 
-To create Azure keys, you need to follow these steps:
-
-1. Sign in to the Azure portal.
+1. Sign in to the [Azure portal](https://portal.azure.com/).
 
 2. In the left-hand menu, click on "Create a resource".
 
@@ -103,8 +105,7 @@ To create Azure keys, you need to follow these steps:
    - Name: Enter a unique name for your resource.
    - Subscription: Select the Azure subscription that you want to use.
    - Resource Group: You can create a new resource group or select an existing one.
-   - Pricing tier: Select the pricing tier that suits your needs.
-
+   - Pricing tier: Select the pricing tier that suits your needs. (Free Tier Limits)[#### 🗄️ Azure Free Tier]
 6. Click on the "Review + create" button.
 
 7. Review your settings and click on the "Create" button.
@@ -114,11 +115,12 @@ To create Azure keys, you need to follow these steps:
 9. In the left-hand menu, click on "Keys and Endpoint".
 
 10. You will see two keys and an endpoint. You can use either of the keys in your application.
+</details>
 
-Remember to keep your keys secure and do not share them publicly. If you believe that a key has been compromised, you can regenerate it from this page.
+Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must it in Azure's Panel.
 
 
-## 🗄️ Azure Free Tier
+#### 🗄️ Azure Free Tier
 
 Azure offers a free tier for its services, which is a great way to get started with Azure Translator for Java. The free tier includes a monthly allowance of 2 million characters for Translator Text. This is sufficient for testing and small projects.
 
