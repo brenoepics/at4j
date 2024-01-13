@@ -124,18 +124,17 @@ And the following dependency`:
 
 10. You will see two keys and an endpoint. You can use either of the keys in your application.
 </details>
-
-Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must it in Azure's Panel.
-
-
-#### 🗄️ Azure Free Tier
-
+<details>
+  <summary>Azure Free Tier</summary>
+    
 Azure offers a free tier for its services, which is a great way to get started with Azure Translator for Java. The free tier includes a monthly allowance of 2 million characters for Translator Text. This is sufficient for testing and small projects.
 
 To use the free tier, you need to create an Azure account and set up a Translator Text resource. Azure will require a credit card for identity verification, but you will not be charged unless you explicitly change your settings and choose to do so.
 
 Please note that the free tier usage limits are subject to change by Azure, and it's recommended to check the current details on the Azure Pricing page.
+</details>
 
+Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must regenerate it in Azure's Panel.
 For more information, visit the [Azure Pricing page](https://azure.microsoft.com/pricing/details/cognitive-services/translator/).
 
 ### Optional Logger Dependency
