@@ -35,6 +35,8 @@ jobs:
 
   formatting:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # If there is a protection rule on the repository, will need to grant write permission to the workflow.
     steps:
       - uses: actions/checkout@v3 # v2 minimum required
       - uses: axel-op/googlejavaformat-action@v3
