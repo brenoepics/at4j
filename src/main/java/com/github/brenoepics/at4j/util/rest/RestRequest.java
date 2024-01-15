@@ -8,7 +8,6 @@ import com.github.brenoepics.at4j.core.exceptions.AzureException;
 import com.github.brenoepics.at4j.util.logging.LoggerUtil;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +17,6 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Function;
-
 import okhttp3.*;
 import org.apache.logging.log4j.Logger;
 
