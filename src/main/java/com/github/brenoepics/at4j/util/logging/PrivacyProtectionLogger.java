@@ -12,11 +12,11 @@ import org.apache.logging.log4j.spi.AbstractLogger;
  * This logger is used to wrap another logger and replace configured sensitive data by asterisks.
  */
 public class PrivacyProtectionLogger extends AbstractLogger {
-
+  private static final long serialVersionUID = 91095837261631L;
   private static final String PRIVATE_DATA_REPLACEMENT = "**********";
   private static final Set<String> privateDataSet = new HashSet<>();
 
-  private final Logger delegate;
+  private final transient Logger delegate;
 
   /**
    * Class constructor. It's recommended to use {@link LoggerUtil#getLogger(String)}.
@@ -43,14 +43,13 @@ public class PrivacyProtectionLogger extends AbstractLogger {
   public void logMessage(String fqcn, Level level, Marker marker, Message message, Throwable t) {
     String formattedMessage = message.getFormattedMessage();
     if (privateDataSet.stream().anyMatch(formattedMessage::contains)) {
-      delegate.log(
-          level,
-          marker,
-          privateDataSet.stream()
-              .reduce(
-                  formattedMessage,
-                  (s, privateData) -> s.replace(privateData, PRIVATE_DATA_REPLACEMENT)),
-          t);
+      String replacedMessage = formattedMessage;
+      for (String privateData : privateDataSet) {
+        if (formattedMessage.contains(privateData)) {
+          replacedMessage = replacedMessage.replace(privateData, PRIVATE_DATA_REPLACEMENT);
+        }
+      }
+      delegate.log(level, marker, replacedMessage, t);
     } else {
       delegate.log(level, marker, message, t);
     }

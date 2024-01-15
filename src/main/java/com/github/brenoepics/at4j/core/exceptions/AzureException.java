@@ -6,17 +6,18 @@ import java.util.Optional;
 
 /** This exception is always thrown whenever a request to azure failed. */
 public class AzureException extends Exception {
+  private static final long serialVersionUID = 1906192041028451817L;
 
   /**
    * The request. May be <code>null</code> if the exception was thrown before creating a request.
    */
-  private final RestRequestInformation request;
+  private final transient RestRequestInformation request;
 
   /**
    * The rest request result. May be <code>null</code> if the exception was thrown before sending a
    * request.
    */
-  private final RestRequestResponseInformation response;
+  private final transient RestRequestResponseInformation response;
 
   /**
    * Creates a new instance of this class.
