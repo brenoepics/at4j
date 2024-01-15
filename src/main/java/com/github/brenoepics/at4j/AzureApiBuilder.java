@@ -95,6 +95,6 @@ public class AzureApiBuilder {
                 new HttpLoggingInterceptor(LoggerUtil.getLogger(OkHttpClient.class)::trace)
                     .setLevel(HttpLoggingInterceptor.Level.BODY))
             .build();
-    return new AzureApiImpl(httpClient, baseURL, subscriptionKey, subscriptionRegion);
+    return new AzureApiImpl<>(httpClient, baseURL, subscriptionKey, subscriptionRegion);
   }
 }

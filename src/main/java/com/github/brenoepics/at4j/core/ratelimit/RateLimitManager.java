@@ -31,7 +31,7 @@ public class RateLimitManager<T> {
 		/**
 		 * The Azure API instance for this rate-limit manager.
 		 */
-		private final AzureApiImpl api;
+		private final AzureApiImpl<T> api;
 
 		/**
 		 * All buckets.
@@ -43,17 +43,8 @@ public class RateLimitManager<T> {
 		 *
 		 * @param api The azure api instance for this rate-limit manager.
 		 */
-		public RateLimitManager(AzureApiImpl api) {
+		public RateLimitManager(AzureApiImpl<T> api) {
 				this.api = api;
-		}
-
-		/**
-		 * Gets all rate-limit buckets.
-		 *
-		 * @return All rate-limit buckets.
-		 */
-		public Set<RateLimitBucket<T>> getBuckets() {
-				return buckets;
 		}
 
 		/**
@@ -98,23 +89,23 @@ public class RateLimitManager<T> {
 						waitUntilSpaceGetsAvailable(bucket);
 						result = currentRequest.executeBlocking();
 						responseTimestamp = System.currentTimeMillis();
-				} catch (Throwable t) {
+				} catch (Exception e) {
 						responseTimestamp = System.currentTimeMillis();
 						if (currentRequest.getResult().isDone()) {
-								logger.warn("Received exception for a request that is already done. " + "This should not be able to happen!", t);
+								logger.warn("Received exception for a request that is already done. This should not be able to happen!", e);
 						}
 
-						if (t instanceof AzureException) {
-								result = mapAzureException(t);
+						if (e instanceof AzureException) {
+								result = mapAzureException(e);
 						}
 
-						currentRequest.getResult().completeExceptionally(t);
+						currentRequest.getResult().completeExceptionally(e);
 				} finally {
 						try {
 								// Handle the response
 								handleResponse(currentRequest, result, bucket, responseTimestamp);
-						} catch (Throwable t) {
-								logger.warn("Encountered unexpected exception.", t);
+						} catch (Exception e) {
+								logger.warn("Encountered unexpected exception.", e);
 						}
 
 						// The request didn't finish, so let's try again
@@ -134,7 +125,7 @@ public class RateLimitManager<T> {
 		private void waitUntilSpaceGetsAvailable(RateLimitBucket<T> bucket) {
 				int sleepTime = bucket.getTimeTillSpaceGetsAvailable();
 				if (sleepTime > 0) {
-						logger.debug("Delaying requests to {} for {}ms to prevent hitting ratelimits", bucket, sleepTime);
+						logger.debug("Delaying requests to {} for {}ms to prevent hitting rate-limits", bucket, sleepTime);
 				}
 
 				while (sleepTime > 0) {

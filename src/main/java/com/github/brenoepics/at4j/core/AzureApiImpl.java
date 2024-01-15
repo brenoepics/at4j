@@ -30,7 +30,7 @@ import okhttp3.OkHttpClient;
  * This class is an implementation of the AzureApi interface. It provides methods to interact with
  * Azure's translation API.
  */
-public class AzureApiImpl implements AzureApi {
+public class AzureApiImpl<T> implements AzureApi {
 
   /** The Http Client for this instance. */
   private final OkHttpClient httpClient;
@@ -48,7 +48,7 @@ public class AzureApiImpl implements AzureApi {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   /** The ratelimit manager for this resource. */
-  private final RateLimitManager ratelimitManager = new RateLimitManager(this);
+  private final RateLimitManager<T> ratelimitManager = new RateLimitManager<>(this);
 
   /** The thread pool which is used internally. */
   private final ThreadPoolImpl threadPool = new ThreadPoolImpl();
@@ -209,7 +209,7 @@ public class AzureApiImpl implements AzureApi {
    *
    * @return RateLimitManager - The used RateLimitManager.
    */
-  public RateLimitManager getRatelimitManager() {
+  public RateLimitManager<T> getRatelimitManager() {
     return ratelimitManager;
   }
 }
