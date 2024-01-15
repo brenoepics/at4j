@@ -22,7 +22,8 @@ class AzureApiImplTest {
   @BeforeEach
   public void setup() {
     azureApi = Mockito.mock(AzureApiImpl.class);
-    translateParams = new TranslateParams("Hello").setSourceLanguage("en").setTargetLanguages("pt");
+    translateParams =
+        new TranslateParams("Hello", Collections.singleton("pt")).setSourceLanguage("en");
   }
 
   @Test

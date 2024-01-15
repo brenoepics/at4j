@@ -40,9 +40,11 @@ public class TranslateParams {
    * Constructor that initializes the text to be translated.
    *
    * @param text The text to be translated.
+   * @param targetLanguages The target languages for the translation.
    */
-  public TranslateParams(String text) {
+  public TranslateParams(String text, Collection<String> targetLanguages) {
     this.text = text;
+    this.targetLanguages = targetLanguages;
   }
 
   // Setter methods for the class fields
@@ -126,7 +128,7 @@ public class TranslateParams {
 
   /**
    * Specifies a fallback language if the language of the input text can't be identified. <br>
-   * Language autodetection is applied when the from parameter is omitted. If detection fails, the
+   * Language autodetect is applied when the form parameter is omitted. If detection fails, the
    * `suggestedFrom` language is assumed
    *
    * @param suggestedFromLanguage A string representing the language code of the translation text.

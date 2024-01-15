@@ -18,44 +18,48 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 ## 🎉 Basic Usage
 > Example repository [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
 
-The following example translates a simple Hello World to French.
+The following example translates a simple Hello World to Portuguese, Spanish and French.
 
 ```java
-import com.github.brenoepics.at4j.AzureApi;
-import com.github.brenoepics.at4j.AzureApiBuilder;
-import com.github.brenoepics.at4j.azure.BaseURL;
-import com.github.brenoepics.at4j.data.request.TranslateParams;
-import com.github.brenoepics.at4j.data.response.TranslationResponse;
-
-public class Main {
-
+public class MyFirstTranslation {
+		
     public static void main(String[] args) {
+        // Get your Azure key and region from environment variables
+        String azureKey = "<Your Azure Subscription Key>";
+        String azureRegion = "<Your Azure Subscription Region>";
 
-        // Create an instance of AzureApi
-        AzureApi api = new AzureApiBuilder()
-                .setBaseURL(BaseURL.GLOBAL)
-                .setSubscriptionKey("<Your Azure Subscription Key>")
-                .setSubscriptionRegion("<Your Azure Subscription Region>")
-                .build();
+        // Create an Azure API object with your key and region
+        AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
 
-        // Create translation parameters
-        TranslateParams params = new TranslateParams("Hello World");
-        params.setSourceLanguage("en");
-        params.setTargetLanguages("fr");
+        // Set up translation parameters
+        List<String> targetLanguages = List.of("pt", "es", "fr");
+        TranslateParams params = new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
 
-        // Translate text
-        api.translate(params).thenAccept(response -> {
-            if (response.isPresent()) {
-                TranslationResponse translationResponse = response.get();
-                translationResponse.getTranslations().forEach(translation -> {
-                    System.out.println("Translated Text: " + translation.getText());
-                });
-            }
+        // Translate the text
+        Optional<TranslationResponse> translationResult = api.translate(params).join();
+
+        // Print the translations
+        translationResult.ifPresent(response -> {
+            System.out.println("Translations:");
+
+            // Loop through each translation and print the language code and text
+            response.getTranslations().forEach(translation -> 
+                    System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
         });
-    }
-
+        }
+		
 }
 ```
+<details>
+     <summary>Expected Output</summary>
+
+```console
+Translations:
+pt: Olá, Mundo!
+es: ¡Hola mundo!
+fr: Salut tout le monde!
+```
+</details>
 
 ## 📦 Download / Installation
 
@@ -71,7 +75,7 @@ repositories {
     mavenCentral()
     maven { url 'https://jitpack.io' }
 }
-dependencies { implementation 'com.github.brenoepics:at4j:0.0.1' }
+dependencies { implementation 'com.github.brenoepics:at4j:0.0.5' }
 ```
 </details>
 <details>
@@ -91,7 +95,7 @@ And the following dependency`:
 <dependency>
     <groupId>com.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.5</version>
 </dependency>
 ```
 </details>

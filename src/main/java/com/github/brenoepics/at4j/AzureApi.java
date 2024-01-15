@@ -58,6 +58,14 @@ public interface AzureApi {
   ThreadPool getThreadPool();
 
   /**
+   * Disconnects the AzureApi. <br>
+   * This method should be called when the AzureApi is no longer needed.
+   * <p>
+   *     <b>Note:</b> This method will shut down the ThreadPool.
+   *     <br>
+   */
+  void disconnect();
+  /**
    * Translates the given text from the given source language to the given target language.
    *
    * @param params The {@link TranslateParams} to translate.

@@ -3,6 +3,7 @@ package com.github.brenoepics.at4j;
 import com.github.brenoepics.at4j.azure.BaseURL;
 import com.github.brenoepics.at4j.core.AzureApiImpl;
 import com.github.brenoepics.at4j.util.logging.LoggerUtil;
+import com.github.brenoepics.at4j.util.logging.PrivacyProtectionLogger;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -50,6 +51,7 @@ public class AzureApiBuilder {
    */
   public AzureApiBuilder setKey(String subscriptionKey) {
     this.subscriptionKey = subscriptionKey;
+    PrivacyProtectionLogger.addPrivateData(subscriptionKey);
     return this;
   }
 
@@ -70,11 +72,12 @@ public class AzureApiBuilder {
    * Builds and returns an instance of AzureApi with the configured parameters.
    *
    * @return An instance of AzureApi with the specified configuration.
+   * @throws NullPointerException If the subscription key is null.
    * @see AzureApi
    */
-  public AzureApi build() throws IllegalArgumentException {
-    if (subscriptionKey == null) {
-      throw new IllegalArgumentException("Subscription key cannot be null");
+  public AzureApi build() {
+    if(this.subscriptionKey == null) {
+      throw new NullPointerException("Subscription key cannot be null");
     }
 
     // The HTTP client used by the Azure API.
