@@ -143,7 +143,7 @@ For more information, visit the [Azure Pricing page](https://azure.microsoft.com
 ### Optional Logger Dependency
 
 Any Log4j-2-compatible logging framework can be used to provide a more sophisticated logging experience
-with being able to configure log format, log targets (console, file, database, Discord direct message, ...),
+with being able to configure log format, log targets (console, file, database, etc.),
 log levels per class, and much more.
 
 For example, Log4j Core in Gradle
