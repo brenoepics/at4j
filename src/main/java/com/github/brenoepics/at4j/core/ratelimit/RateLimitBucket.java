@@ -12,14 +12,14 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * This class represents a rate limit bucket for Azure API requests. It manages the rate limit for
  * each endpoint and major URL parameter combination.
  */
-public class RateLimitBucket {
+public class RateLimitBucket<T> {
 
   // The key is the subscription key, as global rate-limits are shared across the same account.
   private static final Map<String, Long> globalRateLimitResetTimestamp = new ConcurrentHashMap<>();
 
   private final AzureApiImpl api;
 
-  private final ConcurrentLinkedQueue<RestRequest<?>> requestQueue = new ConcurrentLinkedQueue<>();
+  private final ConcurrentLinkedQueue<RestRequest<T>> requestQueue = new ConcurrentLinkedQueue<>();
 
   private final RestEndpoint endpoint;
   private final String majorUrlParameter;
@@ -65,7 +65,7 @@ public class RateLimitBucket {
    *
    * @param request The request to add.
    */
-  public void addRequestToQueue(RestRequest<?> request) {
+  public void addRequestToQueue(RestRequest<T> request) {
     requestQueue.add(request);
   }
 
@@ -79,7 +79,7 @@ public class RateLimitBucket {
    *
    * @return The peeked request.
    */
-  public RestRequest<?> peekRequestFromQueue() {
+  public RestRequest<T> peekRequestFromQueue() {
     return requestQueue.peek();
   }
 
@@ -134,11 +134,12 @@ public class RateLimitBucket {
 
   @Override
   public boolean equals(Object obj) {
-    if (!(obj instanceof RateLimitBucket)) {
-      return false;
+    if (obj instanceof RateLimitBucket) {
+      RateLimitBucket<T> otherBucket = (RateLimitBucket<T>) obj;
+      return equals(otherBucket.endpoint, otherBucket.majorUrlParameter);
     }
-    RateLimitBucket otherBucket = (RateLimitBucket) obj;
-    return equals(otherBucket.endpoint, otherBucket.majorUrlParameter);
+
+    return false;
   }
 
   @Override

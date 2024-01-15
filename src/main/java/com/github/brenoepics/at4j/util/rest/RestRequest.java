@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Function;
 import okhttp3.*;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +31,7 @@ public class RestRequest<T> {
   private final RestEndpoint endpoint;
 
   private volatile boolean includeAuthorizationHeader = true;
-  private volatile String[] urlParameters = new String[0];
+  private AtomicReferenceArray<String> urlParameters = new AtomicReferenceArray<>(new String[0]);
   private final Multimap<String, String> queryParameters = ArrayListMultimap.create();
   private final Map<String, String> headers = new HashMap<>();
   private volatile String body = null;
@@ -104,7 +105,11 @@ public class RestRequest<T> {
    * @return An array with all used url parameters.
    */
   public String[] getUrlParameters() {
-    return urlParameters.clone();
+    String[] parameters = new String[urlParameters.length()];
+    for (int i = 0; i < urlParameters.length(); i++) {
+      parameters[i] = urlParameters.get(i);
+    }
+    return parameters;
   }
 
   /**
@@ -132,11 +137,11 @@ public class RestRequest<T> {
       return Optional.empty();
     }
 
-    if (majorParameterPosition.get() >= urlParameters.length) {
+    if (majorParameterPosition.get() >= urlParameters.length()) {
       return Optional.empty();
     }
 
-    return Optional.of(urlParameters[majorParameterPosition.get()]);
+    return Optional.of(urlParameters.get(majorParameterPosition.get()));
   }
 
   /**
@@ -179,7 +184,7 @@ public class RestRequest<T> {
    * @return The current instance to chain call methods.
    */
   public RestRequest<T> setUrlParameters(String... parameters) {
-    this.urlParameters = parameters;
+    this.urlParameters = new AtomicReferenceArray<>(parameters);
     return this;
   }
 
@@ -248,13 +253,13 @@ public class RestRequest<T> {
     api.getRatelimitManager().queueRequest(this);
     CompletableFuture<T> future = new CompletableFuture<>();
     result.whenComplete(
-        (result, throwable) -> {
+        (requestResult, throwable) -> {
           if (throwable != null) {
             future.completeExceptionally(throwable);
             return;
           }
           try {
-            future.complete(function.apply(result));
+            future.complete(function.apply(requestResult));
           } catch (Throwable t) {
             future.completeExceptionally(t);
           }
@@ -278,12 +283,16 @@ public class RestRequest<T> {
    */
   public RestRequestInformation asRestRequestInformation() {
     try {
+      String[] parameters = new String[urlParameters.length()];
+      for (int i = 0; i < urlParameters.length(); i++) {
+        parameters[i] = urlParameters.get(i);
+      }
       return new RestRequestInformationImpl(
-          api,
-          new URL(endpoint.getFullUrl(api.getBaseURL(), urlParameters)),
-          queryParameters,
-          headers,
-          body);
+              api,
+              new URL(endpoint.getFullUrl(api.getBaseURL(), parameters)),
+              queryParameters,
+              headers,
+              body);
     } catch (MalformedURLException e) {
       throw new AssertionError(e);
     }
@@ -299,8 +308,12 @@ public class RestRequest<T> {
    */
   public RestRequestResult executeBlocking() throws AzureException, IOException {
     Request.Builder requestBuilder = new Request.Builder();
+    String[] parameters = new String[urlParameters.length()];
+    for (int i = 0; i < urlParameters.length(); i++) {
+      parameters[i] = urlParameters.get(i);
+    }
     HttpUrl.Builder httpUrlBuilder =
-        endpoint.getOkHttpUrl(api.getBaseURL(), urlParameters).newBuilder();
+            endpoint.getOkHttpUrl(api.getBaseURL(), parameters).newBuilder();
     queryParameters.forEach(httpUrlBuilder::addQueryParameter);
     requestBuilder.url(httpUrlBuilder.build());
     request(requestBuilder);
@@ -314,8 +327,8 @@ public class RestRequest<T> {
     headers.forEach(requestBuilder::addHeader);
     logger.debug(
         "Trying to send {} request to {}{}",
-        method::name,
-        () -> endpoint.getFullUrl(api.getBaseURL(), urlParameters),
+            method::name,
+        () -> endpoint.getFullUrl(api.getBaseURL(), parameters),
         () -> body != null ? " with body " + body : "");
 
     try (Response response = getApi().getHttpClient().newCall(requestBuilder.build()).execute()) {
@@ -323,7 +336,7 @@ public class RestRequest<T> {
       logger.debug(
           "Sent {} request to {} and received status code {} with{} body{}",
           method::name,
-          () -> endpoint.getFullUrl(api.getBaseURL(), urlParameters),
+          () -> endpoint.getFullUrl(api.getBaseURL(), parameters),
           response::code,
           () -> requestResult.getBody().map(b -> "").orElse(" empty"),
           () -> requestResult.getStringBody().map(s -> " " + s).orElse(""));
