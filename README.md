@@ -46,8 +46,7 @@ public class MyFirstTranslation {
             response.getTranslations().forEach(translation -> 
                     System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
         });
-        }
-		
+    }	
 }
 ```
 <details>
