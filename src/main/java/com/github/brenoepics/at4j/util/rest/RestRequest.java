@@ -288,11 +288,11 @@ public class RestRequest<T> {
         parameters[i] = urlParameters.get(i);
       }
       return new RestRequestInformationImpl(
-              api,
-              new URL(endpoint.getFullUrl(api.getBaseURL(), parameters)),
-              queryParameters,
-              headers,
-              body);
+          api,
+          new URL(endpoint.getFullUrl(api.getBaseURL(), parameters)),
+          queryParameters,
+          headers,
+          body);
     } catch (MalformedURLException e) {
       throw new AssertionError(e);
     }
@@ -313,7 +313,7 @@ public class RestRequest<T> {
       parameters[i] = urlParameters.get(i);
     }
     HttpUrl.Builder httpUrlBuilder =
-            endpoint.getOkHttpUrl(api.getBaseURL(), parameters).newBuilder();
+        endpoint.getOkHttpUrl(api.getBaseURL(), parameters).newBuilder();
     queryParameters.forEach(httpUrlBuilder::addQueryParameter);
     requestBuilder.url(httpUrlBuilder.build());
     request(requestBuilder);
@@ -327,7 +327,7 @@ public class RestRequest<T> {
     headers.forEach(requestBuilder::addHeader);
     logger.debug(
         "Trying to send {} request to {}{}",
-            method::name,
+        method::name,
         () -> endpoint.getFullUrl(api.getBaseURL(), parameters),
         () -> body != null ? " with body " + body : "");
 
