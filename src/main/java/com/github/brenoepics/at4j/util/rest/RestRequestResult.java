@@ -40,15 +40,15 @@ public class RestRequestResult {
     } else {
       stringBody = body.string();
       ObjectMapper mapper = request.getApi().getObjectMapper();
-      JsonNode jsonBody;
+      JsonNode jsonNode;
       try {
-        jsonBody = mapper.readTree(stringBody);
+        jsonNode = mapper.readTree(stringBody);
       } catch (JsonParseException e) {
         // This can happen if Azure sends garbage
         logger.debug("Failed to parse json response", e);
-        jsonBody = null;
+        jsonNode = null;
       }
-      this.jsonBody = jsonBody == null ? NullNode.getInstance() : jsonBody;
+      this.jsonBody = jsonNode == null ? NullNode.getInstance() : jsonNode;
     }
   }
 
