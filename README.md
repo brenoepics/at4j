@@ -24,7 +24,7 @@ The following example translates a simple Hello World to Portuguese, Spanish and
 public class MyFirstTranslation {
 		
     public static void main(String[] args) {
-        // Get your Azure key and region from environment variables
+        // Insert your Azure key and region here
         String azureKey = "<Your Azure Subscription Key>";
         String azureRegion = "<Your Azure Subscription Region>";
 
