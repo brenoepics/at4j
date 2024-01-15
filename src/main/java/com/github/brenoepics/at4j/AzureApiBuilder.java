@@ -76,7 +76,7 @@ public class AzureApiBuilder {
    * @see AzureApi
    */
   public AzureApi build() {
-    if(this.subscriptionKey == null) {
+    if (this.subscriptionKey == null) {
       throw new NullPointerException("Subscription key cannot be null");
     }
 
