@@ -18,12 +18,10 @@ import com.github.brenoepics.at4j.data.response.TranslationResponse;
 import com.github.brenoepics.at4j.util.rest.RestEndpoint;
 import com.github.brenoepics.at4j.util.rest.RestMethod;
 import com.github.brenoepics.at4j.util.rest.RestRequest;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
 import okhttp3.OkHttpClient;
 
 /**
