@@ -326,9 +326,7 @@ public class RestRequest<T> {
 
     if (includeAuthorizationHeader) {
       requestBuilder.addHeader("Ocp-Apim-Subscription-Key", api.getSubscriptionKey());
-      if (api.getSubscriptionRegion().isPresent()) {
-        requestBuilder.addHeader("Ocp-Apim-Subscription-Region", api.getSubscriptionRegion().get());
-      }
+      api.getSubscriptionRegion().ifPresent(region -> requestBuilder.addHeader("Ocp-Apim-Subscription-Region", region));
     }
 
     headers.forEach(requestBuilder::addHeader);
