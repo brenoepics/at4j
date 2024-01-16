@@ -300,6 +300,15 @@ public enum RestRequestResultErrorCode {
   }
 
   /**
+   * Gets the response code for which the given instantiator should be used.
+   *
+   * @return The response code for which the given instantiator should be used.
+   */
+  public RestRequestHttpResponseCode getResponseCode() {
+    return responseCode;
+  }
+
+  /**
    * Gets the azure exception to throw for this kind of result code.
    *
    * @param origin The origin of the exception.
