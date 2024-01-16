@@ -26,16 +26,18 @@ class AzureApiImplTest<T> {
         new TranslateParams("Hello", Collections.singleton("pt")).setSourceLanguage("en");
   }
 
-
   @Test
   void returnsEmptyOnInvalidInput() {
     translateParams.setText(null);
-    azureApi.translate(translateParams).whenComplete((response, throwable) -> {
-      if (throwable != null) {
-        assertTrue(throwable instanceof AzureException);
-        assertEquals("Text is required", throwable.getMessage());
-      }
-    });
+    azureApi
+        .translate(translateParams)
+        .whenComplete(
+            (response, throwable) -> {
+              if (throwable != null) {
+                assertTrue(throwable instanceof AzureException);
+                assertEquals("Text is required", throwable.getMessage());
+              }
+            });
 
     CompletableFuture<Optional<TranslationResponse>> response = azureApi.translate(translateParams);
 
