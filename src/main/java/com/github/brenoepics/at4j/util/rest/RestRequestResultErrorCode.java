@@ -309,17 +309,17 @@ public enum RestRequestResultErrorCode {
    * @return The azure exception to throw for this kind of result code.
    */
   public Optional<AzureException> getAzureException(
-          Exception origin,
-          String message,
-          RestRequestInformation request,
-          RestRequestResponseInformation response) {
+      Exception origin,
+      String message,
+      RestRequestInformation request,
+      RestRequestResponseInformation response) {
     return Optional.ofNullable(azureExceptionInstantiator)
-            .map(instantiate -> instantiate.createInstance(origin, message, request, response))
-            .filter(
-                    exception ->
-                            RestRequestHttpResponseCode.fromAzureExceptionClass(exception.getClass())
-                                    .map(RestRequestHttpResponseCode::getCode)
-                                    .map(mapCode -> mapCode == response.getCode())
-                                    .orElse(true));
+        .map(instantiate -> instantiate.createInstance(origin, message, request, response))
+        .filter(
+            exception ->
+                RestRequestHttpResponseCode.fromAzureExceptionClass(exception.getClass())
+                    .map(RestRequestHttpResponseCode::getCode)
+                    .map(mapCode -> mapCode == response.getCode())
+                    .orElse(true));
   }
 }
