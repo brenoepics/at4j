@@ -10,6 +10,7 @@ import com.github.brenoepics.at4j.util.rest.RestRequestResult;
 import okhttp3.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -123,9 +124,15 @@ class RateLimitManagerTest<T> {
 
 		@Test
 		void handleCurrentRequestThrowsException() throws AzureException, IOException {
-				when(request.executeBlocking()).thenThrow(new RuntimeException());
+				// Arrange
+				RuntimeException expectedException = new RuntimeException();
+				when(request.executeBlocking()).thenThrow(expectedException);
 
-				assertThrows(RuntimeException.class, () -> rateLimitManager.handleCurrentRequest(result, request, bucket, System.currentTimeMillis()));
+				// Act
+				Executable executable = () -> rateLimitManager.handleCurrentRequest(result, request, bucket, System.currentTimeMillis());
+
+				// Assert
+				assertThrows(RuntimeException.class, executable);
 		}
 
 
