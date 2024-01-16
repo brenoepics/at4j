@@ -361,7 +361,7 @@ public class RestRequest<T> {
       throws AzureException {
     RestRequestInformation requestInformation = asRestRequestInformation();
     RestRequestResponseInformation responseInformation =
-        new RestRequestResponseInformationImpl(requestInformation, result);
+        new RestRequestResponseInformationImpl<>(requestInformation, result);
     Optional<RestRequestHttpResponseCode> responseCode =
         RestRequestHttpResponseCode.fromCode(resultCode);
 

@@ -8,7 +8,7 @@ package com.github.brenoepics.at4j.util.rest;
  */
 public class RestRequestHandler<T> {
   // The result of the REST request
-  private final RestRequestResult result;
+  private final RestRequestResult<T> result;
   // The current request being processed
   private final RestRequest<T> currentRequest;
   // The timestamp of the response
@@ -23,7 +23,7 @@ public class RestRequestHandler<T> {
    * @param responseTimestamp the timestamp of the response
    */
   public RestRequestHandler(
-      RestRequestResult result, RestRequest<T> currentRequest, long responseTimestamp) {
+      RestRequestResult<T> result, RestRequest<T> currentRequest, long responseTimestamp) {
     this.result = result;
     this.currentRequest = currentRequest;
     this.responseTimestamp = responseTimestamp;
@@ -34,7 +34,7 @@ public class RestRequestHandler<T> {
    *
    * @return the result of the REST request
    */
-  public RestRequestResult getResult() {
+  public RestRequestResult<T> getResult() {
     return result;
   }
 
