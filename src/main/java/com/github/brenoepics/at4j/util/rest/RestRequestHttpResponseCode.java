@@ -127,24 +127,24 @@ public enum RestRequestHttpResponseCode {
    *
    * @param code The actual numeric response code.
    * @param meaning The textual meaning.
-   * @param AzureExceptionInstantiator The azure exception instantiator that produces instances to
+   * @param exceptionInstantiator The azure exception instantiator that produces instances to
    *     throw for this kind of result code.
    */
   <T extends AzureException> RestRequestHttpResponseCode(
       int code,
       String meaning,
-      AzureExceptionInstantiator<T> AzureExceptionInstantiator,
-      Class<T> AzureExceptionClass) {
+      AzureExceptionInstantiator<T> exceptionInstantiator,
+      Class<T> azureExceptionClass) {
     this.code = code;
     this.meaning = meaning;
-    this.azureExceptionInstantiator = AzureExceptionInstantiator;
-    this.azureExceptionClass = AzureExceptionClass;
+    this.azureExceptionInstantiator = exceptionInstantiator;
+    this.azureExceptionClass = azureExceptionClass;
 
-    if ((AzureExceptionInstantiator == null) && (AzureExceptionClass != null)
-        || (AzureExceptionInstantiator != null) && (AzureExceptionClass == null)) {
+    if ((exceptionInstantiator == null) && (azureExceptionClass != null)
+        || (exceptionInstantiator != null) && (azureExceptionClass == null)) {
 
       throw new IllegalArgumentException(
-          "AzureExceptionInstantiator and AzureExceptionClass do not match");
+          "exceptionInstantiator and azureExceptionClass do not match");
     }
   }
 
@@ -163,13 +163,13 @@ public enum RestRequestHttpResponseCode {
    * class is found, the parents are checked until match is found or {@code AzureException} is
    * reached.
    *
-   * @param AzureExceptionClass The azure exception class.
+   * @param azureExceptionClass The azure exception class.
    * @return The rest request http response code with the azure exception class.
    */
   @SuppressWarnings("unchecked")
   public static Optional<RestRequestHttpResponseCode> fromAzureExceptionClass(
-      Class<? extends AzureException> AzureExceptionClass) {
-    Class<? extends AzureException> clazz = AzureExceptionClass;
+      Class<? extends AzureException> azureExceptionClass) {
+    Class<? extends AzureException> clazz = azureExceptionClass;
     while (instanceByExceptionClass.get(clazz) == null) {
       if (clazz == AzureException.class) {
         return Optional.empty();

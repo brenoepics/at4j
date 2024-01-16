@@ -12,12 +12,12 @@ import okhttp3.ResponseBody;
 import org.apache.logging.log4j.Logger;
 
 /** The result of a {@link RestRequest}. */
-public class RestRequestResult {
+public class RestRequestResult<T> {
 
   /** The (logger) of this class. */
   private static final Logger logger = LoggerUtil.getLogger(RestRequestResult.class);
 
-  private final RestRequest<?> request;
+  private final RestRequest<T> request;
   private final Response response;
   private final ResponseBody body;
   private final String stringBody;
@@ -30,7 +30,7 @@ public class RestRequestResult {
    * @param response The response of the RestRequest.
    * @throws IOException Passed on from {@link ResponseBody#string()}.
    */
-  public RestRequestResult(RestRequest<?> request, Response response) throws IOException {
+  public RestRequestResult(RestRequest<T> request, Response response) throws IOException {
     this.request = request;
     this.response = response;
     this.body = response.body();
@@ -57,7 +57,7 @@ public class RestRequestResult {
    *
    * @return The Request which belongs to this result.
    */
-  public RestRequest<?> getRequest() {
+  public RestRequest<T> getRequest() {
     return request;
   }
 

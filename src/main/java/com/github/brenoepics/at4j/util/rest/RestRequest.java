@@ -36,7 +36,7 @@ public class RestRequest<T> {
   private final Map<String, String> headers = new HashMap<>();
   private volatile String body = null;
 
-  private final CompletableFuture<RestRequestResult> result = new CompletableFuture<>();
+  private final CompletableFuture<RestRequestResult<T>> result = new CompletableFuture<>();
 
   /** The multipart body of the request. */
   private MultipartBody multipartBody;
@@ -253,7 +253,7 @@ public class RestRequest<T> {
    * @param function A function which processes the rest response to the requested object.
    * @return A future which will contain the output of the function.
    */
-  public CompletableFuture<T> execute(Function<RestRequestResult, T> function) {
+  public CompletableFuture<T> execute(Function<RestRequestResult<T>, T> function) {
     api.getRatelimitManager().queueRequest(this);
     CompletableFuture<T> future = new CompletableFuture<>();
     result.whenComplete(
@@ -264,7 +264,7 @@ public class RestRequest<T> {
           }
           try {
             future.complete(function.apply(requestResult));
-          } catch (Throwable t) {
+          } catch (Exception t) {
             future.completeExceptionally(t);
           }
         });
@@ -276,7 +276,7 @@ public class RestRequest<T> {
    *
    * @return Gets the result of this request.
    */
-  public CompletableFuture<RestRequestResult> getResult() {
+  public CompletableFuture<RestRequestResult<T>> getResult() {
     return result;
   }
 
@@ -310,7 +310,7 @@ public class RestRequest<T> {
    * @throws IOException Thrown if OkHttp {@link OkHttpClient#newCall(Request)} throws an {@link
    *     IOException}.
    */
-  public RestRequestResult executeBlocking() throws AzureException, IOException {
+  public RestRequestResult<T> executeBlocking() throws AzureException, IOException {
     Request.Builder requestBuilder = new Request.Builder();
     String[] parameters = new String[urlParameters.length()];
     for (int i = 0; i < urlParameters.length(); i++) {
@@ -327,22 +327,26 @@ public class RestRequest<T> {
       api.getSubscriptionRegion().ifPresent(region -> requestBuilder.addHeader("Ocp-Apim-Subscription-Region", region));
     }
 
+    String fullUrl = endpoint.getFullUrl(api.getBaseURL(), parameters);
     headers.forEach(requestBuilder::addHeader);
     logger.debug(
         "Trying to send {} request to {}{}",
-        method::name,
-        () -> endpoint.getFullUrl(api.getBaseURL(), parameters),
-        () -> body != null ? " with body " + body : "");
+        method.name(),
+            fullUrl,
+        body != null ? " with body " + body : "");
 
     try (Response response = getApi().getHttpClient().newCall(requestBuilder.build()).execute()) {
-      RestRequestResult requestResult = new RestRequestResult(this, response);
+      RestRequestResult<T> requestResult = new RestRequestResult<>(this, response);
+
+      String bodyPresent = requestResult.getBody().map(b -> "").orElse("empty");
+      String bodyString = requestResult.getStringBody().orElse("");
       logger.debug(
-          "Sent {} request to {} and received status code {} with{} body{}",
-          method::name,
-          () -> endpoint.getFullUrl(api.getBaseURL(), parameters),
-          response::code,
-          () -> requestResult.getBody().map(b -> "").orElse(" empty"),
-          () -> requestResult.getStringBody().map(s -> " " + s).orElse(""));
+          "Sent {} request to {} and received status code {} with {} body {}",
+          method.name(),
+          fullUrl,
+          response.code(),
+              bodyPresent,
+           bodyString);
 
       if (response.code() >= 300 || response.code() < 200) {
         return handleError(response.code(), requestResult);
@@ -352,7 +356,7 @@ public class RestRequest<T> {
     }
   }
 
-  private RestRequestResult handleError(int resultCode, RestRequestResult result)
+  private RestRequestResult<T> handleError(int resultCode, RestRequestResult<T> result)
       throws AzureException {
     RestRequestInformation requestInformation = asRestRequestInformation();
     RestRequestResponseInformation responseInformation =
@@ -400,7 +404,7 @@ public class RestRequest<T> {
   }
 
   private void handleKnownError(
-      RestRequestResult result,
+      RestRequestResult<T> result,
       RestRequestHttpResponseCode responseCode,
       RestRequestInformation requestInformation,
       RestRequestResponseInformation responseInformation)

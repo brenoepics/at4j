@@ -57,7 +57,7 @@ public class RateLimitManager<T> {
         .submit(
             () -> {
               RestRequest<T> currentRequest = bucket.peekRequestFromQueue();
-              RestRequestResult result = null;
+              RestRequestResult<T> result = null;
               long responseTimestamp = System.currentTimeMillis();
               while (currentRequest != null) {
                 RestRequestHandler<T> newResult =
@@ -79,7 +79,7 @@ public class RateLimitManager<T> {
    * @return The result of the current request.
    */
   private RestRequestHandler<T> handleCurrentRequest(
-      RestRequestResult result,
+      RestRequestResult<T> result,
       RestRequest<T> currentRequest,
       RateLimitBucket<T> bucket,
       long responseTimestamp) {
@@ -160,7 +160,7 @@ public class RateLimitManager<T> {
     }
   }
 
-  private RestRequestResult mapAzureException(Throwable t) {
+  private RestRequestResult<T> mapAzureException(Throwable t) {
     return ((AzureException) t)
         .getResponse()
         .map(RestRequestResponseInformationImpl.class::cast)
@@ -210,7 +210,7 @@ public class RateLimitManager<T> {
    */
   private void handleResponse(
       RestRequest<T> request,
-      RestRequestResult result,
+      RestRequestResult<T> result,
       RateLimitBucket<T> bucket,
       long responseTimestamp) {
     if (result == null || result.getResponse() == null) {
@@ -228,7 +228,7 @@ public class RateLimitManager<T> {
     // Check if we received a 429 response
     if (result.getResponse().code() != 429) {
       // Check if we didn't already complete it exceptionally.
-      CompletableFuture<RestRequestResult> requestResult = request.getResult();
+      CompletableFuture<RestRequestResult<T>> requestResult = request.getResult();
       if (!requestResult.isDone()) {
         requestResult.complete(result);
       }
