@@ -7,14 +7,12 @@ import com.github.brenoepics.at4j.util.rest.RestRequest;
 import com.github.brenoepics.at4j.util.rest.RestRequestHandler;
 import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformationImpl;
 import com.github.brenoepics.at4j.util.rest.RestRequestResult;
-
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-
 import okhttp3.Response;
 import org.apache.logging.log4j.Logger;
 

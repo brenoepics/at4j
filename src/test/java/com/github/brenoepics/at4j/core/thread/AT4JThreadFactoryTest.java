@@ -1,8 +1,8 @@
 package com.github.brenoepics.at4j.core.thread;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 class AT4JThreadFactoryTest {
 

@@ -1,24 +1,22 @@
 package com.github.brenoepics.at4j.core.ratelimit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import com.github.brenoepics.at4j.core.AzureApiImpl;
 import com.github.brenoepics.at4j.core.exceptions.AzureException;
 import com.github.brenoepics.at4j.core.thread.ThreadPool;
 import com.github.brenoepics.at4j.util.rest.RestRequest;
 import com.github.brenoepics.at4j.util.rest.RestRequestResult;
+import java.io.IOException;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import okhttp3.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import java.io.IOException;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-
-import static org.mockito.Mockito.*;
 
 class RateLimitManagerTest<T> {
 
