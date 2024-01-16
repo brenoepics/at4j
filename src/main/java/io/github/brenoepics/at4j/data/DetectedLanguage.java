@@ -68,7 +68,7 @@ public class DetectedLanguage {
     if (jsonNode.has("isTransliterationSupported")) {
       detected.isTransliterationSupported = jsonNode.get("isTransliterationSupported").asBoolean();
     }
-    
+
     return detected;
   }
 
