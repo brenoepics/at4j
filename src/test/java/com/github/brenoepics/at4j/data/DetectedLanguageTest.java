@@ -70,4 +70,28 @@ class DetectedLanguageTest {
     assertEquals(languageCode, detectedLanguage.getLanguageCode());
     assertEquals(0.9f, detectedLanguage.getScore(), 0.0001);
   }
+
+  @Test
+  void getLanguageCode_returnsCorrectLanguageCode() {
+    DetectedLanguage detectedLanguage = new DetectedLanguage("en", 0.9f, true, false);
+    assertEquals("en", detectedLanguage.getLanguageCode());
+  }
+
+  @Test
+  void getScore_returnsCorrectScore() {
+    DetectedLanguage detectedLanguage = new DetectedLanguage("en", 0.9f, true, false);
+    assertEquals(0.9f, detectedLanguage.getScore(), 0.0001);
+  }
+
+  @Test
+  void isTranslationSupported_returnsCorrectTranslationSupportStatus() {
+    DetectedLanguage detectedLanguage = new DetectedLanguage("en", 0.9f, true, false);
+    assertTrue(detectedLanguage.isTranslationSupported());
+  }
+
+  @Test
+  void isTransliterationSupported_returnsCorrectTransliterationSupportStatus() {
+    DetectedLanguage detectedLanguage = new DetectedLanguage("en", 0.9f, true, false);
+    assertFalse(detectedLanguage.isTransliterationSupported());
+  }
 }

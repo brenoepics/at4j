@@ -22,7 +22,7 @@ class PrivacyProtectionLoggerTest {
 				delegate = Mockito.mock(AbstractLogger.class);
 				privacyProtectionLogger = new PrivacyProtectionLogger(delegate);
 		}
-		
+
 		@Test
 		void shouldLogMessageWithPrivateDataReplaced() {
 				Marker marker = Mockito.mock(Marker.class);
