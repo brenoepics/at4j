@@ -127,8 +127,8 @@ public enum RestRequestHttpResponseCode {
    *
    * @param code The actual numeric response code.
    * @param meaning The textual meaning.
-   * @param exceptionInstantiator The azure exception instantiator that produces instances to
-   *     throw for this kind of result code.
+   * @param exceptionInstantiator The azure exception instantiator that produces instances to throw
+   *     for this kind of result code.
    */
   <T extends AzureException> RestRequestHttpResponseCode(
       int code,
