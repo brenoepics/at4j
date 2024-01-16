@@ -10,7 +10,7 @@ import com.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
  * @param <T> The type of the azure exception that is produced.
  */
 @FunctionalInterface
-public interface AzureExceptionInstantiator<T extends AzureException> {
+public interface AzureExceptionInstantiation<T extends AzureException> {
 
   /**
    * Creates a new instance of the class {@code T}.

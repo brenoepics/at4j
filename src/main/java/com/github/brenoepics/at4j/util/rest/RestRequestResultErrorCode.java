@@ -225,7 +225,7 @@ public enum RestRequestResultErrorCode {
   /**
    * The azure exception instantiate that produces instances to throw for this kind of result code.
    */
-  private final AzureExceptionInstantiator<AzureException> azureExceptionInstantiator;
+  private final AzureExceptionInstantiation<AzureException> azureExceptionInstantiation;
 
   /** The response code for which the given instantiating should be used. */
   private final RestRequestHttpResponseCode responseCode;
@@ -253,18 +253,18 @@ public enum RestRequestResultErrorCode {
    *
    * @param code The actual numeric close code.
    * @param meaning The textual meaning.
-   * @param azureExceptionInstantiator The azure exception instantiator that produces instances to
+   * @param azureExceptionInstantiation The azure exception instantiator that produces instances to
    *     throw for this kind of result code.
    * @param responseCode The response code for which the given instantiator should be used.
    */
   RestRequestResultErrorCode(
       int code,
       String meaning,
-      AzureExceptionInstantiator<AzureException> azureExceptionInstantiator,
+      AzureExceptionInstantiation<AzureException> azureExceptionInstantiation,
       RestRequestHttpResponseCode responseCode) {
     this.code = code;
     this.meaning = meaning;
-    this.azureExceptionInstantiator = azureExceptionInstantiator;
+    this.azureExceptionInstantiation = azureExceptionInstantiation;
     this.responseCode = responseCode;
   }
 
@@ -313,7 +313,7 @@ public enum RestRequestResultErrorCode {
       String message,
       RestRequestInformation request,
       RestRequestResponseInformation response) {
-    return Optional.ofNullable(azureExceptionInstantiator)
+    return Optional.ofNullable(azureExceptionInstantiation)
         .map(instantiate -> instantiate.createInstance(origin, message, request, response))
         .filter(
             exception ->

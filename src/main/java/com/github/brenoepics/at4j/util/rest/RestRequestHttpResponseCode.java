@@ -1,7 +1,7 @@
 package com.github.brenoepics.at4j.util.rest;
 
 import com.github.brenoepics.at4j.core.exceptions.AzureException;
-import com.github.brenoepics.at4j.core.exceptions.AzureExceptionInstantiator;
+import com.github.brenoepics.at4j.core.exceptions.AzureExceptionInstantiation;
 import com.github.brenoepics.at4j.core.exceptions.BadRequestException;
 import com.github.brenoepics.at4j.core.exceptions.NotFoundException;
 import java.util.Arrays;
@@ -87,7 +87,7 @@ public enum RestRequestHttpResponseCode {
   /**
    * The azure exception instantiated that produces instances to throw for this kind of result code.
    */
-  private final AzureExceptionInstantiator<?> azureExceptionInstantiator;
+  private final AzureExceptionInstantiation<?> azureExceptionInstantiation;
 
   /** The azure exception class to throw for this kind of result code. */
   private final Class<? extends AzureException> azureExceptionClass;
@@ -133,11 +133,11 @@ public enum RestRequestHttpResponseCode {
   <T extends AzureException> RestRequestHttpResponseCode(
       int code,
       String meaning,
-      AzureExceptionInstantiator<T> exceptionInstantiator,
+      AzureExceptionInstantiation<T> exceptionInstantiator,
       Class<T> azureExceptionClass) {
     this.code = code;
     this.meaning = meaning;
-    this.azureExceptionInstantiator = exceptionInstantiator;
+    this.azureExceptionInstantiation = exceptionInstantiator;
     this.azureExceptionClass = azureExceptionClass;
 
     if ((exceptionInstantiator == null) && (azureExceptionClass != null)
@@ -211,7 +211,7 @@ public enum RestRequestHttpResponseCode {
       String message,
       RestRequestInformation request,
       RestRequestResponseInformation response) {
-    return Optional.ofNullable(azureExceptionInstantiator)
+    return Optional.ofNullable(azureExceptionInstantiation)
         .map(instantiator -> instantiator.createInstance(origin, message, request, response));
   }
 
