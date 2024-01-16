@@ -11,63 +11,66 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ThreadPoolImplTest {
 
-		private ThreadPoolImpl threadPool;
+  private ThreadPoolImpl threadPool;
 
-		@BeforeEach
-		void setUp() {
-				threadPool = new ThreadPoolImpl();
-		}
+  @BeforeEach
+  void setUp() {
+    threadPool = new ThreadPoolImpl();
+  }
 
-		@Test
-		void shouldReturnExecutorService() {
-				ExecutorService executorService = threadPool.getExecutorService();
-				assertNotNull(executorService);
-		}
+  @Test
+  void shouldReturnExecutorService() {
+    ExecutorService executorService = threadPool.getExecutorService();
+    assertNotNull(executorService);
+  }
 
-		@Test
-		void shouldReturnScheduler() {
-				ScheduledExecutorService scheduler = threadPool.getScheduler();
-				assertNotNull(scheduler);
-		}
+  @Test
+  void shouldReturnScheduler() {
+    ScheduledExecutorService scheduler = threadPool.getScheduler();
+    assertNotNull(scheduler);
+  }
 
-		@Test
-		void shouldReturnDaemonScheduler() {
-				ScheduledExecutorService daemonScheduler = threadPool.getDaemonScheduler();
-				assertNotNull(daemonScheduler);
-		}
+  @Test
+  void shouldReturnDaemonScheduler() {
+    ScheduledExecutorService daemonScheduler = threadPool.getDaemonScheduler();
+    assertNotNull(daemonScheduler);
+  }
 
-		@Test
-		void shouldReturnSingleThreadExecutorService() {
-				ExecutorService singleThreadExecutorService = threadPool.getSingleThreadExecutorService("TestThread");
-				assertNotNull(singleThreadExecutorService);
-		}
+  @Test
+  void shouldReturnSingleThreadExecutorService() {
+    ExecutorService singleThreadExecutorService =
+        threadPool.getSingleThreadExecutorService("TestThread");
+    assertNotNull(singleThreadExecutorService);
+  }
 
-		@Test
-		void shouldReturnSingleDaemonThreadExecutorService() {
-				ExecutorService singleDaemonThreadExecutorService = threadPool.getSingleDaemonThreadExecutorService("TestDaemonThread");
-				assertNotNull(singleDaemonThreadExecutorService);
-		}
+  @Test
+  void shouldReturnSingleDaemonThreadExecutorService() {
+    ExecutorService singleDaemonThreadExecutorService =
+        threadPool.getSingleDaemonThreadExecutorService("TestDaemonThread");
+    assertNotNull(singleDaemonThreadExecutorService);
+  }
 
-		@Test
-		void shouldRemoveAndShutdownSingleThreadExecutorService() {
-				threadPool.getSingleThreadExecutorService("TestThread");
-				assertTrue(threadPool.removeAndShutdownSingleThreadExecutorService("TestThread").isPresent());
-		}
+  @Test
+  void shouldRemoveAndShutdownSingleThreadExecutorService() {
+    threadPool.getSingleThreadExecutorService("TestThread");
+    assertTrue(threadPool.removeAndShutdownSingleThreadExecutorService("TestThread").isPresent());
+  }
 
-		@Test
-		void shouldNotRemoveNonExistentSingleThreadExecutorService() {
-				assertFalse(threadPool.removeAndShutdownSingleThreadExecutorService("NonExistentThread").isPresent());
-		}
+  @Test
+  void shouldNotRemoveNonExistentSingleThreadExecutorService() {
+    assertFalse(
+        threadPool.removeAndShutdownSingleThreadExecutorService("NonExistentThread").isPresent());
+  }
 
-		@Test
-		void shouldRunAfterGivenDuration() {
-				assertDoesNotThrow(() -> threadPool.runAfter(() -> null, 1, TimeUnit.SECONDS));
-		}
+  @Test
+  void shouldRunAfterGivenDuration() {
+    assertDoesNotThrow(() -> threadPool.runAfter(() -> null, 1, TimeUnit.SECONDS));
+  }
 
-		@Test
-		void shouldShutdownAllServices() {
-				threadPool.getSingleThreadExecutorService("TestThread");
-				threadPool.getSingleDaemonThreadExecutorService("TestDaemonThread");
-				assertDoesNotThrow(() -> threadPool.shutdown());
-		}
+  @Test
+  void shouldShutdownAllServices() {
+    threadPool.getSingleThreadExecutorService("TestThread");
+    threadPool.getSingleDaemonThreadExecutorService("TestDaemonThread");
+    assertDoesNotThrow(() -> threadPool.shutdown());
+  }
 }
