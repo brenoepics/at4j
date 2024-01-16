@@ -1,11 +1,7 @@
 package com.github.brenoepics.at4j.core.ratelimit;
 
-import com.github.brenoepics.at4j.AzureApi;
-import com.github.brenoepics.at4j.core.AzureApiImpl;
 import com.github.brenoepics.at4j.util.rest.RestEndpoint;
 import com.github.brenoepics.at4j.util.rest.RestRequest;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -32,7 +28,6 @@ public class RateLimitBucket<T> {
     this.endpoint = endpoint;
     this.majorUrlParameter = majorUrlParameter;
   }
-
 
   /**
    * Adds the given request to the bucket's queue.
