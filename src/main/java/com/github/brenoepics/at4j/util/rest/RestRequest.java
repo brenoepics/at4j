@@ -333,7 +333,7 @@ public class RestRequest<T> {
     logger.debug(
         "Trying to send {} request to {}{}",
         method.name(),
-            fullUrl,
+        fullUrl,
         body != null ? " with body " + body : "");
 
     try (Response response = getApi().getHttpClient().newCall(requestBuilder.build()).execute()) {
@@ -346,8 +346,8 @@ public class RestRequest<T> {
           method.name(),
           fullUrl,
           response.code(),
-              bodyPresent,
-           bodyString);
+          bodyPresent,
+          bodyString);
 
       if (response.code() >= 300 || response.code() < 200) {
         return handleError(response.code(), requestResult);
