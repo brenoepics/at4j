@@ -14,11 +14,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class RateLimitBucket<T> {
 
-  // The key is the subscription key, as global rate-limits are shared across the same account.
-  private static final Map<String, Long> globalRateLimitResetTimestamp = new ConcurrentHashMap<>();
-
-  private final AzureApiImpl<T> api;
-
   private final ConcurrentLinkedQueue<RestRequest<T>> requestQueue = new ConcurrentLinkedQueue<>();
 
   private final RestEndpoint endpoint;
@@ -30,25 +25,14 @@ public class RateLimitBucket<T> {
   /**
    * Creates a RateLimitBucket for the given endpoint / parameter combination.
    *
-   * @param api The api/shard to use.
    * @param endpoint The REST endpoint the rate-limit is tracked for.
    * @param majorUrlParameter The url parameter this bucket is specific for. Maybe null.
    */
-  public RateLimitBucket(AzureApi api, RestEndpoint endpoint, String majorUrlParameter) {
-    this.api = (AzureApiImpl<T>) api;
+  public RateLimitBucket(RestEndpoint endpoint, String majorUrlParameter) {
     this.endpoint = endpoint;
     this.majorUrlParameter = majorUrlParameter;
   }
 
-  /**
-   * Sets a global rate-limit.
-   *
-   * @param api A azure api instance.
-   * @param resetTimestamp The reset timestamp of the global rate-limit.
-   */
-  public static void setGlobalRateLimitResetTimestamp(AzureApi api, long resetTimestamp) {
-    globalRateLimitResetTimestamp.put(api.getSubscriptionKey(), resetTimestamp);
-  }
 
   /**
    * Adds the given request to the bucket's queue.
@@ -97,8 +81,7 @@ public class RateLimitBucket<T> {
    * @return The time in seconds how long you have to wait till there's space in the bucket again.
    */
   public int getTimeTillSpaceGetsAvailable() {
-    long globalRLResetTimestamp =
-        RateLimitBucket.globalRateLimitResetTimestamp.getOrDefault(api.getSubscriptionKey(), 0L);
+    long globalRLResetTimestamp = 0L;
     long timestamp = System.currentTimeMillis();
     if (rateLimitRemaining > 0 && (globalRLResetTimestamp - timestamp) <= 0) {
       return 0;
