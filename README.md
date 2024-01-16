@@ -1,4 +1,4 @@
-# Azure Translator For Java (AT4J) [![Latest version](https://shields.io/github/release/brenoepics/at4j.svg?label=Version&colorB=brightgreen&style=flat-square)](https://github.com/brenoepics/at4j/releases/latest) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/brenoepics/at4j/maven.yml) ![GitHub Repo stars](https://img.shields.io/github/stars/brenoepics/at4j)
+# Azure Translator 4 Java (AT4J) [![Latest version](https://shields.io/github/release/brenoepics/at4j.svg?label=Version&colorB=brightgreen&style=flat-square)](https://github.com/brenoepics/at4j/releases/latest) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) ![GitHub Repo stars](https://img.shields.io/github/stars/brenoepics/at4j)
 
 
 An unofficial Java library for translating text using Azure AI Cognitive Services.
