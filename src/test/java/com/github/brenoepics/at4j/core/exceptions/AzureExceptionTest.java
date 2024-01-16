@@ -19,56 +19,55 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 class AzureExceptionTest<T> {
 
-		@Mock
-		private AzureApiImpl<T> api;
-		@Mock
-		private RestRequestResult<T> result;
-		private RestRequestInformation request;
+  @Mock private AzureApiImpl<T> api;
+  @Mock private RestRequestResult<T> result;
+  private RestRequestInformation request;
 
-		@BeforeEach
-		public void setup() throws MalformedURLException {
-				URL url = new URL("https://" + BaseURL.GLOBAL.getUrl());
-				Multimap<String, String> queryParameter = Multimaps.forMap(new HashMap<>());
-				HashMap<String, String> headers = new HashMap<>();
-				String body = "Test body";
-				request = new RestRequestInformationImpl(api, url, queryParameter, headers, body);
-		}
+  @BeforeEach
+  public void setup() throws MalformedURLException {
+    URL url = new URL("https://" + BaseURL.GLOBAL.getUrl());
+    Multimap<String, String> queryParameter = Multimaps.forMap(new HashMap<>());
+    HashMap<String, String> headers = new HashMap<>();
+    String body = "Test body";
+    request = new RestRequestInformationImpl(api, url, queryParameter, headers, body);
+  }
 
-		@Test
-		void exceptionRetainsOriginAndMessage() {
-				Exception origin = new Exception();
-				String message = "Test message";
-				AzureException exception = new AzureException(origin, message, null, null);
+  @Test
+  void exceptionRetainsOriginAndMessage() {
+    Exception origin = new Exception();
+    String message = "Test message";
+    AzureException exception = new AzureException(origin, message, null, null);
 
-				assertSame(origin, exception.getCause());
-				assertEquals(message, exception.getMessage());
-		}
+    assertSame(origin, exception.getCause());
+    assertEquals(message, exception.getMessage());
+  }
 
-		@Test
-		void requestInformationIsRetained() {
-				AzureException exception = new AzureException(null, null, request, null);
-				assertEquals(Optional.of(request), exception.getRequest());
-		}
+  @Test
+  void requestInformationIsRetained() {
+    AzureException exception = new AzureException(null, null, request, null);
+    assertEquals(Optional.of(request), exception.getRequest());
+  }
 
-		@Test
-		void responseInformationIsRetained() {
-				RestRequestResponseInformation response = new RestRequestResponseInformationImpl<>(request, result);
-				AzureException exception = new AzureException(null, null, null, response);
+  @Test
+  void responseInformationIsRetained() {
+    RestRequestResponseInformation response =
+        new RestRequestResponseInformationImpl<>(request, result);
+    AzureException exception = new AzureException(null, null, null, response);
 
-				assertEquals(Optional.of(response), exception.getResponse());
-		}
+    assertEquals(Optional.of(response), exception.getResponse());
+  }
 
-		@Test
-		void requestInformationIsNullWhenNotProvided() {
-				AzureException exception = new AzureException(null, null, null, null);
+  @Test
+  void requestInformationIsNullWhenNotProvided() {
+    AzureException exception = new AzureException(null, null, null, null);
 
-				assertEquals(Optional.empty(), exception.getRequest());
-		}
+    assertEquals(Optional.empty(), exception.getRequest());
+  }
 
-		@Test
-		void responseInformationIsNullWhenNotProvided() {
-				AzureException exception = new AzureException(null, null, null, null);
+  @Test
+  void responseInformationIsNullWhenNotProvided() {
+    AzureException exception = new AzureException(null, null, null, null);
 
-				assertEquals(Optional.empty(), exception.getResponse());
-		}
+    assertEquals(Optional.empty(), exception.getResponse());
+  }
 }
