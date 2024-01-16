@@ -225,7 +225,7 @@ public enum RestRequestResultErrorCode {
   /**
    * The azure exception instantiate that produces instances to throw for this kind of result code.
    */
-  private final AzureExceptionInstantiator<?> azureExceptionInstantiator;
+  private final AzureExceptionInstantiator<AzureException> azureExceptionInstantiator;
 
   /** The response code for which the given instantiating should be used. */
   private final RestRequestHttpResponseCode responseCode;
@@ -260,7 +260,7 @@ public enum RestRequestResultErrorCode {
   RestRequestResultErrorCode(
       int code,
       String meaning,
-      AzureExceptionInstantiator<?> azureExceptionInstantiator,
+      AzureExceptionInstantiator<AzureException> azureExceptionInstantiator,
       RestRequestHttpResponseCode responseCode) {
     this.code = code;
     this.meaning = meaning;
@@ -308,18 +308,18 @@ public enum RestRequestResultErrorCode {
    * @param response The information about the response.
    * @return The azure exception to throw for this kind of result code.
    */
-  public Optional<? extends AzureException> getAzureException(
-      Exception origin,
-      String message,
-      RestRequestInformation request,
-      RestRequestResponseInformation response) {
+  public Optional<AzureException> getAzureException(
+          Exception origin,
+          String message,
+          RestRequestInformation request,
+          RestRequestResponseInformation response) {
     return Optional.ofNullable(azureExceptionInstantiator)
-        .map(instantiate -> instantiate.createInstance(origin, message, request, response))
-        .filter(
-            exception ->
-                RestRequestHttpResponseCode.fromAzureExceptionClass(exception.getClass())
-                    .map(RestRequestHttpResponseCode::getCode)
-                    .map(mapCode -> mapCode == response.getCode())
-                    .orElse(true));
+            .map(instantiate -> instantiate.createInstance(origin, message, request, response))
+            .filter(
+                    exception ->
+                            RestRequestHttpResponseCode.fromAzureExceptionClass(exception.getClass())
+                                    .map(RestRequestHttpResponseCode::getCode)
+                                    .map(mapCode -> mapCode == response.getCode())
+                                    .orElse(true));
   }
 }
