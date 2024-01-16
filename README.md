@@ -71,32 +71,25 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
   <summary>Gradle</summary>
     
 ```gradle
-repositories {
-    mavenCentral()
-    maven { url 'https://jitpack.io' }
-}
-dependencies { implementation 'com.github.brenoepics:at4j:0.0.5' }
+implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.5'
 ```
 </details>
 <details>
   <summary>Maven</summary>
-Add the Jit Pack repository to your `pom.xml`:
-
-```xml
-<repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-</repository>
-```
-
-And the following dependency`:
 
 ```xml
 <dependency>
-    <groupId>com.github.brenoepics</groupId>
+    <groupId>io.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
     <version>0.0.5</version>
 </dependency>
+```
+</details>
+<details>
+  <summary>Sbt</summary>
+
+```sbt
+libraryDependencies += "io.github.brenoepics" % "at4j" % "0.0.5"
 ```
 </details>
 
