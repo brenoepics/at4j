@@ -17,8 +17,7 @@ import static org.mockito.Mockito.when;
 
 class AzureApiImplTest<T> {
 
-  @Mock
-  private AzureApiImpl<T> azureApi;
+  @Mock private AzureApiImpl<T> azureApi;
   private TranslateParams translateParams;
 
   @BeforeEach
