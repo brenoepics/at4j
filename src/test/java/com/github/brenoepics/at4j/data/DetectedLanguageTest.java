@@ -59,4 +59,15 @@ class DetectedLanguageTest {
             + " isTransliterationSupported=false}";
     assertEquals(expected, detectedLanguage.toString());
   }
+
+  @Test
+  void translateParams_withValidInputs_returnsNewInstance() {
+    String languageCode = "en";
+    DetectedLanguage detectedLanguage = new DetectedLanguage(languageCode, 0.9f, true, false);
+
+    assertTrue(detectedLanguage.isTranslationSupported());
+    assertFalse(detectedLanguage.isTransliterationSupported());
+    assertEquals(languageCode, detectedLanguage.getLanguageCode());
+    assertEquals(0.9f, detectedLanguage.getScore(), 0.0001);
+  }
 }
