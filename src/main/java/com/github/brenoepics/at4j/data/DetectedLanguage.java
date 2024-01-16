@@ -61,10 +61,14 @@ public class DetectedLanguage {
     DetectedLanguage detected =
         new DetectedLanguage(jsonNode.get("language").asText(), jsonNode.get("score").floatValue());
 
-    if (jsonNode.has("isTranslationSupported"))
+    if (jsonNode.has("isTranslationSupported")) {
       detected.isTranslationSupported = jsonNode.get("isTranslationSupported").asBoolean();
-    if (jsonNode.has("isTransliterationSupported"))
+    }
+
+    if (jsonNode.has("isTransliterationSupported")) {
       detected.isTransliterationSupported = jsonNode.get("isTransliterationSupported").asBoolean();
+    }
+    
     return detected;
   }
 
