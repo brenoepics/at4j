@@ -9,14 +9,14 @@ class AzureApiBuilderTest {
 
   @Test
   void shouldSetGlobalBaseUrlByDefault() {
-    AzureApiBuilder builder = new AzureApiBuilder();
+    AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey");
     AzureApi api = builder.build();
     assertEquals(BaseURL.GLOBAL, api.getBaseURL());
   }
 
   @Test
   void shouldSetBaseUrlWhenProvided() {
-    AzureApiBuilder builder = new AzureApiBuilder();
+    AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey");
     AzureApi api = builder.baseURL(BaseURL.EUROPE).build();
     assertEquals(BaseURL.EUROPE, api.getBaseURL());
   }
@@ -36,7 +36,7 @@ class AzureApiBuilderTest {
 
   @Test
   void shouldSetSubscriptionRegionWhenProvided() {
-    AzureApiBuilder builder = new AzureApiBuilder();
+    AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey");
     AzureApi api = builder.region("brazilsouth").build();
     assertEquals("brazilsouth", api.getSubscriptionRegion().orElse(null));
   }
