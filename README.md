@@ -65,7 +65,7 @@ fr: Salut tout le monde!
 
 The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 
-### AT4J Dependency
+### [AT4J Dependency](https://central.sonatype.com/artifact/io.github.brenoepics/at4j)
 
 <details>
   <summary>Gradle</summary>
