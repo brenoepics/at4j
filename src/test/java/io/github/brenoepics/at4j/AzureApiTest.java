@@ -15,23 +15,22 @@ import java.util.concurrent.CompletionException;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class AzureApiTest {
   @Test
-void BuildNullKey() {
+  void BuildNullKey() {
     AzureApiBuilder builder = new AzureApiBuilder();
     assertThrows(NullPointerException.class, builder::build, "Subscription key cannot be null");
   }
 
   @Test
-void buildApi() {
+  void buildApi() {
     AzureApi api = new AzureApiBuilder().setKey("test").region("test").build();
     assertNotNull(api);
     api.disconnect();
   }
 
   @Test
-void getLanguages() {
+  void getLanguages() {
     AzureApi api =
         new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
 
@@ -43,7 +42,7 @@ void getLanguages() {
   }
 
   @Test
-void getLanguagesEmptyKey() {
+  void getLanguagesEmptyKey() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
@@ -53,7 +52,7 @@ void getLanguagesEmptyKey() {
   }
 
   @Test
-void getLanguagesEmptySourceLanguage() {
+  void getLanguagesEmptySourceLanguage() {
     AzureApi api =
         new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
 
@@ -64,7 +63,7 @@ void getLanguagesEmptySourceLanguage() {
   }
 
   @Test
-void translateEmptyKey() {
+  void translateEmptyKey() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     TranslateParams params = new TranslateParams("test", List.of("pt")).setSourceLanguage("en");
@@ -74,7 +73,7 @@ void translateEmptyKey() {
   }
 
   @Test
-void translateEmptyText() {
+  void translateEmptyText() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
     TranslateParams params = new TranslateParams("", List.of("pt")).setSourceLanguage("en");
@@ -85,7 +84,7 @@ void translateEmptyText() {
   }
 
   @Test
-void translateEmptySourceLanguage() {
+  void translateEmptySourceLanguage() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
     TranslateParams params = new TranslateParams("", List.of("pt")).setTargetLanguages("pt");
