@@ -71,7 +71,7 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
   <summary>Gradle</summary>
     
 ```gradle
-implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.5'
+implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.6'
 ```
 </details>
 <details>
@@ -81,7 +81,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.5'
 <dependency>
     <groupId>io.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
 </dependency>
 ```
 </details>
@@ -89,7 +89,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.5'
   <summary>Sbt</summary>
 
 ```sbt
-libraryDependencies += "io.github.brenoepics" % "at4j" % "0.0.5"
+libraryDependencies += "io.github.brenoepics" % "at4j" % "0.0.6"
 ```
 </details>
 
