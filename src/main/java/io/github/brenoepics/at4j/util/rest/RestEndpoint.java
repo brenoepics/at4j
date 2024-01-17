@@ -73,27 +73,6 @@ public enum RestEndpoint {
     return endpointUrl;
   }
 
-  /**
-   * Gets the full url of the endpoint. Parameters which are "too much" are added to the end.
-   *
-   * @param baseURL The base url of the endpoint.
-   * @param parameters The parameters of the url. E.g., for channel ids.
-   * @return The full url of the endpoint.
-   */
-  public String getFullUrl(BaseURL baseURL, String... parameters) {
-    StringBuilder url = new StringBuilder("https://" + baseURL.getUrl() + getEndpointUrl());
-
-    url = new StringBuilder(String.format(url.toString(), (Object[]) parameters));
-    int parameterAmount =
-        getEndpointUrl().split("%s").length - (getEndpointUrl().endsWith("%s") ? 0 : 1);
-
-    if (parameters.length > parameterAmount) {
-      for (int i = parameterAmount; i < parameters.length; i++) {
-        url.append("/").append(parameters[i]);
-      }
-    }
-    return url.toString();
-  }
 
   /**
    * Gets the full {@link URI http url} of the endpoint.
@@ -101,10 +80,9 @@ public enum RestEndpoint {
    * added to the end.
    *
    * @param baseURL The base url of the endpoint.
-   * @param parameters The parameters of the url. E.g., for channel ids.
    * @return The full http url of the endpoint.
    */
-  public URI getHttpUrl(BaseURL baseURL, Map<String, Collection<String>> queryParams, String... parameters) throws URISyntaxException {
+  public URI getHttpUrl(BaseURL baseURL, Map<String, Collection<String>> queryParams) throws URISyntaxException {
     String query = getQuery(queryParams);
 
     return new URI(

@@ -10,12 +10,10 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Function;
 
 import org.apache.logging.log4j.Logger;
@@ -36,10 +34,6 @@ public class RestRequest<T> {
   private volatile String body = null;
 
   private final CompletableFuture<RestRequestResult<T>> result = new CompletableFuture<>();
-
-
-  /** The custom major parameter if it's not included in the url (e.g., for reactions) */
-  private String customMajorParam = null;
 
   /** The origin of the rest request. */
   private final Exception origin;
