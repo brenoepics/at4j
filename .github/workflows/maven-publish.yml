@@ -25,7 +25,7 @@ jobs:
 
       - name: Release With Maven
         run: |
-          mvn -B
+          mvn --batch-mode
           -s settings.xml \
           -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
           deploy
