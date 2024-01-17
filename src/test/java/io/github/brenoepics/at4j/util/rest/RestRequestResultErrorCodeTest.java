@@ -1,14 +1,7 @@
 package io.github.brenoepics.at4j.util.rest;
 
-import com.google.common.collect.Multimaps;
-import io.github.brenoepics.at4j.AzureApi;
-import io.github.brenoepics.at4j.AzureApiBuilder;
-import io.github.brenoepics.at4j.core.exceptions.AzureException;
-import okhttp3.Protocol;
-import okhttp3.Response;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;

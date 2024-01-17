@@ -10,6 +10,7 @@ class FallbackLoggerConfigurationTest {
   void invokingConstructorThrowsException() {
     assertThrows(UnsupportedOperationException.class, FallbackLoggerConfiguration::new);
   }
+
   @Test
   void debugInitiallyEnabled() {
     assertTrue(FallbackLoggerConfiguration.isDebugEnabled());
