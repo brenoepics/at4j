@@ -14,13 +14,17 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-      - name: Publish package
-        run: mvn --batch-mode deploy
+      - id: install-secret-key
+        name: Install gpg secret key
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AZURE_KEY: ${{ secrets.AZURE_KEY }}
-          AZURE_REGION: ${{ secrets.AZURE_REGION }}
-          
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+        run: |
+           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+           gpg --list-secret-keys --keyid-format LONG
+      - name: Publish package
+        run: mvn --batch-mode -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} deploy
+      
   publish-javadoc:
     runs-on: ubuntu-latest
     permissions:
