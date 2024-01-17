@@ -1,7 +1,6 @@
 package io.github.brenoepics.at4j.core.thread;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import org.jetbrains.annotations.NotNull;
 
 /** A thread factory that creates optionally numbered threads as daemon or non-daemon. */
 public class AT4JThreadFactory implements java.util.concurrent.ThreadFactory {
@@ -28,7 +27,7 @@ public class AT4JThreadFactory implements java.util.concurrent.ThreadFactory {
   }
 
   @Override
-  public Thread newThread(@NotNull Runnable r) {
+  public Thread newThread(Runnable r) {
     Thread thread = new Thread(r, String.format(namePattern, counter.incrementAndGet()));
     thread.setDaemon(daemon);
     return thread;

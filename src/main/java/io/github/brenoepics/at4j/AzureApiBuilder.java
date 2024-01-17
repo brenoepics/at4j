@@ -2,10 +2,9 @@ package io.github.brenoepics.at4j;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
-import io.github.brenoepics.at4j.util.logging.LoggerUtil;
 import io.github.brenoepics.at4j.util.logging.PrivacyProtectionLogger;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
+
+import java.net.http.HttpClient;
 
 /**
  * Builder class for constructing instances of AzureApi.
@@ -81,19 +80,10 @@ public class AzureApiBuilder {
     }
 
     // The HTTP client used by the Azure API.
-    OkHttpClient httpClient =
-        new OkHttpClient.Builder()
-            .addInterceptor(
-                chain ->
-                    chain.proceed(
-                        chain
-                            .request()
-                            .newBuilder()
-                            .addHeader("User-Agent", AT4J.USER_AGENT)
-                            .build()))
-            .addInterceptor(
-                new HttpLoggingInterceptor(LoggerUtil.getLogger(OkHttpClient.class)::trace)
-                    .setLevel(HttpLoggingInterceptor.Level.BODY))
+    HttpClient httpClient =
+            HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .followRedirects(HttpClient.Redirect.NORMAL)
             .build();
     return new AzureApiImpl<>(httpClient, baseURL, subscriptionKey, subscriptionRegion);
   }

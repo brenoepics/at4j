@@ -8,6 +8,7 @@ import io.github.brenoepics.at4j.util.rest.RestRequestHandler;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInformationImpl;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
+import java.net.http.HttpResponse;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-import okhttp3.Response;
 import org.apache.logging.log4j.Logger;
 
 /** This class manages rate-limits and keeps track of them. */
@@ -181,12 +181,12 @@ public class RateLimitManager<T> {
       RateLimitBucket<T> bucket =
           buckets.stream()
               .filter(
-                  b -> b.equals(request.getEndpoint(), request.getMajorUrlParameter().orElse(null)))
+                  b -> b.equals(request.getEndpoint(), null))
               .findAny()
               .orElseGet(
                   () ->
                       new RateLimitBucket<>(
-                          request.getEndpoint(), request.getMajorUrlParameter().orElse(null)));
+                          request.getEndpoint(), null));
 
       // Check if it is already in the queue, send not present
       if (bucket.peekRequestFromQueue() != null) {
@@ -219,16 +219,16 @@ public class RateLimitManager<T> {
       return;
     }
 
-    Response response = result.getResponse();
+    HttpResponse<String> response = result.getResponse();
     int remaining =
-        Integer.parseInt(Objects.requireNonNull(response.header("X-RateLimit-Remaining", "1")));
+        Integer.parseInt(Objects.requireNonNull(response.headers().firstValue("X-RateLimit-Remaining").orElse("1")));
     long reset =
         (long)
-            (Double.parseDouble(Objects.requireNonNull(response.header("X-RateLimit-Reset", "0")))
+            (Double.parseDouble(Objects.requireNonNull(response.headers().firstValue("X-RateLimit-Reset").orElse("0")))
                 * 1000);
 
     // Check if we received a 429 response
-    if (result.getResponse().code() != 429) {
+    if (result.getResponse().statusCode() != 429) {
       // Check if we didn't already complete it exceptionally.
       CompletableFuture<RestRequestResult<T>> requestResult = request.getResult();
       if (!requestResult.isDone()) {
@@ -241,12 +241,12 @@ public class RateLimitManager<T> {
       return;
     }
 
-    if (response.header("Via") == null) {
+    if (response.headers().firstValue("Via").isEmpty()) {
       logger.warn(
           "Hit a CloudFlare API ban! This means you were sending a very large amount of invalid"
               + " requests.");
       int retryAfter =
-          Integer.parseInt(Objects.requireNonNull(response.header("Retry-after"))) * 1000;
+          Integer.parseInt(Objects.requireNonNull(response.headers().firstValue("Retry-after").orElse("10"))) * 1000;
       bucket.setRateLimitRemaining(retryAfter);
       bucket.setRateLimitResetTimestamp(responseTimestamp + retryAfter);
       return;

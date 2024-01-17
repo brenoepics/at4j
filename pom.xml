@@ -6,7 +6,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.7</version>
     <name>Azure Translator For Java</name>
     <description>
         A simple Java library to translate text using Azure AI Cognitive Services.
@@ -84,18 +84,6 @@
     </profiles>
     <dependencies>
         <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.12.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>logging-interceptor</artifactId>
-            <version>4.12.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.22.1</version>
@@ -143,6 +131,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.12.1</version>
                 <configuration>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- Maven JAR Plugin -->

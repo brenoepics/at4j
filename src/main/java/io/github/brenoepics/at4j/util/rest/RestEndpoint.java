@@ -1,9 +1,13 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
-import java.util.Optional;
 
-import okhttp3.HttpUrl;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This enum contains all endpoints that we may use. Each endpoint is represented as an enum
@@ -92,14 +96,30 @@ public enum RestEndpoint {
   }
 
   /**
-   * Gets the full {@link HttpUrl http url} of the endpoint. Parameters which are "too much" are
+   * Gets the full {@link URI http url} of the endpoint.
+   * Parameters which are "too much" are
    * added to the end.
    *
    * @param baseURL The base url of the endpoint.
    * @param parameters The parameters of the url. E.g., for channel ids.
    * @return The full http url of the endpoint.
    */
-  public HttpUrl getOkHttpUrl(BaseURL baseURL, String... parameters) {
-    return HttpUrl.parse(getFullUrl(baseURL, parameters));
+  public URI getHttpUrl(BaseURL baseURL, Map<String, Collection<String>> queryParams, String... parameters) throws URISyntaxException {
+    String query = getQuery(queryParams);
+
+    return new URI(
+            "https",
+            baseURL.getUrl(),
+            endpointUrl,
+            query,
+            null);
+  }
+
+  private String getQuery(Map<String, Collection<String>> queryParams) {
+    return queryParams.entrySet().stream()
+            .map(entry -> entry.getValue().stream()
+                    .map(value -> entry.getKey() + "=" + value)
+                    .collect(Collectors.joining("&")))
+            .collect(Collectors.joining("&"));
   }
 }

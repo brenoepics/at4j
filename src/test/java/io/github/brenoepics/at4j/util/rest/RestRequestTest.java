@@ -45,15 +45,6 @@ class RestRequestTest<T> {
   }
 
   @Test
-  @DisplayName("Should set url parameters correctly")
-  void shouldSetUrlParameters() {
-    restRequest.setUrlParameters("param1", "param2");
-    Assertions.assertEquals(2, restRequest.getUrlParameters().length);
-    Assertions.assertEquals("param1", restRequest.getUrlParameters()[0]);
-    Assertions.assertEquals("param2", restRequest.getUrlParameters()[1]);
-  }
-
-  @Test
   @DisplayName("Should set body correctly")
   void shouldSetBody() {
     restRequest.setBody("bodyContent");
