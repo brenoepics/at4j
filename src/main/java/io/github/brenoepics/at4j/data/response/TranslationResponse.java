@@ -11,10 +11,11 @@ import java.util.Collection;
  */
 public class TranslationResponse {
 
-  /** The detected language of the input text. It can be null if the language could not be detected.
+  /**
+   * The detected language of the input text. It can be null if the language could not be detected.
+   *
    * @see DetectedLanguage
    */
-
   private DetectedLanguage detectedLanguage = null;
 
   // A collection of translations for the input text.

@@ -30,9 +30,8 @@ class RestRequestTest<T> {
     restRequest.addQueryParameter("to", "es");
     restRequest.addQueryParameter("to", "fr");
     Assertions.assertTrue(restRequest.getQueryParameters().containsKey("to"));
-    Assertions.assertTrue(restRequest.getQueryParameters().get("to").containsAll(
-        Arrays.asList("pt", "es", "fr")
-    ));
+    Assertions.assertTrue(
+        restRequest.getQueryParameters().get("to").containsAll(Arrays.asList("pt", "es", "fr")));
   }
 
   @Test
