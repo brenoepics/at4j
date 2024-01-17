@@ -18,6 +18,11 @@ jobs:
         with:
           java-version: 17
           distribution: 'zulu' # Alternative distribution options are available.
+      - id: install-secret-key
+        name: Install gpg secret key
+        run: |
+           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+           gpg --list-secret-keys --keyid-format LONG
       - name: Cache SonarCloud packages
         uses: actions/cache@v3
         with:
