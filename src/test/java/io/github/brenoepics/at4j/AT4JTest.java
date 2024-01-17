@@ -1,15 +1,16 @@
 package io.github.brenoepics.at4j;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import org.junit.Test;
 
-public class AT4JTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class AT4JTest {
 
   @Test
-  public void testVersionFields() throws NoSuchFieldException, IllegalAccessException {
+  void testVersionFields() throws NoSuchFieldException, IllegalAccessException {
     Field versionField = AT4J.class.getDeclaredField("VERSION");
     versionField.setAccessible(true);
     String version = (String) versionField.get(null);
@@ -27,7 +28,7 @@ public class AT4JTest {
   }
 
   @Test
-  public void testAzureTranslatorApiVersion() {
+  void testAzureTranslatorApiVersion() {
     assertEquals("3.0", AT4J.AZURE_TRANSLATOR_API_VERSION);
   }
 }

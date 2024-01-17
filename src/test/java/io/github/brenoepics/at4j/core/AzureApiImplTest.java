@@ -34,7 +34,7 @@ class AzureApiImplTest<T> {
         .whenComplete(
             (response, throwable) -> {
               if (throwable != null) {
-                assertTrue(throwable instanceof AzureException);
+                assertInstanceOf(AzureException.class, throwable);
                 assertEquals("Text is required", throwable.getMessage());
               }
             });

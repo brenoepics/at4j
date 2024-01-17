@@ -1,7 +1,5 @@
 package io.github.brenoepics.at4j;
 
-import static org.junit.Assert.*;
-
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
@@ -14,24 +12,26 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class AzureApiTest {
+
+class AzureApiTest {
   @Test
-  public void BuildNullKey() {
+void BuildNullKey() {
     AzureApiBuilder builder = new AzureApiBuilder();
-    assertThrows("Subscription key cannot be null", NullPointerException.class, builder::build);
+    assertThrows(NullPointerException.class, builder::build, "Subscription key cannot be null");
   }
 
   @Test
-  public void buildApi() {
+void buildApi() {
     AzureApi api = new AzureApiBuilder().setKey("test").region("test").build();
     assertNotNull(api);
     api.disconnect();
   }
 
   @Test
-  public void getLanguages() {
+void getLanguages() {
     AzureApi api =
         new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
 
@@ -43,7 +43,7 @@ public class AzureApiTest {
   }
 
   @Test
-  public void getLanguagesEmptyKey() {
+void getLanguagesEmptyKey() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
@@ -53,7 +53,7 @@ public class AzureApiTest {
   }
 
   @Test
-  public void getLanguagesEmptySourceLanguage() {
+void getLanguagesEmptySourceLanguage() {
     AzureApi api =
         new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
 
@@ -64,7 +64,7 @@ public class AzureApiTest {
   }
 
   @Test
-  public void translateEmptyKey() {
+void translateEmptyKey() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     TranslateParams params = new TranslateParams("test", List.of("pt")).setSourceLanguage("en");
@@ -74,7 +74,7 @@ public class AzureApiTest {
   }
 
   @Test
-  public void translateEmptyText() {
+void translateEmptyText() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
     TranslateParams params = new TranslateParams("", List.of("pt")).setSourceLanguage("en");
@@ -85,7 +85,7 @@ public class AzureApiTest {
   }
 
   @Test
-  public void translateEmptySourceLanguage() {
+void translateEmptySourceLanguage() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
     TranslateParams params = new TranslateParams("", List.of("pt")).setTargetLanguages("pt");

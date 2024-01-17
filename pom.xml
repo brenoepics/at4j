@@ -111,12 +111,6 @@
             <version>33.0.0-jre</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>5.10.1</version>
@@ -194,20 +188,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- Attach source jars-->
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.3.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-source</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <!-- Sign artifacts for uploading to maven central -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -222,12 +202,12 @@
                         </goals>
                     </execution>
                 </executions>
-                    <configuration>
-  <gpgArguments>
-      <arg>--pinentry-mode</arg>
-      <arg>loopback</arg>
-  </gpgArguments>
-</configuration>
+                <configuration>
+                    <gpgArguments>
+                        <arg>--pinentry-mode</arg>
+                        <arg>loopback</arg>
+                    </gpgArguments>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.sonatype.central</groupId>
