@@ -9,7 +9,8 @@ public class FallbackLoggerConfiguration {
 
   private static final AtomicBoolean trace = new AtomicBoolean();
 
-  private FallbackLoggerConfiguration() {
+  /** This class should not be instantiated. */
+  FallbackLoggerConfiguration() {
     throw new UnsupportedOperationException();
   }
 

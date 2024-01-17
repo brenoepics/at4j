@@ -25,6 +25,18 @@ class DetectedLanguageTest {
   }
 
   @Test
+  void ofJSON_withInvalidLangJson_returnsNull() throws JsonProcessingException {
+    String json =
+        "{\"score\":0.9,\"isTranslationSupported\":true,\"isTransliterationSupported\":false}";
+    ObjectMapper mapper = new ObjectMapper();
+    ObjectNode jsonNode = mapper.convertValue(mapper.readTree(json), ObjectNode.class);
+
+    DetectedLanguage detectedLanguage = DetectedLanguage.ofJSON(jsonNode);
+
+    assertNull(detectedLanguage);
+  }
+
+  @Test
   void ofJSON_withMissingFields_returnsDetectedLanguageWithDefaults()
       throws JsonProcessingException {
     String json = "{\"language\":\"en\",\"score\":0.9}";

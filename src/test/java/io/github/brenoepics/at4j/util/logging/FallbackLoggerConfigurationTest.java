@@ -7,6 +7,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class FallbackLoggerConfigurationTest {
 
   @Test
+  void invokingConstructorThrowsException() {
+    assertThrows(UnsupportedOperationException.class, FallbackLoggerConfiguration::new);
+  }
+  @Test
   void debugInitiallyEnabled() {
     assertTrue(FallbackLoggerConfiguration.isDebugEnabled());
   }
