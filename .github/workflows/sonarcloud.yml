@@ -1,8 +1,11 @@
 name: SonarCloud
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
+    paths:
+      - 'src/**'
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -39,4 +42,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=brenoepics_at4j -Pcoverage -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+        run: mvn -B clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=brenoepics_at4j -Pcoverage -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
