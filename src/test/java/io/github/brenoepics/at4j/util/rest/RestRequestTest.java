@@ -7,6 +7,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.Arrays;
+
 class RestRequestTest<T> {
 
   @Mock private AzureApiImpl<T> api;
@@ -27,8 +29,10 @@ class RestRequestTest<T> {
     restRequest.addQueryParameter("to", "pt");
     restRequest.addQueryParameter("to", "es");
     restRequest.addQueryParameter("to", "fr");
-    Assertions.assertEquals(4, restRequest.getQueryParameters().size());
-    Assertions.assertTrue(restRequest.getQueryParameters().containsEntry("to", "pt"));
+    Assertions.assertTrue(restRequest.getQueryParameters().containsKey("to"));
+    Assertions.assertTrue(restRequest.getQueryParameters().get("to").containsAll(
+        Arrays.asList("pt", "es", "fr")
+    ));
   }
 
   @Test

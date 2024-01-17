@@ -1,8 +1,8 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.AzureApi;
-import com.google.common.collect.Multimap;
 import java.net.URL;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
@@ -28,7 +28,7 @@ public interface RestRequestInformation {
    *
    * @return The query parameters of the rest request.
    */
-  Multimap<String, String> getQueryParameters();
+  Map<String, Collection<String>> getQueryParameters();
 
   /**
    * Gets the headers of the rest request.

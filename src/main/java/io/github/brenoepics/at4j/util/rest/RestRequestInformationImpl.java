@@ -1,20 +1,15 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.AzureApi;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /** The implementation of {@link RestRequestInformation}. */
 public class RestRequestInformationImpl implements RestRequestInformation {
 
   private final AzureApi api;
   private final URL url;
-  private final Multimap<String, String> queryParameters;
+  private final Map<String, Collection<String>> queryParameters;
   private final Map<String, String> headers;
   private final String body;
 
@@ -30,7 +25,7 @@ public class RestRequestInformationImpl implements RestRequestInformation {
   public RestRequestInformationImpl(
       AzureApi api,
       URL url,
-      Multimap<String, String> queryParameter,
+      Map<String, Collection<String>> queryParameter,
       Map<String, String> headers,
       String body) {
     this.api = api;
@@ -51,8 +46,8 @@ public class RestRequestInformationImpl implements RestRequestInformation {
   }
 
   @Override
-  public Multimap<String, String> getQueryParameters() {
-    return Multimaps.unmodifiableMultimap(queryParameters);
+  public Map<String, Collection<String>> getQueryParameters() {
+    return Collections.unmodifiableMap(queryParameters);
   }
 
   @Override

@@ -2,8 +2,8 @@ package io.github.brenoepics.at4j.data.response;
 
 import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.Translation;
+
 import java.util.Collection;
-import javax.annotation.Nullable;
 
 /**
  * This class represents a response from a translation service. It contains the detected language of
@@ -11,8 +11,11 @@ import javax.annotation.Nullable;
  */
 public class TranslationResponse {
 
-  // The detected language of the input text. It can be null if the language could not be detected.
-  @Nullable private DetectedLanguage detectedLanguage = null;
+  /** The detected language of the input text. It can be null if the language could not be detected.
+   * @see DetectedLanguage
+   */
+
+  private DetectedLanguage detectedLanguage = null;
 
   // A collection of translations for the input text.
   private final Collection<Translation> translations;
@@ -24,7 +27,7 @@ public class TranslationResponse {
    * @param translations A collection of translations for the input text.
    */
   public TranslationResponse(
-      @Nullable DetectedLanguage detectedLanguage, Collection<Translation> translations) {
+      DetectedLanguage detectedLanguage, Collection<Translation> translations) {
     this.detectedLanguage = detectedLanguage;
     this.translations = translations;
   }
@@ -44,7 +47,7 @@ public class TranslationResponse {
    *
    * @param detectedLanguage The detected language of the input text.
    */
-  public void setDetectedLanguage(@Nullable DetectedLanguage detectedLanguage) {
+  public void setDetectedLanguage(DetectedLanguage detectedLanguage) {
     this.detectedLanguage = detectedLanguage;
   }
 
@@ -53,7 +56,6 @@ public class TranslationResponse {
    *
    * @return The detected language of the input text.
    */
-  @Nullable
   public DetectedLanguage getDetectedLanguage() {
     return detectedLanguage;
   }

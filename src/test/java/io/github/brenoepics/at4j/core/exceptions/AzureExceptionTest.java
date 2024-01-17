@@ -2,8 +2,6 @@ package io.github.brenoepics.at4j.core.exceptions;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
 import io.github.brenoepics.at4j.util.rest.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +9,9 @@ import org.mockito.Mock;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,7 +25,7 @@ class AzureExceptionTest<T> {
   @BeforeEach
   public void setup() throws MalformedURLException {
     URL url = new URL("https://" + BaseURL.GLOBAL.getUrl());
-    Multimap<String, String> queryParameter = Multimaps.forMap(new HashMap<>());
+    Map<String, Collection<String>> queryParameter = new HashMap<>();
     HashMap<String, String> headers = new HashMap<>();
     String body = "Test body";
     request = new RestRequestInformationImpl(api, url, queryParameter, headers, body);

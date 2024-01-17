@@ -6,14 +6,10 @@ import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Function;
@@ -33,7 +29,7 @@ public class RestRequest<T> {
 
   private volatile boolean includeAuthorizationHeader = true;
   private AtomicReferenceArray<String> urlParameters = new AtomicReferenceArray<>(new String[0]);
-  private final Multimap<String, String> queryParameters = ArrayListMultimap.create();
+  private final Map<String, Collection<String>> queryParameters = new HashMap<>();
   private final Map<String, String> headers = new HashMap<>();
   private volatile String body = null;
 
@@ -59,7 +55,7 @@ public class RestRequest<T> {
     this.api = (AzureApiImpl) api;
     this.method = method;
     this.endpoint = endpoint;
-    this.queryParameters.put("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
+    addQueryParameter("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
 
     this.origin = new Exception("origin of RestRequest call");
   }
@@ -96,7 +92,7 @@ public class RestRequest<T> {
    *
    * @return The query parameters of this request.
    */
-  public Multimap<String, String> getQueryParameters() {
+  public Map<String, Collection<String>> getQueryParameters() {
     return queryParameters;
   }
 
@@ -162,7 +158,7 @@ public class RestRequest<T> {
    * @return The current instance to chain call methods.
    */
   public RestRequest<T> addQueryParameter(String key, String value) {
-    queryParameters.put(key, value);
+    queryParameters.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
     return this;
   }
 
@@ -313,13 +309,11 @@ public class RestRequest<T> {
    */
   public RestRequestResult<T> executeBlocking() throws AzureException, IOException {
     Request.Builder requestBuilder = new Request.Builder();
-    String[] parameters = new String[urlParameters.length()];
-    for (int i = 0; i < urlParameters.length(); i++) {
-      parameters[i] = urlParameters.get(i);
-    }
+    String[] parameters = getUrlParameters();
     HttpUrl.Builder httpUrlBuilder =
         endpoint.getOkHttpUrl(api.getBaseURL(), parameters).newBuilder();
-    queryParameters.forEach(httpUrlBuilder::addQueryParameter);
+    queryParameters.forEach(
+        (key, values) -> values.forEach(value -> httpUrlBuilder.addQueryParameter(key, value)));
     requestBuilder.url(httpUrlBuilder.build());
     request(requestBuilder);
 
