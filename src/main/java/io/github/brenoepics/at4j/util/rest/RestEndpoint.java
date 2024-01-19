@@ -1,9 +1,13 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
-import java.util.Optional;
 
-import okhttp3.HttpUrl;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * This enum contains all endpoints that we may use. Each endpoint is represented as an enum
@@ -69,37 +73,31 @@ public enum RestEndpoint {
     return endpointUrl;
   }
 
-  /**
-   * Gets the full url of the endpoint. Parameters which are "too much" are added to the end.
-   *
-   * @param baseURL The base url of the endpoint.
-   * @param parameters The parameters of the url. E.g., for channel ids.
-   * @return The full url of the endpoint.
-   */
-  public String getFullUrl(BaseURL baseURL, String... parameters) {
-    StringBuilder url = new StringBuilder("https://" + baseURL.getUrl() + getEndpointUrl());
-
-    url = new StringBuilder(String.format(url.toString(), (Object[]) parameters));
-    int parameterAmount =
-        getEndpointUrl().split("%s").length - (getEndpointUrl().endsWith("%s") ? 0 : 1);
-
-    if (parameters.length > parameterAmount) {
-      for (int i = parameterAmount; i < parameters.length; i++) {
-        url.append("/").append(parameters[i]);
-      }
-    }
-    return url.toString();
-  }
 
   /**
-   * Gets the full {@link HttpUrl http url} of the endpoint. Parameters which are "too much" are
+   * Gets the full {@link URI http url} of the endpoint.
+   * Parameters which are "too much" are
    * added to the end.
    *
    * @param baseURL The base url of the endpoint.
-   * @param parameters The parameters of the url. E.g., for channel ids.
    * @return The full http url of the endpoint.
    */
-  public HttpUrl getOkHttpUrl(BaseURL baseURL, String... parameters) {
-    return HttpUrl.parse(getFullUrl(baseURL, parameters));
+  public URI getHttpUrl(BaseURL baseURL, Map<String, Collection<String>> queryParams) throws URISyntaxException {
+    String query = getQuery(queryParams);
+
+    return new URI(
+            "https",
+            baseURL.getUrl(),
+            endpointUrl,
+            query,
+            null);
+  }
+
+  private String getQuery(Map<String, Collection<String>> queryParams) {
+    return queryParams.entrySet().stream()
+            .map(entry -> entry.getValue().stream()
+                    .map(value -> entry.getKey() + "=" + value)
+                    .collect(Collectors.joining("&")))
+            .collect(Collectors.joining("&"));
   }
 }

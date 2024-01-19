@@ -8,13 +8,14 @@ import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 import java.util.function.Function;
 
-import okhttp3.*;
 import org.apache.logging.log4j.Logger;
 
 /** This class is used to wrap a rest request. */
@@ -28,18 +29,11 @@ public class RestRequest<T> {
   private final RestEndpoint endpoint;
 
   private volatile boolean includeAuthorizationHeader = true;
-  private AtomicReferenceArray<String> urlParameters = new AtomicReferenceArray<>(new String[0]);
   private final Map<String, Collection<String>> queryParameters = new HashMap<>();
   private final Map<String, String> headers = new HashMap<>();
   private volatile String body = null;
 
   private final CompletableFuture<RestRequestResult<T>> result = new CompletableFuture<>();
-
-  /** The multipart body of the request. */
-  private MultipartBody multipartBody;
-
-  /** The custom major parameter if it's not included in the url (e.g., for reactions) */
-  private String customMajorParam = null;
 
   /** The origin of the rest request. */
   private final Exception origin;
@@ -97,48 +91,12 @@ public class RestRequest<T> {
   }
 
   /**
-   * Gets an array with all used url parameters.
-   *
-   * @return An array with all used url parameters.
-   */
-  public String[] getUrlParameters() {
-    String[] parameters = new String[urlParameters.length()];
-    for (int i = 0; i < urlParameters.length(); i++) {
-      parameters[i] = urlParameters.get(i);
-    }
-    return parameters;
-  }
-
-  /**
    * Gets the body of this request.
    *
    * @return The body of this request.
    */
   public Optional<String> getBody() {
     return Optional.ofNullable(body);
-  }
-
-  /**
-   * Gets the major url parameter of this request. If a request has a major parameter, it means that
-   * the rate-limits for this request are based on this parameter.
-   *
-   * @return The major url parameter used for rate-limits.
-   */
-  public Optional<String> getMajorUrlParameter() {
-    if (customMajorParam != null) {
-      return Optional.of(customMajorParam);
-    }
-
-    Optional<Integer> majorParameterPosition = endpoint.getMajorParameterPosition();
-    if (!majorParameterPosition.isPresent()) {
-      return Optional.empty();
-    }
-
-    if (majorParameterPosition.get() >= urlParameters.length()) {
-      return Optional.empty();
-    }
-
-    return Optional.of(urlParameters.get(majorParameterPosition.get()));
   }
 
   /**
@@ -178,39 +136,6 @@ public class RestRequest<T> {
     return headers;
   }
 
-  /**
-   * Sets the url parameters, e.g., a language parameter.
-   *
-   * @param parameters The parameters.
-   * @return The current instance to chain call methods.
-   */
-  public RestRequest<T> setUrlParameters(String... parameters) {
-    this.urlParameters = new AtomicReferenceArray<>(parameters);
-    return this;
-  }
-
-  /**
-   * Sets the multipart body of the request. If a multipart body is set, the {@link
-   * #setBody(String)} method is ignored!
-   *
-   * @param multipartBody The multipart body of the request.
-   * @return The current instance to chain call methods.
-   */
-  public RestRequest<T> setMultipartBody(MultipartBody multipartBody) {
-    this.multipartBody = multipartBody;
-    return this;
-  }
-
-  /**
-   * Sets a custom major parameter.
-   *
-   * @param customMajorParam The custom parameter to set.
-   * @return The current instance to chain call methods.
-   */
-  public RestRequest<T> setCustomMajorParam(String customMajorParam) {
-    this.customMajorParam = customMajorParam;
-    return this;
-  }
 
   /**
    * Sets the body of the request.
@@ -281,75 +206,71 @@ public class RestRequest<T> {
    * Gets the information for this rest request.
    *
    * @return The information for this rest request.
+   * @throws AssertionError Thrown if the url is malformed.
    */
   public RestRequestInformation asRestRequestInformation() {
     try {
-      String[] parameters = new String[urlParameters.length()];
-      for (int i = 0; i < urlParameters.length(); i++) {
-        parameters[i] = urlParameters.get(i);
-      }
+
       return new RestRequestInformationImpl(
           api,
-          new URL(endpoint.getFullUrl(api.getBaseURL(), parameters)),
+          endpoint.getHttpUrl(api.getBaseURL(), queryParameters).toURL(),
           queryParameters,
           headers,
           body);
-    } catch (MalformedURLException e) {
+    } catch (URISyntaxException | MalformedURLException e) {
       throw new AssertionError(e);
     }
-  }
+	}
 
   /**
    * Executes the request blocking.
    *
    * @return The result of the request.
    * @throws AzureException Thrown in case of an error while requesting azure.
-   * @throws IOException Thrown if OkHttp {@link OkHttpClient#newCall(Request)} throws an {@link
-   *     IOException}.
+   * @throws IOException Thrown if an error occurs while reading the response.
+   *
    */
-  public RestRequestResult<T> executeBlocking() throws AzureException, IOException {
-    Request.Builder requestBuilder = new Request.Builder();
-    String[] parameters = getUrlParameters();
-    HttpUrl.Builder httpUrlBuilder =
-        endpoint.getOkHttpUrl(api.getBaseURL(), parameters).newBuilder();
-    queryParameters.forEach(
-        (key, values) -> values.forEach(value -> httpUrlBuilder.addQueryParameter(key, value)));
-    requestBuilder.url(httpUrlBuilder.build());
+  public RestRequestResult<T> executeBlocking() throws AzureException, IOException, URISyntaxException {
+    URI fullUrl = endpoint.getHttpUrl(api.getBaseURL(), queryParameters);
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+    .uri(fullUrl);
     request(requestBuilder);
 
     if (includeAuthorizationHeader) {
-      requestBuilder.addHeader("Ocp-Apim-Subscription-Key", api.getSubscriptionKey());
+      requestBuilder.setHeader("Ocp-Apim-Subscription-Key", api.getSubscriptionKey());
       api.getSubscriptionRegion()
-          .ifPresent(region -> requestBuilder.addHeader("Ocp-Apim-Subscription-Region", region));
+          .ifPresent(region -> requestBuilder.setHeader("Ocp-Apim-Subscription-Region", region));
     }
 
-    String fullUrl = endpoint.getFullUrl(api.getBaseURL(), parameters);
-    headers.forEach(requestBuilder::addHeader);
+    headers.forEach(requestBuilder::setHeader);
+
     logger.debug(
         "Trying to send {} request to {}{}",
         method.name(),
-        fullUrl,
+        requestBuilder,
         body != null ? " with body " + body : "");
 
-    try (Response response = getApi().getHttpClient().newCall(requestBuilder.build()).execute()) {
-      RestRequestResult<T> requestResult = new RestRequestResult<>(this, response);
+    CompletableFuture<HttpResponse<String>> response = getApi().getHttpClient().sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+    RestRequestResult<T> responseResult = handleResponse(fullUrl, response.join());
+    result.complete(responseResult);
+    return responseResult;
+	}
 
-      String bodyPresent = requestResult.getBody().map(b -> "").orElse("empty");
-      String bodyString = requestResult.getStringBody().orElse("");
-      logger.debug(
-          "Sent {} request to {} and received status code {} with {} body {}",
-          method.name(),
-          fullUrl,
-          response.code(),
-          bodyPresent,
-          bodyString);
+  private RestRequestResult<T> handleResponse(URI fullUrl, HttpResponse<String> response) throws IOException, AzureException {
+    RestRequestResult<T> requestResult = new RestRequestResult<>(this, response);
+    String bodyString = requestResult.getStringBody().orElse("empty");
+    logger.debug(
+            "Sent {} request to {} and received status code {} with body {}",
+            method.name(),
+            fullUrl.toURL(),
+            response.statusCode(),
+            bodyString);
 
-      if (response.code() >= 300 || response.code() < 200) {
-        return handleError(response.code(), requestResult);
-      }
-
-      return requestResult;
+    if (response.statusCode() >= 300 || response.statusCode() < 200) {
+      return handleError(response.statusCode(), requestResult);
     }
+
+    return requestResult;
   }
 
   private RestRequestResult<T> handleError(int resultCode, RestRequestResult<T> result)
@@ -376,14 +297,14 @@ public class RestRequest<T> {
                     "Received a "
                         + resultCode
                         + " response from Azure with"
-                        + (result.getBody().isPresent() ? "" : " empty")
+                        + (result.getStringBody().isPresent() ? "" : " empty")
                         + " body"
                         + result.getStringBody().map(s -> " " + s).orElse("")
                         + "!",
                     requestInformation,
                     responseInformation));
 
-    String bodyPresent = result.getBody().isPresent() ? "" : " empty";
+    String bodyPresent = result.getStringBody().isPresent() ? "" : " empty";
     throw azureException.isPresent()
         ? azureException.get()
         : new AzureException(
@@ -423,38 +344,11 @@ public class RestRequest<T> {
     }
   }
 
-  private RequestBody createMultipartBody() {
-    if (multipartBody != null) {
-      return multipartBody;
-    }
-
-    if (body != null) {
-      return RequestBody.create(body, MediaType.parse("application/json"));
-    }
-    return RequestBody.create(new byte[0], null);
-  }
-
-  private void request(okhttp3.Request.Builder requestBuilder) {
-    RequestBody requestBody = createMultipartBody();
-
-    switch (method) {
-      case GET:
-        requestBuilder.get();
-        break;
-      case POST:
-        requestBuilder.post(requestBody);
-        break;
-      case PUT:
-        requestBuilder.put(requestBody);
-        break;
-      case DELETE:
-        requestBuilder.delete(requestBody);
-        break;
-      case PATCH:
-        requestBuilder.patch(requestBody);
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported http method!");
-    }
+  private void request(HttpRequest.Builder requestBuilder) {
+    requestBuilder.setHeader("User-Agent", AT4J.USER_AGENT);
+    requestBuilder.setHeader("Accept", "application/json");
+    requestBuilder.setHeader("Content-Type", "application/json");
+    HttpRequest.BodyPublisher bodyPublisher = body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body);
+    requestBuilder.method(method.name(), bodyPublisher);
   }
 }

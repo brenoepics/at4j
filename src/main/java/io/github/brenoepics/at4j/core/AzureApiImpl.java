@@ -19,12 +19,12 @@ import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
 
+import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-import okhttp3.OkHttpClient;
 
 /**
  * This class is an implementation of the AzureApi interface. It provides methods to interact with
@@ -33,7 +33,7 @@ import okhttp3.OkHttpClient;
 public class AzureApiImpl<T> implements AzureApi {
 
   /** The Http Client for this instance. */
-  private final OkHttpClient httpClient;
+  private final HttpClient httpClient;
 
   /** The BaseURL for this instance. */
   private final BaseURL baseURL;
@@ -62,7 +62,7 @@ public class AzureApiImpl<T> implements AzureApi {
    * @param subscriptionRegion The subscription region for this instance.
    */
   public AzureApiImpl(
-      OkHttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion) {
+          HttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion) {
     this.httpClient = httpClient;
     this.baseURL = baseURL;
     this.subscriptionKey = subscriptionKey;
@@ -183,15 +183,14 @@ public class AzureApiImpl<T> implements AzureApi {
   @Override
   public void disconnect() {
     this.threadPool.getExecutorService().shutdown();
-    this.httpClient.dispatcher().executorService().shutdown();
   }
 
   /**
    * Gets the used OkHttpClient.
    *
-   * @return OkHttpClient - The used OkHttpClient.
+   * @return HttpClient - The used HttpClient.
    */
-  public OkHttpClient getHttpClient() {
+  public HttpClient getHttpClient() {
     return this.httpClient;
   }
 

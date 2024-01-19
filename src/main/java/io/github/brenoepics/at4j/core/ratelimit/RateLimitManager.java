@@ -8,6 +8,8 @@ import io.github.brenoepics.at4j.util.rest.RestRequestHandler;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInformationImpl;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
+import java.net.http.HttpHeaders;
+import java.net.http.HttpResponse;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,7 +17,6 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
-import okhttp3.Response;
 import org.apache.logging.log4j.Logger;
 
 /** This class manages rate-limits and keeps track of them. */
@@ -29,6 +30,18 @@ public class RateLimitManager<T> {
 
   /** All buckets. */
   private final Set<RateLimitBucket<T>> buckets = new HashSet<>();
+
+  /** The header for rate-limit remaining information. */
+  public static final String RATE_LIMITED_HEADER = "X-RateLimit-Remaining";
+
+  /** The header name for rate-limit reset information. */
+  public static final String RATE_LIMIT_RESET_HEADER = "X-RateLimit-Reset";
+
+  /** The header name for rate-limit reset information. */
+  public static final String RATE_LIMITED_HEADER_CLOUDFLARE = "Retry-after";
+
+  /** The body name for rate-limit reset information. */
+  public static final String RATE_LIMITED_BODY_CLOUDFLARE = "retry_after";
 
   /**
    * Creates a new rate-limit manager.
@@ -48,27 +61,32 @@ public class RateLimitManager<T> {
   public void queueRequest(RestRequest<T> request) {
     Optional<RateLimitBucket<T>> searchBucket = searchBucket(request);
 
-    if (!searchBucket.isPresent()) {
+    if (searchBucket.isEmpty()) {
       return;
     }
 
-    final RateLimitBucket<T> bucket = searchBucket.get();
+    api.getThreadPool().getExecutorService().submit(() -> submitRequest(searchBucket.get()));
+  }
 
-    api.getThreadPool()
-        .getExecutorService()
-        .submit(
-            () -> {
-              RestRequest<T> currentRequest = bucket.peekRequestFromQueue();
-              RestRequestResult<T> result = null;
-              long responseTimestamp = System.currentTimeMillis();
-              while (currentRequest != null) {
-                RestRequestHandler<T> newResult =
-                    handleCurrentRequest(result, currentRequest, bucket, responseTimestamp);
-                result = newResult.getResult();
-                currentRequest = newResult.getCurrentRequest();
-                responseTimestamp = newResult.getResponseTimestamp();
-              }
-            });
+  /**
+   * Submits the request to the given bucket.
+   *
+   * @param bucket The bucket to submit the request to.
+   */
+  private void submitRequest(RateLimitBucket<T> bucket) {
+    RestRequest<T> currentRequest = bucket.peekRequestFromQueue();
+    RestRequestResult<T> result = null;
+
+    long responseTimestamp = System.currentTimeMillis();
+
+    while (currentRequest != null) {
+      RestRequestHandler<T> newResult =
+          handleCurrentRequest(result, currentRequest, bucket, responseTimestamp);
+
+      result = newResult.getResult();
+      currentRequest = newResult.getCurrentRequest();
+      responseTimestamp = newResult.getResponseTimestamp();
+    }
   }
 
   /**
@@ -85,17 +103,18 @@ public class RateLimitManager<T> {
       RestRequest<T> currentRequest,
       RateLimitBucket<T> bucket,
       long responseTimestamp) {
+
     try {
       waitUntilSpaceGetsAvailable(bucket);
+
+      // Execute the request and get the result
       result = currentRequest.executeBlocking();
       responseTimestamp = System.currentTimeMillis();
+
     } catch (Exception e) {
       responseTimestamp = System.currentTimeMillis();
       if (currentRequest.getResult().isDone()) {
-        logger.warn(
-            "Received exception for a request that is already done. This should not be able to"
-                + " happen!",
-            e);
+        logger.warn("Exception for a already done request. This should not happen!", e);
       }
 
       if (e instanceof AzureException) {
@@ -104,11 +123,8 @@ public class RateLimitManager<T> {
 
       currentRequest.getResult().completeExceptionally(e);
     } finally {
-      try {
-        // Handle the response
+      if (result != null && result.getResponse() != null) {
         handleResponse(currentRequest, result, bucket, responseTimestamp);
-      } catch (Exception e) {
-        logger.warn("Encountered unexpected exception.", e);
       }
 
       // The request didn't finish, so let's try again
@@ -162,6 +178,13 @@ public class RateLimitManager<T> {
     }
   }
 
+  /**
+   * Maps the given exception to a {@link RestRequestResult}.
+   *
+   * @param t The exception to map.
+   * @return The mapped exception.
+   */
+  @SuppressWarnings("unchecked")
   private RestRequestResult<T> mapAzureException(Throwable t) {
     return ((AzureException) t)
         .getResponse()
@@ -178,27 +201,31 @@ public class RateLimitManager<T> {
    */
   Optional<RateLimitBucket<T>> searchBucket(RestRequest<T> request) {
     synchronized (buckets) {
-      RateLimitBucket<T> bucket =
-          buckets.stream()
-              .filter(
-                  b -> b.equals(request.getEndpoint(), request.getMajorUrlParameter().orElse(null)))
-              .findAny()
-              .orElseGet(
-                  () ->
-                      new RateLimitBucket<>(
-                          request.getEndpoint(), request.getMajorUrlParameter().orElse(null)));
+      RateLimitBucket<T> bucket = getMatchingBucket(request);
 
       // Check if it is already in the queue, send not present
       if (bucket.peekRequestFromQueue() != null) {
         return Optional.empty();
       }
 
-      // Add the bucket to the set of buckets (does nothing if it's already in the set)
       buckets.add(bucket);
-
-      // Add the request to the bucket's queue
       bucket.addRequestToQueue(request);
       return Optional.of(bucket);
+    }
+  }
+
+  /**
+   * Gets the bucket that matches the given request.
+   *
+   * @param request The request.
+   * @return The bucket that matches the request.
+   */
+  private RateLimitBucket<T> getMatchingBucket(RestRequest<T> request) {
+    synchronized (buckets) {
+      return buckets.stream()
+          .filter(b -> b.endpointMatches(request.getEndpoint()))
+          .findAny()
+          .orElseGet(() -> new RateLimitBucket<>(request.getEndpoint()));
     }
   }
 
@@ -210,56 +237,94 @@ public class RateLimitManager<T> {
    * @param bucket The bucket the request belongs to.
    * @param responseTimestamp The timestamp directly after the response finished.
    */
-  void handleResponse(
+  private void handleResponse(
       RestRequest<T> request,
       RestRequestResult<T> result,
       RateLimitBucket<T> bucket,
       long responseTimestamp) {
-    if (result == null || result.getResponse() == null) {
-      return;
-    }
+    try {
+      HttpResponse<String> response = result.getResponse();
 
-    Response response = result.getResponse();
-    int remaining =
-        Integer.parseInt(Objects.requireNonNull(response.header("X-RateLimit-Remaining", "1")));
-    long reset =
-        (long)
-            (Double.parseDouble(Objects.requireNonNull(response.header("X-RateLimit-Reset", "0")))
-                * 1000);
-
-    // Check if we received a 429 response
-    if (result.getResponse().code() != 429) {
-      // Check if we didn't already complete it exceptionally.
-      CompletableFuture<RestRequestResult<T>> requestResult = request.getResult();
-      if (!requestResult.isDone()) {
-        requestResult.complete(result);
+      // Check if we did not receive a rate-limit response
+      if (result.getResponse().statusCode() != 429) {
+        handleRateLimit(request.getResult(), result, bucket, response.headers());
+        return;
       }
 
-      // Update bucket information
-      bucket.setRateLimitRemaining(remaining);
-      bucket.setRateLimitResetTimestamp(reset);
-      return;
-    }
+      if (response.headers().firstValue("Via").isEmpty()) {
+        handleCloudFlare(response.headers(), bucket);
+        return;
+      }
 
-    if (response.header("Via") == null) {
-      logger.warn(
-          "Hit a CloudFlare API ban! This means you were sending a very large amount of invalid"
-              + " requests.");
-      int retryAfter =
-          Integer.parseInt(Objects.requireNonNull(response.header("Retry-after"))) * 1000;
-      bucket.setRateLimitRemaining(retryAfter);
+      long retryAfter = 0;
+
+      if (!result.getJsonBody().isNull()) {
+        retryAfter =
+            (long) (result.getJsonBody().get(RATE_LIMITED_BODY_CLOUDFLARE).asDouble() * 1000);
+      }
+
+      logger.debug("Received a 429 response from Azure! Recalculating time offset...");
+
+      bucket.setRateLimitRemaining(0);
       bucket.setRateLimitResetTimestamp(responseTimestamp + retryAfter);
-      return;
+
+    } catch (Exception e) {
+      logger.warn("Encountered unexpected exception.", e);
+    }
+  }
+
+  /**
+   * Handles the CloudFlare rate-limit.
+   *
+   * @param headers The headers of the response.
+   * @param bucket The bucket the request belongs to.
+   */
+  private void handleCloudFlare(HttpHeaders headers, RateLimitBucket<T> bucket) {
+    logger.warn(
+        "Hit a CloudFlare API ban! {}",
+        "You were sending a very large amount of invalid requests.");
+    int retryAfter =
+        Integer.parseInt(getHeader(headers, RATE_LIMITED_HEADER_CLOUDFLARE, "10")) * 1000;
+    bucket.setRateLimitRemaining(retryAfter);
+    bucket.setRateLimitResetTimestamp(System.currentTimeMillis() + retryAfter);
+  }
+
+  /**
+   * Handles the rate-limit information.
+   *
+   * @param request The request.
+   * @param result The result of the request.
+   * @param bucket The bucket the request belongs to.
+   * @param headers The headers of the response.
+   */
+  private void handleRateLimit(
+      CompletableFuture<RestRequestResult<T>> request,
+      RestRequestResult<T> result,
+      RateLimitBucket<T> bucket,
+      HttpHeaders headers) {
+
+    // Check if we didn't already complete it exceptionally.
+    if (!request.isDone()) {
+      request.complete(result);
     }
 
-    long retryAfter =
-        result.getJsonBody().isNull()
-            ? 0
-            : (long) (result.getJsonBody().get("retry_after").asDouble() * 1000);
-    logger.debug("Received a 429 response from Azure! Recalculating time offset...");
+    String remaining = getHeader(headers, RATE_LIMITED_HEADER, "1");
+    String reset = getHeader(headers, RATE_LIMIT_RESET_HEADER, "0");
 
-    // Update the bucket information
-    bucket.setRateLimitRemaining(0);
-    bucket.setRateLimitResetTimestamp(responseTimestamp + retryAfter);
+    // Update bucket information
+    bucket.setRateLimitRemaining(Integer.parseInt(remaining));
+    bucket.setRateLimitResetTimestamp((long) (Double.parseDouble(reset) * 1000));
+  }
+
+  /**
+   * Gets the header value from the given headers.
+   *
+   * @param headers The headers.
+   * @param header The header to get the value for.
+   * @param defaultValue The default value if the header is not present.
+   * @return The header value.
+   */
+  public static String getHeader(HttpHeaders headers, String header, String defaultValue) {
+    return Objects.requireNonNull(headers.firstValue(header).orElse(defaultValue));
   }
 }
