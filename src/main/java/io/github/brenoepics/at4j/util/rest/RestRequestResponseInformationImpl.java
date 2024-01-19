@@ -42,7 +42,7 @@ public class RestRequestResponseInformationImpl<T> implements RestRequestRespons
 
   @Override
   public int getCode() {
-    return restRequestResult.getResponse().code();
+    return restRequestResult.getResponse().statusCode();
   }
 
   @Override

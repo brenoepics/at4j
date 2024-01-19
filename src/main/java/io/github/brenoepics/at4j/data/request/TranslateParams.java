@@ -47,8 +47,6 @@ public class TranslateParams {
     this.targetLanguages = targetLanguages;
   }
 
-  // Setter methods for the class fields
-
   /**
    * Sets the text to be translated.
    *

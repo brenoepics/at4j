@@ -3,6 +3,7 @@ package io.github.brenoepics.at4j;
 import org.junit.jupiter.api.Test;
 import io.github.brenoepics.at4j.azure.BaseURL;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AzureApiBuilderTest {

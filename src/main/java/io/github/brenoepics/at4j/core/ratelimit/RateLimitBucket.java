@@ -13,7 +13,6 @@ public class RateLimitBucket<T> {
   private final ConcurrentLinkedQueue<RestRequest<T>> requestQueue = new ConcurrentLinkedQueue<>();
 
   private final RestEndpoint endpoint;
-  private final String majorUrlParameter;
 
   private volatile long rateLimitResetTimestamp = 0;
   private volatile int rateLimitRemaining = 1;
@@ -22,11 +21,9 @@ public class RateLimitBucket<T> {
    * Creates a RateLimitBucket for the given endpoint / parameter combination.
    *
    * @param endpoint The REST endpoint the rate-limit is tracked for.
-   * @param majorUrlParameter The url parameter this bucket is specific for. Maybe null.
    */
-  public RateLimitBucket(RestEndpoint endpoint, String majorUrlParameter) {
+  public RateLimitBucket(RestEndpoint endpoint) {
     this.endpoint = endpoint;
-    this.majorUrlParameter = majorUrlParameter;
   }
 
   /**
@@ -88,23 +85,17 @@ public class RateLimitBucket<T> {
    * Checks if a bucket created with the given parameters would equal this bucket.
    *
    * @param endpoint The endpoint.
-   * @param majorUrlParameter The major url parameter.
    * @return Whether a bucket created with the given parameters would equal this bucket or not.
    */
-  public boolean equals(RestEndpoint endpoint, String majorUrlParameter) {
-    boolean endpointSame = this.endpoint == endpoint;
-    boolean majorUrlParameterBothNull = this.majorUrlParameter == null && majorUrlParameter == null;
-    boolean majorUrlParameterEqual =
-        this.majorUrlParameter != null && this.majorUrlParameter.equals(majorUrlParameter);
-
-    return endpointSame && (majorUrlParameterBothNull || majorUrlParameterEqual);
+  public boolean endpointMatches(RestEndpoint endpoint) {
+    return this.endpoint == endpoint;
   }
 
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof RateLimitBucket) {
       RateLimitBucket<T> otherBucket = (RateLimitBucket<T>) obj;
-      return equals(otherBucket.endpoint, otherBucket.majorUrlParameter);
+      return endpointMatches(otherBucket.endpoint);
     }
     return false;
   }
@@ -112,18 +103,13 @@ public class RateLimitBucket<T> {
   @Override
   public int hashCode() {
     int hash = 42;
-    int urlParamHash = majorUrlParameter == null ? 0 : majorUrlParameter.hashCode();
     int endpointHash = endpoint == null ? 0 : endpoint.hashCode();
-
-    hash = hash * 11 + urlParamHash;
     hash = hash * 17 + endpointHash;
     return hash;
   }
 
   @Override
   public String toString() {
-    String str = "Endpoint: " + (endpoint == null ? "global" : endpoint.getEndpointUrl());
-    str += ", Major url parameter:" + (majorUrlParameter == null ? "none" : majorUrlParameter);
-    return str;
+    return "Endpoint: " + (endpoint == null ? "global" : endpoint.getEndpointUrl());
   }
 }
