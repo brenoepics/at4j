@@ -6,7 +6,6 @@ import io.github.brenoepics.at4j.util.logging.PrivacyProtectionLogger;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
-import java.net.InetAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.time.Duration;
