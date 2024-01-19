@@ -73,31 +73,27 @@ public enum RestEndpoint {
     return endpointUrl;
   }
 
-
   /**
-   * Gets the full {@link URI http url} of the endpoint.
-   * Parameters which are "too much" are
-   * added to the end.
+   * Gets the full {@link URI http url} of the endpoint. Parameters which are "too much" are added
+   * to the end.
    *
    * @param baseURL The base url of the endpoint.
    * @return The full http url of the endpoint.
    */
-  public URI getHttpUrl(BaseURL baseURL, Map<String, Collection<String>> queryParams) throws URISyntaxException {
+  public URI getHttpUrl(BaseURL baseURL, Map<String, Collection<String>> queryParams)
+      throws URISyntaxException {
     String query = getQuery(queryParams);
 
-    return new URI(
-            "https",
-            baseURL.getUrl(),
-            endpointUrl,
-            query,
-            null);
+    return new URI("https", baseURL.getUrl(), endpointUrl, query, null);
   }
 
   private String getQuery(Map<String, Collection<String>> queryParams) {
     return queryParams.entrySet().stream()
-            .map(entry -> entry.getValue().stream()
+        .map(
+            entry ->
+                entry.getValue().stream()
                     .map(value -> entry.getKey() + "=" + value)
                     .collect(Collectors.joining("&")))
-            .collect(Collectors.joining("&"));
+        .collect(Collectors.joining("&"));
   }
 }

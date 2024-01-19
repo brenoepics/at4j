@@ -28,7 +28,8 @@ public class RestRequestResult<T> {
    * @param response The response of the RestRequest.
    * @throws IOException Passed on from {@link HttpResponse#body()}.
    */
-  public RestRequestResult(RestRequest<T> request, HttpResponse<String> response) throws IOException {
+  public RestRequestResult(RestRequest<T> request, HttpResponse<String> response)
+      throws IOException {
     this.request = request;
     this.response = response;
     this.stringBody = response.body();
@@ -37,16 +38,16 @@ public class RestRequestResult<T> {
       return;
     }
 
-      ObjectMapper mapper = request.getApi().getObjectMapper();
-      JsonNode jsonNode;
-      try {
-        jsonNode = mapper.readTree(stringBody);
-      } catch (JsonParseException e) {
-        // This can happen if Azure sends garbage
-        logger.debug("Failed to parse json response", e);
-        jsonNode = null;
-      }
-      this.jsonBody = jsonNode == null ? NullNode.getInstance() : jsonNode;
+    ObjectMapper mapper = request.getApi().getObjectMapper();
+    JsonNode jsonNode;
+    try {
+      jsonNode = mapper.readTree(stringBody);
+    } catch (JsonParseException e) {
+      // This can happen if Azure sends garbage
+      logger.debug("Failed to parse json response", e);
+      jsonNode = null;
+    }
+    this.jsonBody = jsonNode == null ? NullNode.getInstance() : jsonNode;
   }
 
   /**
@@ -66,7 +67,6 @@ public class RestRequestResult<T> {
   public HttpResponse<String> getResponse() {
     return response;
   }
-
 
   /**
    * Gets the string body of the response.

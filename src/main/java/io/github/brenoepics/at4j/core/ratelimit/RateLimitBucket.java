@@ -88,7 +88,7 @@ public class RateLimitBucket<T> {
    * @return Whether a bucket created with the given parameters would equal this bucket or not.
    */
   public boolean endpointMatches(RestEndpoint endpoint) {
-			return this.endpoint == endpoint;
+    return this.endpoint == endpoint;
   }
 
   @Override
@@ -110,6 +110,6 @@ public class RateLimitBucket<T> {
 
   @Override
   public String toString() {
-			return "Endpoint: " + (endpoint == null ? "global" : endpoint.getEndpointUrl());
+    return "Endpoint: " + (endpoint == null ? "global" : endpoint.getEndpointUrl());
   }
 }

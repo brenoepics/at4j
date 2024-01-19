@@ -135,7 +135,6 @@ public class AzureApiBuilder {
     return this;
   }
 
-
   /**
    * Builds and returns an instance of AzureApi with the configured parameters.
    *
@@ -162,7 +161,6 @@ public class AzureApiBuilder {
     if (sslParameters != null) {
       httpClient.sslParameters(sslParameters);
     }
-
 
     if (connectTimeout != null) {
       httpClient.connectTimeout(connectTimeout);

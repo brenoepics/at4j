@@ -136,7 +136,6 @@ public class RestRequest<T> {
     return headers;
   }
 
-
   /**
    * Sets the body of the request.
    *
@@ -220,7 +219,7 @@ public class RestRequest<T> {
     } catch (URISyntaxException | MalformedURLException e) {
       throw new AssertionError(e);
     }
-	}
+  }
 
   /**
    * Executes the request blocking.
@@ -228,12 +227,11 @@ public class RestRequest<T> {
    * @return The result of the request.
    * @throws AzureException Thrown in case of an error while requesting azure.
    * @throws IOException Thrown if an error occurs while reading the response.
-   *
    */
-  public RestRequestResult<T> executeBlocking() throws AzureException, IOException, URISyntaxException {
+  public RestRequestResult<T> executeBlocking()
+      throws AzureException, IOException, URISyntaxException {
     URI fullUrl = endpoint.getHttpUrl(api.getBaseURL(), queryParameters);
-    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
-    .uri(fullUrl);
+    HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(fullUrl);
     request(requestBuilder);
 
     if (includeAuthorizationHeader) {
@@ -250,21 +248,25 @@ public class RestRequest<T> {
         requestBuilder,
         body != null ? " with body " + body : "");
 
-    CompletableFuture<HttpResponse<String>> response = getApi().getHttpClient().sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+    CompletableFuture<HttpResponse<String>> response =
+        getApi()
+            .getHttpClient()
+            .sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
     RestRequestResult<T> responseResult = handleResponse(fullUrl, response.join());
     result.complete(responseResult);
     return responseResult;
-	}
+  }
 
-  private RestRequestResult<T> handleResponse(URI fullUrl, HttpResponse<String> response) throws IOException, AzureException {
+  private RestRequestResult<T> handleResponse(URI fullUrl, HttpResponse<String> response)
+      throws IOException, AzureException {
     RestRequestResult<T> requestResult = new RestRequestResult<>(this, response);
     String bodyString = requestResult.getStringBody().orElse("empty");
     logger.debug(
-            "Sent {} request to {} and received status code {} with body {}",
-            method.name(),
-            fullUrl.toURL(),
-            response.statusCode(),
-            bodyString);
+        "Sent {} request to {} and received status code {} with body {}",
+        method.name(),
+        fullUrl.toURL(),
+        response.statusCode(),
+        bodyString);
 
     if (response.statusCode() >= 300 || response.statusCode() < 200) {
       return handleError(response.statusCode(), requestResult);
@@ -348,7 +350,10 @@ public class RestRequest<T> {
     requestBuilder.setHeader("User-Agent", AT4J.USER_AGENT);
     requestBuilder.setHeader("Accept", "application/json");
     requestBuilder.setHeader("Content-Type", "application/json");
-    HttpRequest.BodyPublisher bodyPublisher = body == null ? HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body);
+    HttpRequest.BodyPublisher bodyPublisher =
+        body == null
+            ? HttpRequest.BodyPublishers.noBody()
+            : HttpRequest.BodyPublishers.ofString(body);
     requestBuilder.method(method.name(), bodyPublisher);
   }
 }

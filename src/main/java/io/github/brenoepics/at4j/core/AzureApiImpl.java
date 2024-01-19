@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
-
 /**
  * This class is an implementation of the AzureApi interface. It provides methods to interact with
  * Azure's translation API.
@@ -62,7 +61,7 @@ public class AzureApiImpl<T> implements AzureApi {
    * @param subscriptionRegion The subscription region for this instance.
    */
   public AzureApiImpl(
-          HttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion) {
+      HttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion) {
     this.httpClient = httpClient;
     this.baseURL = baseURL;
     this.subscriptionKey = subscriptionKey;
