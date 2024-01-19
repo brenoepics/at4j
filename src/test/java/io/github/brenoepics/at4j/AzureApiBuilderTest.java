@@ -3,6 +3,12 @@ package io.github.brenoepics.at4j;
 import org.junit.jupiter.api.Test;
 import io.github.brenoepics.at4j.azure.BaseURL;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+import java.net.InetAddress;
+import java.net.ProxySelector;
+import java.time.Duration;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AzureApiBuilderTest {

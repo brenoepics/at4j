@@ -4,7 +4,12 @@ import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.util.logging.PrivacyProtectionLogger;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+import java.net.InetAddress;
+import java.net.ProxySelector;
 import java.net.http.HttpClient;
+import java.time.Duration;
 
 /**
  * Builder class for constructing instances of AzureApi.
@@ -21,6 +26,16 @@ public class AzureApiBuilder {
 
   // The subscription region for the Azure API.
   private String subscriptionRegion;
+
+  private ProxySelector proxySelector = null;
+
+  private SSLContext sslContext = null;
+
+  private SSLParameters sslParameters = null;
+
+  private InetAddress localAddress = null;
+
+  private Duration connectTimeout = null;
 
   /** Default constructor initializes the base URL to the global endpoint. */
   public AzureApiBuilder() {
@@ -68,6 +83,76 @@ public class AzureApiBuilder {
   }
 
   /**
+   * Sets the proxy selector for the Azure API.
+   *
+   * @param proxySelector The proxy selector for the Azure API.
+   * @return The current instance of AzureApiBuilder for method chaining.
+   * @see <a
+   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/ProxySelector.html"
+   *     >ProxySelector</a>
+   */
+  public AzureApiBuilder proxy(ProxySelector proxySelector) {
+    this.proxySelector = proxySelector;
+    return this;
+  }
+
+  /**
+   * Sets the connect timeout for the Azure API.
+   *
+   * @param connectTimeout The connect timeout for the Azure API.
+   * @return The current instance of AzureApiBuilder for method chaining.
+   * @see <a
+   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.net.http/java/net/http/HttpClient.Builder.html#connectTimeout(java.time.Duration)"
+   *     >Connection Timeout</a>
+   */
+  public AzureApiBuilder connectTimeout(Duration connectTimeout) {
+    this.connectTimeout = connectTimeout;
+    return this;
+  }
+
+  /**
+   * Sets the SSL context for the Azure API.
+   *
+   * @param sslContext The SSL context for the Azure API.
+   * @return The current instance of AzureApiBuilder for method chaining.
+   * @see <a
+   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLContext.html"
+   *     >SSLContext</a>
+   */
+  public AzureApiBuilder sslContext(SSLContext sslContext) {
+    this.sslContext = sslContext;
+    return this;
+  }
+
+  /**
+   * Sets the SSL parameters for the Azure API.
+   *
+   * @param sslParameters The SSL parameters for the Azure API.
+   * @return The current instance of AzureApiBuilder for method chaining.
+   * @see <a
+   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/javax/net/ssl/SSLParameters.html"
+   *     >SSLParameters</a>
+   */
+  public AzureApiBuilder sslParameters(SSLParameters sslParameters) {
+    this.sslParameters = sslParameters;
+    return this;
+  }
+
+  /**
+   * Sets the local address for the Azure API.
+   *
+   * @param localAddress The local address for the Azure API.
+   * @return The current instance of AzureApiBuilder for method chaining.
+   * @see <a
+   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/InetAddress.html"
+   *     >InetAddress</a>
+   */
+  public AzureApiBuilder localAddress(InetAddress localAddress) {
+    this.localAddress = localAddress;
+    return this;
+  }
+
+  /**
    * Builds and returns an instance of AzureApi with the configured parameters.
    *
    * @return An instance of AzureApi with the specified configuration.
@@ -80,11 +165,28 @@ public class AzureApiBuilder {
     }
 
     // The HTTP client used by the Azure API.
-    HttpClient httpClient =
-            HttpClient.newBuilder()
-                .version(HttpClient.Version.HTTP_1_1)
-                .followRedirects(HttpClient.Redirect.NORMAL)
-            .build();
-    return new AzureApiImpl<>(httpClient, baseURL, subscriptionKey, subscriptionRegion);
+    HttpClient.Builder httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1);
+
+    if (proxySelector != null) {
+      httpClient.proxy(proxySelector);
+    }
+
+    if (sslContext != null) {
+      httpClient.sslContext(sslContext);
+    }
+
+    if (sslParameters != null) {
+      httpClient.sslParameters(sslParameters);
+    }
+
+    if (localAddress != null) {
+      httpClient.localAddress(localAddress);
+    }
+
+    if (connectTimeout != null) {
+      httpClient.connectTimeout(connectTimeout);
+    }
+
+    return new AzureApiImpl<>(httpClient.build(), baseURL, subscriptionKey, subscriptionRegion);
   }
 }
