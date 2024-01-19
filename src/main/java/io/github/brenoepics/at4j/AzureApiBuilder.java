@@ -33,8 +33,6 @@ public class AzureApiBuilder {
 
   private SSLParameters sslParameters = null;
 
-  private InetAddress localAddress = null;
-
   private Duration connectTimeout = null;
 
   /** Default constructor initializes the base URL to the global endpoint. */
@@ -138,19 +136,6 @@ public class AzureApiBuilder {
     return this;
   }
 
-  /**
-   * Sets the local address for the Azure API.
-   *
-   * @param localAddress The local address for the Azure API.
-   * @return The current instance of AzureApiBuilder for method chaining.
-   * @see <a
-   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/net/InetAddress.html"
-   *     >InetAddress</a>
-   */
-  public AzureApiBuilder localAddress(InetAddress localAddress) {
-    this.localAddress = localAddress;
-    return this;
-  }
 
   /**
    * Builds and returns an instance of AzureApi with the configured parameters.
@@ -179,9 +164,6 @@ public class AzureApiBuilder {
       httpClient.sslParameters(sslParameters);
     }
 
-    if (localAddress != null) {
-      httpClient.localAddress(localAddress);
-    }
 
     if (connectTimeout != null) {
       httpClient.connectTimeout(connectTimeout);
