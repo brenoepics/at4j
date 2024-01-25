@@ -17,6 +17,7 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 - [JavaDoc](https://brenoepics.github.io/at4j/javadoc/)
 
 ## 🎉 Basic Usage
+> [!NOTE]
 > Example repository [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
 
 The following example translates a simple Hello World to Portuguese, Spanish and French.
@@ -94,9 +95,15 @@ libraryDependencies += "io.github.brenoepics" % "at4j" % "0.0.6"
 </details>
 
 ### 🔑 Azure Translator Keys
-> tl;dr [Generate Here](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/TextTranslation).
+> [!WARNING]
+> Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must regenerate it in Azure's Panel.
+> For more information, visit the [Azure portal](https://portal.azure.com/).
+
 <details>
   <summary>How to generate my own keys?</summary>
+
+
+> tl;dr [Generate Here](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/TextTranslation).
 
 1. Sign in to the [Azure portal](https://portal.azure.com/).
 
@@ -130,9 +137,6 @@ To use the free tier, you need to create an Azure account and set up a Translato
 
 Please note that the free tier usage limits are subject to change by Azure, and it's recommended to check the current details on the Azure Pricing page.
 </details>
-
-Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must regenerate it in Azure's Panel.
-For more information, visit the [Azure Pricing page](https://azure.microsoft.com/pricing/details/cognitive-services/translator/).
 
 ### Optional Logger Dependency
 
