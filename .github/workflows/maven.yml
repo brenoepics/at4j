@@ -29,9 +29,6 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-      env:
-        AZURE_KEY: ${{ secrets.AZURE_KEY }}
-        AZURE_REGION: ${{ secrets.AZURE_REGION }}
 
   formatting:
     runs-on: ubuntu-latest

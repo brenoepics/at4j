@@ -237,11 +237,11 @@ public class RateLimitManager<T> {
    * @param bucket The bucket the request belongs to.
    * @param responseTimestamp The timestamp directly after the response finished.
    */
-  private void handleResponse(
-      RestRequest<T> request,
-      RestRequestResult<T> result,
-      RateLimitBucket<T> bucket,
-      long responseTimestamp) {
+  void handleResponse(
+          RestRequest<T> request,
+          RestRequestResult<T> result,
+          RateLimitBucket<T> bucket,
+          long responseTimestamp) {
     try {
       HttpResponse<String> response = result.getResponse();
 

@@ -82,6 +82,14 @@ public class RateLimitBucket<T> {
   }
 
   /**
+   * Gets the remaining RateLimit
+   * @return int the remaining RateLimit
+   */
+  public int getRateLimitRemaining() {
+    return rateLimitRemaining;
+  }
+
+  /**
    * Checks if a bucket created with the given parameters would equal this bucket.
    *
    * @param endpoint The endpoint.
