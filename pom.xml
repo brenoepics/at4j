@@ -49,39 +49,6 @@
         <sonar.organization>brenoepic</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-    <profiles>
-        <profile>
-            <id>coverage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.jacoco</groupId>
-                        <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.11</version>
-                        <executions>
-                            <execution>
-                                <id>prepare-agent</id>
-                                <goals>
-                                    <goal>prepare-agent</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>report</id>
-                                <goals>
-                                    <goal>report</goal>
-                                </goals>
-                                <configuration>
-                                    <formats>
-                                        <format>XML</format>
-                                    </formats>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
     <dependencies>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -201,13 +168,17 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <tokenEnabled>true</tokenEnabled>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.11</version>
             </plugin>
         </plugins>
     </build>
