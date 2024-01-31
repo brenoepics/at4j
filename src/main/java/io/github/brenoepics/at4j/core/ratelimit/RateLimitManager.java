@@ -220,7 +220,7 @@ public class RateLimitManager<T> {
    * @param request The request.
    * @return The bucket that matches the request.
    */
-  private RateLimitBucket<T> getMatchingBucket(RestRequest<T> request) {
+  RateLimitBucket<T> getMatchingBucket(RestRequest<T> request) {
     synchronized (buckets) {
       return buckets.stream()
           .filter(b -> b.endpointMatches(request.getEndpoint()))
