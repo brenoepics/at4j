@@ -83,6 +83,7 @@ public class RateLimitBucket<T> {
 
   /**
    * Gets the remaining RateLimit
+   *
    * @return int the remaining RateLimit
    */
   public int getRateLimitRemaining() {
