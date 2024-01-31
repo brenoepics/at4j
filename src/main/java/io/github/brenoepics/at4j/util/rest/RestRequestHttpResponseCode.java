@@ -1,9 +1,6 @@
 package io.github.brenoepics.at4j.util.rest;
 
-import io.github.brenoepics.at4j.core.exceptions.AzureException;
-import io.github.brenoepics.at4j.core.exceptions.AzureExceptionInstantiation;
-import io.github.brenoepics.at4j.core.exceptions.BadRequestException;
-import io.github.brenoepics.at4j.core.exceptions.NotFoundException;
+import io.github.brenoepics.at4j.core.exceptions.*;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,10 +35,18 @@ public enum RestRequestHttpResponseCode {
       BadRequestException.class),
 
   /** The Authorization header was missing or invalid. */
-  UNAUTHORIZED(401, "The Authorization header was missing or invalid"),
+  UNAUTHORIZED(
+      401,
+      "The Authorization header was missing or invalid",
+      UnauthorizedException::new,
+      UnauthorizedException.class),
 
   /** The Authorization token you passed did not have permission to the resource. */
-  FORBIDDEN(403, "The Authorization token you passed did not have permission to the resource"),
+  FORBIDDEN(
+      403,
+      "The Authorization token you passed did not have permission to the resource",
+      ForbiddenException::new,
+      ForbiddenException.class),
 
   /** The resource at the location specified doesn't exist. */
   NOT_FOUND(
@@ -51,14 +56,25 @@ public enum RestRequestHttpResponseCode {
       NotFoundException.class),
 
   /** The HTTP method used is not valid for the location specified. */
-  METHOD_NOT_ALLOWED(405, "The HTTP method used is not valid for the location specified"),
+  METHOD_NOT_ALLOWED(
+      405,
+      "The HTTP method used is not valid for the location specified",
+      MethodNotAllowedException::new,
+      MethodNotAllowedException.class),
 
   /** The request timed out, you can retry it again later with the same parameters. */
-  REQUEST_TIMEOUT(408, "The request timed out, you can retry it again later"),
+  REQUEST_TIMEOUT(
+      408,
+      "The request timed out, you can retry it again later",
+      RequestTimeoutException::new,
+      RequestTimeoutException.class),
 
   /** The request entity has a media type which the server or resource does not support. */
   UNSUPPORTED_MEDIA_TYPE(
-      415, "The request entity has a media type which the server or resource does not support"),
+      415,
+      "The request entity has a media type which the server or resource does not support",
+      UnsupportedMediaTypeException::new,
+      UnsupportedMediaTypeException.class),
   /** You've made too many requests. */
   TOO_MANY_REQUESTS(429, "You've made too many requests"),
 
@@ -67,10 +83,16 @@ public enum RestRequestHttpResponseCode {
       502, "There was not a gateway available to process your request. Wait a bit and retry"),
 
   /** There was an internal server error while processing your request. */
-  INTERNAL_SERVER_ERROR(500, "There was an internal server error while processing your request"),
+  INTERNAL_SERVER_ERROR(
+      500,
+      "There was an internal server error while processing your request",
+      InternalServerErrorException::new,
+      InternalServerErrorException.class),
 
   /** There was a service unavailable while processing your request. */
-  SERVICE_UNAVAILABLE(503, "There was a service unavailable while processing your request");
+  SERVICE_UNAVAILABLE(503, "There was a service unavailable while processing your request",
+          ServiceUnavailableException::new,
+          ServiceUnavailableException.class);
 
   /** A map for retrieving the enum instances by code. */
   private static final Map<Integer, RestRequestHttpResponseCode> instanceByCode;

@@ -215,10 +215,10 @@ public enum RestRequestResultErrorCode {
   ;
 
   /** A map for retrieving the enum instances by code. */
-  private static final Map<Integer, RestRequestResultErrorCode> instanceByCode;
+  private static final Map<String, RestRequestResultErrorCode> instanceByCode;
 
   /** The actual numeric result code. */
-  private final int code;
+  private final String code;
 
   /** The textual meaning. */
   private final String meaning;
@@ -263,7 +263,7 @@ public enum RestRequestResultErrorCode {
       String meaning,
       AzureExceptionInstantiation<AzureException> azureExceptionInstantiation,
       RestRequestHttpResponseCode responseCode) {
-    this.code = code;
+    this.code = String.valueOf(code);
     this.meaning = meaning;
     this.azureExceptionInstantiation = azureExceptionInstantiation;
     this.responseCode = responseCode;
@@ -277,7 +277,7 @@ public enum RestRequestResultErrorCode {
    * @return The web socket close code with the actual numeric result code.
    */
   public static Optional<RestRequestResultErrorCode> fromCode(
-      int code, RestRequestHttpResponseCode responseCode) {
+      String code, RestRequestHttpResponseCode responseCode) {
     return Optional.ofNullable(instanceByCode.get(code))
         .filter(errorCode -> errorCode.responseCode == responseCode);
   }
@@ -287,7 +287,7 @@ public enum RestRequestResultErrorCode {
    *
    * @return The actual numeric result code.
    */
-  public int getCode() {
+  public String getCode() {
     return code;
   }
 

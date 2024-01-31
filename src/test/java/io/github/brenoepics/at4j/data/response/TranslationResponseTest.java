@@ -34,18 +34,6 @@ class TranslationResponseTest {
   }
 
   @Test
-  void setsDetectedLanguageAfterCreation() {
-    DetectedLanguage detectedLanguage = new DetectedLanguage("en", 1.0f);
-    TranslationResponse response = new TranslationResponse(Collections.emptyList());
-
-    assertNull(response.getDetectedLanguage());
-
-    response.setDetectedLanguage(detectedLanguage);
-
-    assertEquals(detectedLanguage, response.getDetectedLanguage());
-  }
-
-  @Test
   void returnsEmptyTranslationsWhenNoneProvided() {
     TranslationResponse response = new TranslationResponse(Collections.emptyList());
     assertEquals(0, response.getTranslations().size());

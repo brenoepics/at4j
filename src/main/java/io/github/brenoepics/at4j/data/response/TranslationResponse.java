@@ -44,15 +44,6 @@ public class TranslationResponse {
   }
 
   /**
-   * Sets the detected language of the input text.
-   *
-   * @param detectedLanguage The detected language of the input text.
-   */
-  public void setDetectedLanguage(DetectedLanguage detectedLanguage) {
-    this.detectedLanguage = detectedLanguage;
-  }
-
-  /**
    * Returns the detected language of the input text.
    *
    * @return The detected language of the input text.

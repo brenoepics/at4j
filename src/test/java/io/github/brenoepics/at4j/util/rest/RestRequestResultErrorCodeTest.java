@@ -25,7 +25,7 @@ class RestRequestResultErrorCodeTest<T> {
 
   @Test
   void test_getCode() {
-    Map<RestRequestResultErrorCode, Integer> expectedCodes = new HashMap<>();
+    Map<RestRequestResultErrorCode, String> expectedCodes = new HashMap<>();
     expectedCodes.putAll(
         Arrays.stream(RestRequestResultErrorCode.values())
             .collect(
@@ -34,8 +34,8 @@ class RestRequestResultErrorCodeTest<T> {
                 HashMap::putAll));
 
     for (RestRequestResultErrorCode errorCode : RestRequestResultErrorCode.values()) {
-      int expectedCode = expectedCodes.get(errorCode);
-      int actualCode = errorCode.getCode();
+      String expectedCode = expectedCodes.get(errorCode);
+      String actualCode = errorCode.getCode();
       assertEquals(expectedCode, actualCode);
     }
   }

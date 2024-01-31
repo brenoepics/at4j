@@ -2,7 +2,9 @@ package io.github.brenoepics.at4j;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
+import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
+import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -87,10 +90,46 @@ class AzureApiTest {
   void translateEmptySourceLanguage() {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").build();
 
-    TranslateParams params = new TranslateParams("", List.of("pt")).setTargetLanguages("pt");
+    TranslateParams params = new TranslateParams("", List.of("pt"));
     CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
     Optional<TranslationResponse> tr = translation.join();
     tr.ifPresent(translations -> assertEquals(0, translations.getTranslations().size()));
     api.disconnect();
+  }
+
+  @Test
+  void translateHelloWorld() {
+    String subscriptionKey = System.getenv("AZURE_KEY");
+    String subscriptionRegion = System.getenv("AZURE_REGION");
+    Assumptions.assumeTrue(
+        subscriptionKey != null && subscriptionRegion != null,
+        "Azure Credentials are null, skipping the test");
+
+    AzureApiBuilder builder =
+        new AzureApiBuilder().setKey(subscriptionKey).region(subscriptionRegion);
+    AzureApi api = builder.build();
+
+    TranslateParams params = new TranslateParams("Hello World!", List.of("pt", "es"));
+    Optional<TranslationResponse> translate = api.translate(params).join();
+    assertTrue(translate.isPresent());
+    assertEquals(2, translate.get().getTranslations().size());
+  }
+
+  @Test
+  void detectHelloWorldLanguage() {
+    String subscriptionKey = System.getenv("AZURE_KEY");
+    String subscriptionRegion = System.getenv("AZURE_REGION");
+    Assumptions.assumeTrue(
+        subscriptionKey != null && subscriptionRegion != null,
+        "Azure Credentials are null, skipping the test");
+    AzureApiBuilder builder =
+        new AzureApiBuilder().setKey(subscriptionKey).region(subscriptionRegion);
+    AzureApi api = builder.build();
+
+    Optional<DetectedLanguage> detect =
+        api.detectLanguage(new DetectLanguageParams("Hello World!")).join();
+
+    assertTrue(detect.isPresent());
+    assertEquals("en", detect.get().getLanguageCode());
   }
 }

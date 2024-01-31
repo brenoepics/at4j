@@ -113,11 +113,14 @@ public class AzureApiImpl<T> implements AzureApi {
               .get("translations")
               .forEach(node -> translations.add(Translation.ofJSON((ObjectNode) node)));
 
-          TranslationResponse translationResponse = new TranslationResponse(translations);
+          TranslationResponse translationResponse;
           if (jsonNode.has("detectedLanguage")) {
             JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
-            translationResponse.setDetectedLanguage(
-                DetectedLanguage.ofJSON((ObjectNode) detectedLanguage));
+            translationResponse =
+                new TranslationResponse(
+                    DetectedLanguage.ofJSON((ObjectNode) detectedLanguage), translations);
+          } else {
+            translationResponse = new TranslationResponse(translations);
           }
 
           return Optional.of(translationResponse);

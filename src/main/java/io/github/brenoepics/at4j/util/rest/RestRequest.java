@@ -280,70 +280,69 @@ public class RestRequest<T> {
     RestRequestInformation requestInformation = asRestRequestInformation();
     RestRequestResponseInformation responseInformation =
         new RestRequestResponseInformationImpl<>(requestInformation, result);
-    Optional<RestRequestHttpResponseCode> responseCode =
+    Optional<RestRequestHttpResponseCode> responseCodeOptional =
         RestRequestHttpResponseCode.fromCode(resultCode);
 
+    if (responseCodeOptional.isEmpty()) {
+      throw new AzureException(
+          origin,
+          "Received a response from Azure with a not found resultCode!",
+          requestInformation,
+          responseInformation);
+    }
+
+    RestRequestHttpResponseCode responseCode = responseCodeOptional.get();
+
+    String code = responseCode.getCode() + "000";
+    String error = null;
     if (!result.getJsonBody().isNull() && result.getJsonBody().has("error")) {
-      handleKnownError(result, responseCode.orElse(null), requestInformation, responseInformation);
+      code = result.getJsonBody().get("error").get("code").asText();
+      error = result.getJsonBody().get("error").get("message").asText();
+    }
+
+    Optional<? extends AzureException> azureException =
+        handleKnownError(responseCode, code, error, requestInformation, responseInformation);
+
+    if (azureException.isPresent()) {
+      throw azureException.get();
     }
 
     if (resultCode == 429) {
       return result;
     }
 
-    Optional<? extends AzureException> azureException =
-        responseCode.flatMap(
-            restRequestHttpResponseCode ->
-                restRequestHttpResponseCode.getAzureException(
-                    origin,
-                    "Received a "
-                        + resultCode
-                        + " response from Azure with"
-                        + (result.getStringBody().isPresent() ? "" : " empty")
-                        + " body"
-                        + result.getStringBody().map(s -> " " + s).orElse("")
-                        + "!",
-                    requestInformation,
-                    responseInformation));
+    String message = "Received a " + resultCode + " response from Azure, Meaning: %MEANING%";
 
-    String bodyPresent = result.getStringBody().isPresent() ? "" : " empty";
-    throw azureException.isPresent()
-        ? azureException.get()
-        : new AzureException(
+    azureException =
+        responseCode.getAzureException(
             origin,
-            "Received a "
-                + resultCode
-                + " response from Azure with"
-                + bodyPresent
-                + " body"
-                + result.getStringBody().map(s -> " " + s).orElse("")
-                + "!",
+            message.replace("%MEANING%", responseCode.getMeaning()),
             requestInformation,
             responseInformation);
-  }
-
-  private void handleKnownError(
-      RestRequestResult<T> result,
-      RestRequestHttpResponseCode responseCode,
-      RestRequestInformation requestInformation,
-      RestRequestResponseInformation responseInformation)
-      throws AzureException {
-    JsonNode errorBody = result.getJsonBody().get("error");
-    int code = errorBody.get("code").asInt();
-    String message = errorBody.has("message") ? errorBody.get("message").asText() : null;
-    Optional<? extends AzureException> azureException =
-        RestRequestResultErrorCode.fromCode(code, responseCode)
-            .flatMap(
-                restRequestResultCode ->
-                    restRequestResultCode.getAzureException(
-                        origin,
-                        (message == null) ? restRequestResultCode.getMeaning() : message,
-                        requestInformation,
-                        responseInformation));
 
     if (azureException.isPresent()) {
       throw azureException.get();
+    } else {
+      throw new AzureException(
+          origin, message.replace("%MEANING%", "Unknown"), requestInformation, responseInformation);
     }
+  }
+
+  private Optional<? extends AzureException> handleKnownError(
+      RestRequestHttpResponseCode responseCode,
+      String code,
+      String message,
+      RestRequestInformation requestInformation,
+      RestRequestResponseInformation responseInformation) {
+
+    return RestRequestResultErrorCode.fromCode(code, responseCode)
+        .flatMap(
+            restRequestResultCode ->
+                restRequestResultCode.getAzureException(
+                    origin,
+                    (message == null) ? restRequestResultCode.getMeaning() : message,
+                    requestInformation,
+                    responseInformation));
   }
 
   private void request(HttpRequest.Builder requestBuilder) {
