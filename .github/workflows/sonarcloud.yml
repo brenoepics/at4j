@@ -1,6 +1,12 @@
 name: SonarCloud
+
 on:
   workflow_dispatch:
+    inputs:
+      approval:
+        description: 'Approve workflow execution'
+        required: false
+
   push:
     branches:
       - main
@@ -10,8 +16,16 @@ on:
 
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
+  approval:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if approval is required
+        run: echo "Approval is required"
+
   build:
+    needs: approval
     name: Build and analyze
     runs-on: ubuntu-latest
     steps:
