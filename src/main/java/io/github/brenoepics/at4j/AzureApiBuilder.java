@@ -16,23 +16,13 @@ import java.time.Duration;
  * @see AzureApi
  */
 public class AzureApiBuilder {
-
-  // The base URL for the Azure API.
   private BaseURL baseURL;
-
-  // The subscription key for accessing the Azure API.
   private String subscriptionKey;
-
-  // The subscription region for the Azure API.
   private String subscriptionRegion;
-
-  private ProxySelector proxySelector = null;
-
-  private SSLContext sslContext = null;
-
-  private SSLParameters sslParameters = null;
-
-  private Duration connectTimeout = null;
+  private ProxySelector proxySelector;
+  private SSLContext sslContext;
+  private SSLParameters sslParameters;
+  private Duration connectTimeout;
 
   /** Default constructor initializes the base URL to the global endpoint. */
   public AzureApiBuilder() {
