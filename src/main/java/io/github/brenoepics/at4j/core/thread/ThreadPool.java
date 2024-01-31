@@ -64,8 +64,8 @@ public interface ThreadPool {
    * Executes code after a given duration.
    *
    * <p>Tasks will be scheduled on the daemon executor, allowing the bot to shut down without all
-   * tasks being executed. This method is not meant to persist a scheduled task over multiple bot life
-   * cycles.
+   * tasks being executed. This method is not meant to persist a scheduled task over multiple bot
+   * life cycles.
    *
    * @param task The code to run.
    * @param duration The duration to run the code after.
