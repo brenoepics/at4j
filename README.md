@@ -1,6 +1,9 @@
 # Azure Translator 4 Java (AT4J) 
-![Static Badge](https://img.shields.io/badge/api--version-3.0-blue?style=flat&logo=microsoftazure&logoColor=%230080FF&color=%230080FF&link=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fazure%2Fai-services%2Ftranslator%2Freference%2Fv3-0-reference) [![Maven Central](https://img.shields.io/maven-central/v/io.github.brenoepics/at4j?color=blue)](https://central.sonatype.com/artifact/io.github.brenoepics/at4j) [![Static Badge](https://img.shields.io/badge/run-l?logo=postman&label=Postman&labelColor=d94e1b&color=EF5B25)](https://www.postman.com/maintenance-astronaut-2993290/workspace/brenoepics/collection/18589822-dfe7a640-9b94-47a8-b19f-46cb9cc8843e?action=share&creator=18589822)
- [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) ![GitHub Repo stars](https://img.shields.io/github/stars/brenoepics/at4j)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.brenoepics/at4j?color=blue)](https://central.sonatype.com/artifact/io.github.brenoepics/at4j)
+![Static Badge](https://img.shields.io/badge/azure--api-3.0-blue?style=flat&logo=microsoftazure&logoColor=%230080FF&color=%230080FF&link=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fazure%2Fai-services%2Ftranslator%2Freference%2Fv3-0-reference) 
+[![Static Badge](https://img.shields.io/badge/run-l?logo=postman&label=Postman&color=EF5B25)](https://www.postman.com/maintenance-astronaut-2993290/workspace/brenoepics/collection/18589822-dfe7a640-9b94-47a8-b19f-46cb9cc8843e?action=share&creator=18589822)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j)
 
 
 An unofficial Java library for translating text using Azure AI Cognitive Services.
