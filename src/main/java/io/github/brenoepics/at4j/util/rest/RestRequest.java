@@ -37,6 +37,7 @@ public class RestRequest<T> {
 
   /** The origin of the rest request. */
   private final Exception origin;
+
   public static final String ERROR_FIELD = "error";
 
   /**
