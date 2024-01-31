@@ -39,4 +39,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B clean package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=brenoepics_at4j jacoco:report -P coverage
+        run: mvn -B clean package org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=brenoepics_at4j jacoco:report -Pcoverage
