@@ -1,7 +1,19 @@
 package io.github.brenoepics.at4j;
 
+import io.github.brenoepics.at4j.azure.lang.Language;
+import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import org.junit.jupiter.api.Test;
 import io.github.brenoepics.at4j.azure.BaseURL;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+import java.net.InetSocketAddress;
+import java.net.ProxySelector;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,5 +51,25 @@ class AzureApiBuilderTest {
     AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey");
     AzureApi api = builder.region("brazilsouth").build();
     assertEquals("brazilsouth", api.getSubscriptionRegion().orElse(null));
+  }
+
+  @Test
+  void shouldSetAllParameters() throws NoSuchAlgorithmException {
+    ProxySelector selector = ProxySelector.getDefault();
+    SSLContext sslContext = SSLContext.getDefault();
+    SSLParameters parameters = new SSLParameters();
+    AzureApi api =
+        new AzureApiBuilder()
+            .setKey("test")
+            .region("test")
+            .baseURL(BaseURL.GLOBAL)
+            .connectTimeout(Duration.ofSeconds(60))
+            .proxy(selector)
+            .sslContext(sslContext)
+            .sslParameters(parameters)
+            .build();
+    Optional<Collection<Language>> languages = api.getAvailableLanguages(new AvailableLanguagesParams()).join();
+    assertTrue(languages.isPresent());
+    assertFalse(languages.get().isEmpty());
   }
 }

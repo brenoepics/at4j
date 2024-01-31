@@ -37,6 +37,7 @@ public class RestRequest<T> {
 
   /** The origin of the rest request. */
   private final Exception origin;
+  public static final String ERROR_FIELD = "error";
 
   /**
    * Creates a new instance of this class.
@@ -295,9 +296,9 @@ public class RestRequest<T> {
 
     String code = responseCode.getCode() + "000";
     String error = null;
-    if (!result.getJsonBody().isNull() && result.getJsonBody().has("error")) {
-      code = result.getJsonBody().get("error").get("code").asText();
-      error = result.getJsonBody().get("error").get("message").asText();
+    if (!result.getJsonBody().isNull() && result.getJsonBody().has(ERROR_FIELD)) {
+      code = result.getJsonBody().get(ERROR_FIELD).get("code").asText();
+      error = result.getJsonBody().get(ERROR_FIELD).get("message").asText();
     }
 
     Optional<? extends AzureException> azureException =
