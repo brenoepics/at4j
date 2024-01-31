@@ -10,35 +10,36 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class PrivacyProtectionLoggerTest {
-		private Logger delegate;
-		private PrivacyProtectionLogger privacyProtectionLogger;
+  private Logger delegate;
+  private PrivacyProtectionLogger privacyProtectionLogger;
 
-		@BeforeEach
-		public void setup() {
-				delegate = Mockito.mock(Logger.class);
-				privacyProtectionLogger = new PrivacyProtectionLogger(delegate);
-		}
+  @BeforeEach
+  public void setup() {
+    delegate = Mockito.mock(Logger.class);
+    privacyProtectionLogger = new PrivacyProtectionLogger(delegate);
+  }
 
   @Test
-	void logMessageTest() {
-			String privateData = "secret";
-			PrivacyProtectionLogger.addPrivateData(privateData);
-			Message message = new SimpleMessage("This is a secret message");
-			Marker marker = MarkerManager.getMarker("TEST");
-			privacyProtectionLogger.logMessage(PrivacyProtectionLoggerTest.class.getName(), Level.INFO, marker, message, null);
-			verify(delegate).log(eq(Level.INFO), eq(marker), eq("This is a ********** message"), (Throwable) isNull());
-		}
+  void logMessageTest() {
+    String privateData = "secret";
+    PrivacyProtectionLogger.addPrivateData(privateData);
+    Message message = new SimpleMessage("This is a secret message");
+    Marker marker = MarkerManager.getMarker("TEST");
+    privacyProtectionLogger.logMessage(
+        PrivacyProtectionLoggerTest.class.getName(), Level.INFO, marker, message, null);
+    verify(delegate)
+        .log(eq(Level.INFO), eq(marker), eq("This is a ********** message"), (Throwable) isNull());
+  }
 
   @Test
   void isEnabledTest() {
-				Marker marker = MarkerManager.getMarker("TEST");
-				when(delegate.isEnabled(Level.INFO, marker)).thenReturn(true);
-				assertTrue(privacyProtectionLogger.isEnabled(Level.INFO, marker, "Test message"));
-		}
+    Marker marker = MarkerManager.getMarker("TEST");
+    when(delegate.isEnabled(Level.INFO, marker)).thenReturn(true);
+    assertTrue(privacyProtectionLogger.isEnabled(Level.INFO, marker, "Test message"));
+  }
 }
