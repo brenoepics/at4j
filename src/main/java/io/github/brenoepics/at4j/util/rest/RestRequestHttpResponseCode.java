@@ -90,9 +90,11 @@ public enum RestRequestHttpResponseCode {
       InternalServerErrorException.class),
 
   /** There was a service unavailable while processing your request. */
-  SERVICE_UNAVAILABLE(503, "There was a service unavailable while processing your request",
-          ServiceUnavailableException::new,
-          ServiceUnavailableException.class);
+  SERVICE_UNAVAILABLE(
+      503,
+      "There was a service unavailable while processing your request",
+      ServiceUnavailableException::new,
+      ServiceUnavailableException.class);
 
   /** A map for retrieving the enum instances by code. */
   private static final Map<Integer, RestRequestHttpResponseCode> instanceByCode;
