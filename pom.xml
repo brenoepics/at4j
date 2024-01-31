@@ -213,7 +213,6 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
-                    <tokenEnabled>true</tokenEnabled>
                 </configuration>
             </plugin>
             <plugin>
