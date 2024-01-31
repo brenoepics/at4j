@@ -57,7 +57,7 @@
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
-                        <version>0.8.11</version>
+                        <version>0.8.7</version>
                         <executions>
                             <execution>
                                 <id>prepare-agent</id>
@@ -197,10 +197,11 @@
             <plugin>
                 <groupId>org.sonatype.central</groupId>
                 <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.3.0</version>
+                <version>0.1.2</version>
                 <extensions>true</extensions>
                 <configuration>
                     <publishingServerId>central</publishingServerId>
+                    <tokenEnabled>true</tokenEnabled>
                 </configuration>
             </plugin>
             <plugin>
