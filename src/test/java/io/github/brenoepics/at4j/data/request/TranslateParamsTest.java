@@ -6,10 +6,7 @@ import io.github.brenoepics.at4j.data.request.optional.TextType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,8 +15,8 @@ class TranslateParamsTest {
   @Test
   void shouldSetAndGetText() {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
-    params.setText("Bonjour");
-    assertEquals("Bonjour", params.getText());
+    params.setTexts(Collections.singleton("Bonjour"));
+    assertEquals("Bonjour", params.getTexts().get(1));
   }
 
   @Test

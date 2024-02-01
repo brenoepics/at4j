@@ -16,7 +16,7 @@ class TranslationResponseTest {
   void createsTranslationResponseWithDetectedLanguageAndTranslations() {
     DetectedLanguage detectedLanguage = new DetectedLanguage("en", 1.0f);
     Translation translation = new Translation("pt", "Olá, mundo!");
-    TranslationResponse response = new TranslationResponse(detectedLanguage, List.of(translation));
+    TranslationResponse response = new TranslationResponse(translation.getText(), detectedLanguage, List.of(translation));
 
     assertEquals(detectedLanguage, response.getDetectedLanguage());
     assertEquals(1, response.getTranslations().size());
@@ -26,7 +26,7 @@ class TranslationResponseTest {
   @Test
   void createsTranslationResponseWithTranslationsOnly() {
     Translation translation = new Translation("pt", "Olá, mundo!");
-    TranslationResponse response = new TranslationResponse(List.of(translation));
+    TranslationResponse response = new TranslationResponse(translation.getText(), List.of(translation));
 
     assertNull(response.getDetectedLanguage());
     assertEquals(1, response.getTranslations().size());
@@ -35,7 +35,7 @@ class TranslationResponseTest {
 
   @Test
   void returnsEmptyTranslationsWhenNoneProvided() {
-    TranslationResponse response = new TranslationResponse(Collections.emptyList());
+    TranslationResponse response = new TranslationResponse("", Collections.emptyList());
     assertEquals(0, response.getTranslations().size());
   }
 }

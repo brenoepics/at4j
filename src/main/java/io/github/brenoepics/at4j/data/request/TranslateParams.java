@@ -5,9 +5,14 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.brenoepics.at4j.azure.lang.Language;
+import io.github.brenoepics.at4j.data.DetectedLanguage;
+import io.github.brenoepics.at4j.data.Translation;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityAction;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import io.github.brenoepics.at4j.data.request.optional.TextType;
+import io.github.brenoepics.at4j.data.response.TranslationResponse;
+import io.github.brenoepics.at4j.util.rest.RestRequestResult;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -18,7 +23,7 @@ import java.util.stream.Collectors;
  */
 public class TranslateParams {
   // The text to be translated
-  private String text;
+  private LinkedHashMap<Integer, String> toTranslate;
   // The type of the text to be translated (plain or HTML)
   private TextType textType;
   // The action to be taken on profanities in the text
@@ -43,18 +48,32 @@ public class TranslateParams {
    * @param targetLanguages The target languages for the translation.
    */
   public TranslateParams(String text, Collection<String> targetLanguages) {
-    this.text = text;
+    this.toTranslate = new LinkedHashMap<>();
+    this.toTranslate.put(1, text);
+    this.targetLanguages = targetLanguages;
+  }
+
+  /**
+   * Constructor that initializes the text to be translated.
+   *
+   * @param texts The text list to be translated.
+   * @param targetLanguages The target languages for the translation.
+   */
+  public TranslateParams(Collection<String> texts, Collection<String> targetLanguages) {
+    this.toTranslate = new LinkedHashMap<>();
+    texts.forEach(t -> this.toTranslate.put(this.toTranslate.size() + 1, t));
     this.targetLanguages = targetLanguages;
   }
 
   /**
    * Sets the text to be translated.
    *
-   * @param text The text to be translated.
+   * @param texts The texts to be translated.
    * @return This instance.
    */
-  public TranslateParams setText(String text) {
-    this.text = text;
+  public TranslateParams setTexts(Collection<String> texts) {
+    this.toTranslate = new LinkedHashMap<>();
+    texts.forEach(t -> this.toTranslate.put(this.toTranslate.size() + 1, t));
     return this;
   }
 
@@ -167,10 +186,7 @@ public class TranslateParams {
    */
   public TranslateParams setTargetLanguages(Collection<Language> targetLanguages) {
     this.targetLanguages =
-        Collections.unmodifiableCollection(
-            targetLanguages.stream()
-                .map(Language::getCode)
-                .collect(Collectors.toCollection(ArrayList::new)));
+        targetLanguages.stream().map(Language::getCode).collect(Collectors.toUnmodifiableList());
     return this;
   }
 
@@ -185,8 +201,8 @@ public class TranslateParams {
     return this;
   }
 
-  public String getText() {
-    return text;
+  public Map<Integer, String> getTexts() {
+    return toTranslate;
   }
 
   public Boolean getIncludeAlignment() {
@@ -264,11 +280,45 @@ public class TranslateParams {
    */
   public JsonNode getBody() {
     ArrayNode body = JsonNodeFactory.instance.arrayNode();
-    if (getText() != null && !getText().isEmpty()) {
+
+    for (String text : getTexts().values()) {
       ObjectNode textNode = JsonNodeFactory.instance.objectNode();
-      textNode.put("Text", getText());
+      textNode.put("Text", text);
       body.add(textNode);
     }
     return body;
+  }
+
+  public Optional<List<TranslationResponse>> handleTranslations(
+      RestRequestResult<Optional<List<TranslationResponse>>> response) {
+    if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
+      return Optional.empty();
+
+    List<TranslationResponse> responses = new ArrayList<>();
+    getTexts()
+        .forEach(
+            (index, baseText) -> {
+              JsonNode jsonNode = response.getJsonBody().get(index - 1);
+              if (!jsonNode.has("translations")) return;
+
+              Collection<Translation> translations = new ArrayList<>();
+              jsonNode
+                  .get("translations")
+                  .forEach(node -> translations.add(Translation.ofJSON((ObjectNode) node)));
+
+              if (jsonNode.has("detectedLanguage")) {
+                JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
+                responses.add(
+                    new TranslationResponse(
+                        baseText,
+                        DetectedLanguage.ofJSON((ObjectNode) detectedLanguage),
+                        translations));
+                return;
+              }
+
+              responses.add(new TranslationResponse(baseText, translations));
+            });
+
+    return Optional.of(responses);
   }
 }

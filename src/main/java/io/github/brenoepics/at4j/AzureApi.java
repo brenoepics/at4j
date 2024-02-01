@@ -10,6 +10,7 @@ import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -72,7 +73,7 @@ public interface AzureApi {
    * @param params The {@link TranslateParams} to translate.
    * @return The {@link TranslationResponse} containing the translation.
    */
-  CompletableFuture<Optional<TranslationResponse>> translate(TranslateParams params);
+  CompletableFuture<Optional<List<TranslationResponse>>> translate(TranslateParams params);
 
   /**
    * Gets the available languages for translation.

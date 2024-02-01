@@ -8,7 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -28,7 +30,7 @@ class AzureApiImplTest<T> {
 
   @Test
   void returnsEmptyOnInvalidInput() {
-    translateParams.setText(null);
+    translateParams.setTexts(Collections.emptyList());
     azureApi
         .translate(translateParams)
         .whenComplete(
@@ -39,7 +41,7 @@ class AzureApiImplTest<T> {
               }
             });
 
-    CompletableFuture<Optional<TranslationResponse>> response = azureApi.translate(translateParams);
+    CompletableFuture<Optional<List<TranslationResponse>>> response = azureApi.translate(translateParams);
 
     assertFalse(response.join().isPresent());
   }

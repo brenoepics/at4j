@@ -18,10 +18,12 @@ import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
+import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
 import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -89,42 +91,19 @@ public class AzureApiImpl<T> implements AzureApi {
   }
 
   @Override
-  public CompletableFuture<Optional<TranslationResponse>> translate(TranslateParams params) {
-    if (params.getText() == null || params.getText().isEmpty()) {
+  public CompletableFuture<Optional<List<TranslationResponse>>> translate(TranslateParams params) {
+    if (params.getTexts() == null || params.getTexts().isEmpty()) {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<TranslationResponse>> request =
-        new RestRequest<Optional<TranslationResponse>>(
+    RestRequest<Optional<List<TranslationResponse>>> request =
+        new RestRequest<Optional<List<TranslationResponse>>>(
                 this, RestMethod.POST, RestEndpoint.TRANSLATE)
             .setBody(params.getBody());
     params.getQueryParameters().forEach(request::addQueryParameter);
     params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
 
-    return request.execute(
-        response -> {
-          if (response.getJsonBody().isNull()
-              || !response.getJsonBody().has(0)
-              || !response.getJsonBody().get(0).has("translations")) return Optional.empty();
-
-          JsonNode jsonNode = response.getJsonBody().get(0);
-          Collection<Translation> translations = new ArrayList<>();
-          jsonNode
-              .get("translations")
-              .forEach(node -> translations.add(Translation.ofJSON((ObjectNode) node)));
-
-          TranslationResponse translationResponse;
-          if (jsonNode.has("detectedLanguage")) {
-            JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
-            translationResponse =
-                new TranslationResponse(
-                    DetectedLanguage.ofJSON((ObjectNode) detectedLanguage), translations);
-          } else {
-            translationResponse = new TranslationResponse(translations);
-          }
-
-          return Optional.of(translationResponse);
-        });
+    return request.execute(params::handleTranslations);
   }
 
   @Override

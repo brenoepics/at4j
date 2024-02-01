@@ -18,6 +18,8 @@ public class TranslationResponse {
    */
   private DetectedLanguage detectedLanguage = null;
 
+  private final String baseText;
+
   // A collection of translations for the input text.
   private final Collection<Translation> translations;
 
@@ -28,7 +30,8 @@ public class TranslationResponse {
    * @param translations A collection of translations for the input text.
    */
   public TranslationResponse(
-      DetectedLanguage detectedLanguage, Collection<Translation> translations) {
+      String baseText, DetectedLanguage detectedLanguage, Collection<Translation> translations) {
+    this.baseText = baseText;
     this.detectedLanguage = detectedLanguage;
     this.translations = translations;
   }
@@ -39,7 +42,8 @@ public class TranslationResponse {
    *
    * @param translations A collection of translations for the input text.
    */
-  public TranslationResponse(Collection<Translation> translations) {
+  public TranslationResponse(String baseText, Collection<Translation> translations) {
+    this.baseText = baseText;
     this.translations = translations;
   }
 
@@ -59,5 +63,14 @@ public class TranslationResponse {
    */
   public Collection<Translation> getTranslations() {
     return translations;
+  }
+
+  /**
+   * Returns the base texts that were translated
+   *
+   * @return the base text
+   */
+  public String getBaseText() {
+    return baseText;
   }
 }
