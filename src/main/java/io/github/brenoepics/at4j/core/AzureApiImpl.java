@@ -14,6 +14,7 @@ import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
+import io.github.brenoepics.at4j.data.response.TranslationResult;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
@@ -89,13 +90,13 @@ public class AzureApiImpl<T> implements AzureApi {
   }
 
   @Override
-  public CompletableFuture<Optional<List<TranslationResponse>>> translate(TranslateParams params) {
+  public CompletableFuture<Optional<TranslationResponse>> translate(TranslateParams params) {
     if (params.getTexts() == null || params.getTexts().isEmpty()) {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<List<TranslationResponse>>> request =
-        new RestRequest<Optional<List<TranslationResponse>>>(
+    RestRequest<Optional<TranslationResponse>> request =
+        new RestRequest<Optional<TranslationResponse>>(
                 this, RestMethod.POST, RestEndpoint.TRANSLATE)
             .setBody(params.getBody());
     params.getQueryParameters().forEach(request::addQueryParameter);

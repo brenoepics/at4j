@@ -1,5 +1,7 @@
 package io.github.brenoepics.at4j;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.data.DetectedLanguage;
@@ -7,16 +9,13 @@ import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 class AzureApiTest {
   @Test
@@ -70,7 +69,7 @@ class AzureApiTest {
     AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
 
     TranslateParams params = new TranslateParams("test", List.of("pt")).setSourceLanguage("en");
-    CompletableFuture<Optional<List<TranslationResponse>>> translation = api.translate(params);
+    CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
     assertThrows(CompletionException.class, translation::join);
     api.disconnect();
   }
@@ -88,9 +87,9 @@ class AzureApiTest {
     AzureApi api = builder.build();
 
     TranslateParams params = new TranslateParams("Hello World!", List.of("pt", "es"));
-    Optional<List<TranslationResponse>> translate = api.translate(params).join();
+    Optional<TranslationResponse> translate = api.translate(params).join();
     assertTrue(translate.isPresent());
-    assertEquals(2, translate.get().get(0).getTranslations().size());
+    assertEquals(2, translate.get().getResultList().get(0).getTranslations().size());
   }
 
   @Test
@@ -107,10 +106,10 @@ class AzureApiTest {
 
     TranslateParams params =
         new TranslateParams(List.of("Hello World!", "How are you?"), List.of("pt", "es"));
-    Optional<List<TranslationResponse>> translate = api.translate(params).join();
+    Optional<TranslationResponse> translate = api.translate(params).join();
     assertTrue(translate.isPresent());
 
-    assertEquals(2, translate.get().size());
+    assertEquals(2, translate.get().getResultList().size());
   }
 
   @Test

@@ -11,6 +11,7 @@ import io.github.brenoepics.at4j.data.request.optional.ProfanityAction;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import io.github.brenoepics.at4j.data.request.optional.TextType;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
+import io.github.brenoepics.at4j.data.response.TranslationResult;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
 import java.util.*;
@@ -289,12 +290,12 @@ public class TranslateParams {
     return body;
   }
 
-  public Optional<List<TranslationResponse>> handleTranslations(
-      RestRequestResult<Optional<List<TranslationResponse>>> response) {
+  public Optional<TranslationResponse> handleTranslations(
+      RestRequestResult<Optional<TranslationResponse>> response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
 
-    List<TranslationResponse> responses = new ArrayList<>();
+    TranslationResponse responses = new TranslationResponse();
     getTexts()
         .forEach(
             (index, baseText) -> {
@@ -308,15 +309,15 @@ public class TranslateParams {
 
               if (jsonNode.has("detectedLanguage")) {
                 JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
-                responses.add(
-                    new TranslationResponse(
+                responses.addResult(
+                    new TranslationResult(
                         baseText,
                         DetectedLanguage.ofJSON((ObjectNode) detectedLanguage),
                         translations));
                 return;
               }
 
-              responses.add(new TranslationResponse(baseText, translations));
+              responses.addResult(new TranslationResult(baseText, translations));
             });
 
     return Optional.of(responses);

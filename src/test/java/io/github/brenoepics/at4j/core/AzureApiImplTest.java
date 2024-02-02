@@ -4,6 +4,7 @@ import io.github.brenoepics.at4j.AzureApiBuilder;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
+import io.github.brenoepics.at4j.data.response.TranslationResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -40,7 +41,7 @@ class AzureApiImplTest<T> {
               }
             });
 
-    CompletableFuture<Optional<List<TranslationResponse>>> response =
+    CompletableFuture<Optional<TranslationResponse>> response =
         azureApi.translate(translateParams);
 
     assertFalse(response.join().isPresent());

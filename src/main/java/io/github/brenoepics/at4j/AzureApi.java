@@ -8,6 +8,7 @@ import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
+import io.github.brenoepics.at4j.data.response.TranslationResult;
 
 import java.util.Collection;
 import java.util.List;
@@ -71,9 +72,9 @@ public interface AzureApi {
    * Translates the given text from the given source language to the given target language.
    *
    * @param params The {@link TranslateParams} to translate.
-   * @return The {@link TranslationResponse} containing the translation.
+   * @return The {@link TranslationResult} containing the translation.
    */
-  CompletableFuture<Optional<List<TranslationResponse>>> translate(TranslateParams params);
+  CompletableFuture<Optional<TranslationResponse>> translate(TranslateParams params);
 
   /**
    * Gets the available languages for translation.

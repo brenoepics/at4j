@@ -1,76 +1,66 @@
 package io.github.brenoepics.at4j.data.response;
 
-import io.github.brenoepics.at4j.data.DetectedLanguage;
-import io.github.brenoepics.at4j.data.Translation;
-
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This class represents a response from a translation service. It contains the detected language of
- * the input and a collection of translations.
+ * This class represents a response that contains a list of translation results.
  */
 public class TranslationResponse {
+  // List to store the translation results
+  private final List<TranslationResult> resultList;
 
   /**
-   * The detected language of the input text. It can be null if the language could not be detected.
-   *
-   * @see DetectedLanguage
+   * Default constructor that initializes an empty list of translation results.
    */
-  private DetectedLanguage detectedLanguage = null;
-
-  private final String baseText;
-
-  // A collection of translations for the input text.
-  private final Collection<Translation> translations;
-
-  /**
-   * Constructs a TranslationResponse with a detected language and a collection of translations.
-   *
-   * @param detectedLanguage The detected language of the input text.
-   * @param translations A collection of translations for the input text.
-   */
-  public TranslationResponse(
-      String baseText, DetectedLanguage detectedLanguage, Collection<Translation> translations) {
-    this.baseText = baseText;
-    this.detectedLanguage = detectedLanguage;
-    this.translations = translations;
+  public TranslationResponse() {
+    resultList = new ArrayList<>();
   }
 
   /**
-   * Constructs a TranslationResponse with a collection of translations. The detected language is
-   * set to null.
+   * Constructor that initializes the list of translation results with the provided list.
    *
-   * @param translations A collection of translations for the input text.
+   * @param results The list of translation results to be stored.
    */
-  public TranslationResponse(String baseText, Collection<Translation> translations) {
-    this.baseText = baseText;
-    this.translations = translations;
+  public TranslationResponse(List<TranslationResult> results) {
+    resultList = results;
   }
 
   /**
-   * Returns the detected language of the input text.
+   * Method to add a translation result to the list.
    *
-   * @return The detected language of the input text.
+   * @param result The translation result to be added.
    */
-  public DetectedLanguage getDetectedLanguage() {
-    return detectedLanguage;
+  public void addResult(TranslationResult result) {
+    resultList.add(result);
   }
 
   /**
-   * Returns the collection of translations for the input text.
+   * Method to retrieve the list of translation results.
    *
-   * @return The collection of translations for the input text.
+   * @return The list of translation results.
    */
-  public Collection<Translation> getTranslations() {
-    return translations;
+  public List<TranslationResult> getResultList() {
+    return resultList;
   }
 
   /**
-   * Returns the base texts that were translated
+   * Static factory method to create a new TranslationResponse with the provided list of results.
    *
-   * @return the base text
+   * @param results The list of translation results to be stored.
+   * @return A new TranslationResponse instance.
    */
-  public String getBaseText() {
-    return baseText;
+  public static TranslationResponse of(List<TranslationResult> results) {
+    return new TranslationResponse(results);
+  }
+
+  /**
+   * Static factory method to create a new TranslationResponse with the provided result.
+   *
+   * @param result The translation result to be stored.
+   * @return A new TranslationResponse instance.
+   */
+  public static TranslationResponse of(TranslationResult result) {
+    return new TranslationResponse(List.of(result));
   }
 }
