@@ -47,9 +47,9 @@ public class ExampleTranslator {
 			
 			// Create a single stream of translations from all results
 			response.getResultList()
-                    .stream()
-                    .flatMap(result -> result.getTranslations().stream())
-					.forEach(translation -> System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
+			.stream()
+			.flatMap(result -> result.getTranslations().stream())
+			.forEach(translation -> System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
 		});
 		}
     }
