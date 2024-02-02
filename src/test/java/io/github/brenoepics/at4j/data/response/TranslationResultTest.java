@@ -27,8 +27,7 @@ class TranslationResultTest {
   @Test
   void createsTranslationResponseWithTranslationsOnly() {
     Translation translation = new Translation("pt", "Olá, mundo!");
-    TranslationResult response =
-        new TranslationResult(translation.getText(), List.of(translation));
+    TranslationResult response = new TranslationResult(translation.getText(), List.of(translation));
 
     assertNull(response.getDetectedLanguage());
     assertEquals(1, response.getTranslations().size());

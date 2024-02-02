@@ -14,7 +14,6 @@ import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
-import io.github.brenoepics.at4j.data.response.TranslationResult;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
@@ -22,7 +21,6 @@ import io.github.brenoepics.at4j.util.rest.RestRequest;
 import java.net.http.HttpClient;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 

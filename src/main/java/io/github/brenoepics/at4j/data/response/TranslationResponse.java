@@ -3,16 +3,12 @@ package io.github.brenoepics.at4j.data.response;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * This class represents a response that contains a list of translation results.
- */
+/** This class represents a response that contains a list of translation results. */
 public class TranslationResponse {
   // List to store the translation results
   private final List<TranslationResult> resultList;
 
-  /**
-   * Default constructor that initializes an empty list of translation results.
-   */
+  /** Default constructor that initializes an empty list of translation results. */
   public TranslationResponse() {
     resultList = new ArrayList<>();
   }

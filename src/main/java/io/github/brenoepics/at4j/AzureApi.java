@@ -11,7 +11,6 @@ import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import io.github.brenoepics.at4j.data.response.TranslationResult;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
