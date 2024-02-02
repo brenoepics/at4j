@@ -27,33 +27,32 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 The following example translates a simple Hello World to Portuguese, Spanish and French.
 
 ```java
-public class MyFirstTranslation {
-		
-    public static void main(String[] args) {
-        // Insert your Azure key and region here
-        String azureKey = "<Your Azure Subscription Key>";
-        String azureRegion = "<Your Azure Subscription Region>";
+public class ExampleTranslator {
+	public static void main(String[] args) {
+		// Insert your Azure key and region here
+		String azureKey = "<Your Azure Subscription Key>";
+		String azureRegion = "<Your Azure Subscription Region>";
+		AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
 
-        // Create an Azure API object with your key and region
-        AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
+		// Set up translation parameters
+		List<String> targetLanguages = List.of("pt", "es", "fr");
+		TranslateParams params = new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
 
-        // Set up translation parameters
-        List<String> targetLanguages = List.of("pt", "es", "fr");
-        TranslateParams params = new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
+		// Translate the text
+		Optional<TranslationResponse> translationResult = api.translate(params).join();
 
-        // Translate the text
-        Optional<TranslationResponse> translationResult = api.translate(params).join();
-
-        // Print the translations
-        translationResult.ifPresent(response -> {
-            System.out.println("Translations:");
-
-            // Loop through each translation and print the language code and text
-            response.getTranslations().forEach(translation -> 
-                    System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
-        });
-    }	
-}
+		// Print the translations
+		translationResult.ifPresent(response -> {
+			System.out.println("Translations:");
+			
+			// Create a single stream of translations from all results
+			response.getResultList()
+                    .stream()
+                    .flatMap(result -> result.getTranslations().stream())
+					.forEach(translation -> System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
+		});
+		}
+    }
 ```
 <details>
      <summary>Expected Output</summary>
@@ -76,7 +75,7 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
   <summary>Gradle</summary>
     
 ```gradle
-implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.6'
+implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.0.0'
 ```
 </details>
 <details>
@@ -86,7 +85,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.6'
 <dependency>
     <groupId>io.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
-    <version>0.0.6</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 </details>
@@ -94,7 +93,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '0.0.6'
   <summary>Sbt</summary>
 
 ```sbt
-libraryDependencies += "io.github.brenoepics" % "at4j" % "0.0.6"
+libraryDependencies += "io.github.brenoepics" % "at4j" % "1.0.0"
 ```
 </details>
 
