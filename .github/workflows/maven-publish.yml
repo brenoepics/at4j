@@ -29,7 +29,7 @@ jobs:
       - name: Release With Maven
         run: |
           mvn javadoc:javadoc
-          mvn -s settings.xml -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} --batch-mode -P publish deploy
+          mvn -s settings.xml -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} --batch-mode package verify deploy -P publish
         env:
          AZURE_KEY: ${{ secrets.AZURE_KEY }}
          AZURE_REGION: ${{ secrets.AZURE_REGION }}
