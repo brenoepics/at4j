@@ -37,7 +37,6 @@ jobs:
       - name: Build with VitePress
         run: |
           npm run --prefix docs build
-          touch ./docs/.vitepress/dist/.nojekyll
           mkdir staging
           cp .vitepress/dist/* staging
       - uses: actions/setup-java@v3
