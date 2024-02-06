@@ -7,6 +7,8 @@
     <groupId>io.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
     <version>1.0.0</version>
+    <packaging>jar</packaging>
+
     <name>Azure Translator For Java</name>
     <description>
         A simple Java library to translate text using Azure AI Cognitive Services.
