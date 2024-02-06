@@ -1,0 +1,155 @@
+[
+    {
+      "Code": "400000",
+      "Description": "One of the request inputs isn't valid."
+    },
+    {
+      "Code": "400001",
+      "Description": "The \"scope\" parameter is invalid."
+    },
+    {
+      "Code": "400002",
+      "Description": "The \"category\" parameter is invalid."
+    },
+    {
+      "Code": "400003",
+      "Description": "A language specifier is missing or invalid."
+    },
+    {
+      "Code": "400004",
+      "Description": "A target script specifier (\"To script\") is missing or invalid."
+    },
+    {
+      "Code": "400005",
+      "Description": "An input text is missing or invalid."
+    },
+    {
+      "Code": "400006",
+      "Description": "The combination of language and script isn't valid."
+    },
+    {
+      "Code": "400018",
+      "Description": "A source script specifier (\"From script\") is missing or invalid."
+    },
+    {
+      "Code": "400019",
+      "Description": "One of the specified languages isn't supported."
+    },
+    {
+      "Code": "400020",
+      "Description": "One of the elements in the array of input text isn't valid."
+    },
+    {
+      "Code": "400021",
+      "Description": "The API version parameter is missing or invalid."
+    },
+    {
+      "Code": "400023",
+      "Description": "One of the specified language pair isn't valid."
+    },
+    {
+      "Code": "400035",
+      "Description": "The source language (\"From\" field) isn't valid."
+    },
+    {
+      "Code": "400036",
+      "Description": "The target language (\"To\" field) is missing or invalid."
+    },
+    {
+      "Code": "400042",
+      "Description": "One of the options specified (\"Options\" field) isn't valid."
+    },
+    {
+      "Code": "400043",
+      "Description": "The client trace ID (ClientTraceId field or X-ClientTranceId header) is missing or invalid."
+    },
+    {
+      "Code": "400050",
+      "Description": "The input text is too long. View request limits."
+    },
+    {
+      "Code": "400064",
+      "Description": "The \"translation\" parameter is missing or invalid."
+    },
+    {
+      "Code": "400070",
+      "Description": "The number of target scripts (ToScript parameter) doesn't match the number of target languages (To parameter)."
+    },
+    {
+      "Code": "400071",
+      "Description": "The value isn't valid for TextType."
+    },
+    {
+      "Code": "400072",
+      "Description": "The array of input text has too many elements."
+    },
+    {
+      "Code": "400073",
+      "Description": "The script parameter isn't valid."
+    },
+    {
+      "Code": "400074",
+      "Description": "The body of the request isn't valid JSON."
+    },
+    {
+      "Code": "400075",
+      "Description": "The language pair and category combination isn't valid."
+    },
+    {
+      "Code": "400077",
+      "Description": "The maximum request size has been exceeded. View request limits."
+    },
+    {
+      "Code": "400079",
+      "Description": "The custom system requested for translation between from and to language doesn't exist."
+    },
+    {
+      "Code": "400080",
+      "Description": "Transliteration isn't supported for the language or script."
+    },
+    {
+      "Code": "401000",
+      "Description": "The request isn't authorized because credentials are missing or invalid."
+    },
+    {
+      "Code": "401015",
+      "Description": "\"The credentials provided are for the Speech API. This request requires credentials for the Text API. Use a subscription to Translator.\""
+    },
+    {
+      "Code": "403000",
+      "Description": "The operation isn't allowed."
+    },
+    {
+      "Code": "403001",
+      "Description": "The operation isn't allowed because the subscription has exceeded its free quota."
+    },
+    {
+      "Code": "405000",
+      "Description": "The request method isn't supported for the requested resource."
+    },
+    {
+      "Code": "408001",
+      "Description": "The translation system requested is being prepared. Retry in a few minutes."
+    },
+    {
+      "Code": "408002",
+      "Description": "Request timed out waiting on incoming stream. The client didn't produce a request within the time that the server was prepared to wait. The client may repeat the request without modifications at any later time."
+    },
+    {
+      "Code": "415000",
+      "Description": "The Content-Type header is missing or invalid."
+    },
+    {
+      "Code": "429000, 429001, 429002",
+      "Description": "The server rejected the request because the client has exceeded request limits."
+    },
+    {
+      "Code": "500000",
+      "Description": "An unexpected error occurred. If the error persists, report it with date/time of error, request identifier from response header X-RequestId, and client identifier from request header X-ClientTraceId."
+    },
+    {
+      "Code": "503000",
+      "Description": "Service is temporarily unavailable. Retry. If the error persists, report it with date/time of error, request identifier from response header X-RequestId, and client identifier from request header X-ClientTraceId."
+    }
+  ]
+
