@@ -35,10 +35,9 @@ jobs:
         working-directory: ./docs
         run: npm install
       - name: Build with VitePress
-        working-directory: ./docs
         run: |
-          npm run build
-          touch .vitepress/dist/.nojekyll
+          npm run --prefix project ./docs build
+          touch ./docs/.vitepress/dist/.nojekyll
           mkdir staging
           cp .vitepress/dist/* staging
       - uses: actions/setup-java@v3
