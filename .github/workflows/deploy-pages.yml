@@ -38,7 +38,7 @@ jobs:
         run: |
           npm run --prefix docs build
           mkdir staging
-          cp .vitepress/dist/* staging
+          cp ./docs/.vitepress/dist/* staging
       - uses: actions/setup-java@v3
         with:
           java-version: '11'
