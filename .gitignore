@@ -152,3 +152,4 @@ pids
 /docs/src/examples/data.json
 /docs/src/tutorial/data.json
 /docs/draft.md
+docs/package-lock.json
