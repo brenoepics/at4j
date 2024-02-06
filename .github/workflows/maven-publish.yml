@@ -30,7 +30,5 @@ jobs:
         run: |
           mvn -s settings.xml -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} --batch-mode deploy -DskipTests
         env:
-         AZURE_KEY: ${{ secrets.AZURE_KEY }}
-         AZURE_REGION: ${{ secrets.AZURE_REGION }}
          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
