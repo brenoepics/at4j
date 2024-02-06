@@ -120,7 +120,7 @@ export default defineConfig({
     ],
 
     editLink: {
-      pattern: 'https://github.com/brenoepics/at4j/edit/main/docs/:path',
+      pattern: 'https://github.com/brenoepics/at4j/edit/main/docs/src/:path',
       text: 'Edit this page on GitHub'
     },
 
