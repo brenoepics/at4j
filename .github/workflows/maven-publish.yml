@@ -1,4 +1,4 @@
-name: Publish package to GitHub Packages
+name: Publish a new Release
 on:
   workflow_dispatch:
   release:
@@ -33,7 +33,8 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
-        run: npm install
+        working-directory: ./docs
+        run: npm ci
       - name: Build with VitePress
         working-directory: ./docs
         run: |
