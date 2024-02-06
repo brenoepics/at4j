@@ -31,10 +31,10 @@ jobs:
         with:
           node-version: 20
           cache: npm # or pnpm / yarn
+          cache-dependency-path: '**/package-lock.json'
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Install dependencies
-        working-directory: ./docs
         run: npm install
       - name: Build with VitePress
         working-directory: ./docs
