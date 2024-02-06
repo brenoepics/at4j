@@ -1,4 +1,4 @@
-# Documentation for Vue.js
+# Documentation for AT4J
 
 ## Contributing
 
@@ -16,6 +16,4 @@ This project requires Node.js to be `v14.0.0` or higher, because we use new Java
 
 ## Working on the content
 
-- See VitePress docs on supported [Markdown Extensions](https://vitepress.dev/guide/markdown) and the ability to [use Vue syntax inside markdown](https://vitepress.dev/guide/using-vue).
-
-- See the [Writing Guide](https://github.com/vuejs/docs/blob/main/.github/contributing/writing-guide.md) for our rules and recommendations on writing and maintaining documentation content.
+- See VitePress docs on supported [Markdown Extensions](https://vitepress.dev/guide/markdown).
