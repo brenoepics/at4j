@@ -50,7 +50,8 @@ jobs:
       - name: Release With Maven
         run: |
           mvn javadoc:javadoc
-          cp target/site/apidocs/* staging -r
+          mkdir staging/javadoc
+          cp target/site/apidocs/* staging/javadoc -r
          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

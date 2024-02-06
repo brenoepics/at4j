@@ -84,6 +84,7 @@ export default defineConfig({
   title: 'AT4J',
   description: 'AT4J - Azure Translator for Java',
   srcDir: 'src',
+  base: '/at4j/',
 
   head: [
     ['meta', { name: 'theme-color', content: '#3c8772' }],
