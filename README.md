@@ -18,6 +18,7 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 
 ## 📝 Documentation
 
+- [VitePress Docs](https://brenoepics.github.io/at4j/)
 - [JavaDoc](https://brenoepics.github.io/at4j/javadoc/)
 
 ## 🎉 Basic Usage
@@ -102,44 +103,8 @@ libraryDependencies += "io.github.brenoepics" % "at4j" % "1.0.0"
 > Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must regenerate it in Azure's Panel.
 > For more information, visit the [Azure portal](https://portal.azure.com/).
 
-<details>
-  <summary>How to generate my own keys?</summary>
-
-
-> tl;dr [Generate Here](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/TextTranslation).
-
-1. Sign in to the [Azure portal](https://portal.azure.com/).
-
-2. In the left-hand menu, click on "Create a resource".
-
-3. In the "Search the Marketplace" box, type "Translator Text" and select it from the dropdown list.
-
-4. Click on the "Create" button.
-
-5. Fill in the required details:
-   - Name: Enter a unique name for your resource.
-   - Subscription: Select the Azure subscription that you want to use.
-   - Resource Group: You can create a new resource group or select an existing one.
-   - Pricing tier: Select the pricing tier that suits your needs.
-6. Click on the "Review + create" button.
-
-7. Review your settings and click on the "Create" button.
-
-8. After the deployment is complete, go to the resource you just created.
-
-9. In the left-hand menu, click on "Keys and Endpoint".
-
-10. You will see two keys and an endpoint. You can use either of the keys in your application.
-</details>
-<details>
-  <summary>Azure Free Tier</summary>
-    
-Azure offers a free tier for its services, which is a great way to get started with Azure Translator for Java. The free tier includes a monthly allowance of 2 million characters for Translator Text. This is sufficient for testing and small projects.
-
-To use the free tier, you need to create an Azure account and set up a Translator Text resource. Azure will require a credit card for identity verification, but you will not be charged unless you explicitly change your settings and choose to do so.
-
-Please note that the free tier usage limits are subject to change by Azure, and it's recommended to check the current details on the Azure Pricing page.
-</details>
+- [How to generate my own keys?](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-subscription)
+- [Azure Free Tier](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-free-tier)
 
 ### Optional Logger Dependency
 
@@ -147,10 +112,7 @@ Any Log4j-2-compatible logging framework can be used to provide a more sophistic
 with being able to configure log format, log targets (console, file, database, etc.),
 log levels per class, and much more.
 
-For example, Log4j Core in Gradle
-```gradle
-dependencies { runtimeOnly 'org.apache.logging.log4j:log4j-core:2.19.0' }
-```
+More info at our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency)
 
 ## 📋 Version Numbers
 
