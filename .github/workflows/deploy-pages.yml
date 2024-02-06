@@ -1,7 +1,10 @@
 name: Deploy GitHub Pages
 on:
   workflow_dispatch:
-
+  push:
+    paths:
+      - 'docs/**'
+      
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
