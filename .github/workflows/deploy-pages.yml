@@ -39,6 +39,8 @@ jobs:
         run: |
           npm run build
           touch .vitepress/dist/.nojekyll
+          mkdir staging
+          cp .vitepress/dist/ staging
       - uses: actions/setup-java@v3
         with:
           java-version: '11'
@@ -50,13 +52,13 @@ jobs:
       - name: Release With Maven
         run: |
           mvn javadoc:javadoc
+          cp target/apidocs staging
          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:     
           path: |
-                docs/.vitepress/dist
-                target/apidocs
+                staging
                 
   # Deployment job
   deploy:
