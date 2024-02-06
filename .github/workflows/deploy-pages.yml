@@ -38,7 +38,7 @@ jobs:
         run: |
           npm run --prefix docs build
           mkdir staging
-          cp ./docs/.vitepress/dist/* staging
+          cp ./docs/.vitepress/dist/* staging -r
       - uses: actions/setup-java@v3
         with:
           java-version: '11'
@@ -50,7 +50,7 @@ jobs:
       - name: Release With Maven
         run: |
           mvn javadoc:javadoc
-          cp target/apidocs/* staging
+          cp target/apidocs/* staging -r
          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
