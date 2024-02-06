@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "vitepress",
     "build": "vitepress build",
-    "preview": "vitepress preview",
-    "preinstall": "npx only-allow pnpm"
+    "preview": "vitepress preview"
   },
   "dependencies": {
     "axios": "^1.6.7",
