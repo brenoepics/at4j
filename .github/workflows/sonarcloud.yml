@@ -9,11 +9,14 @@ on:
     paths:
       - 'src/**'
       - 'pom.xml'
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
     name: Build and analyze
     runs-on: ubuntu-latest
+    if: ${{ secrets.AZURE_KEY && secrets.AZURE_REGION && secrets.GITHUB_TOKEN && secrets.SONAR_TOKEN }}
     steps:
       - uses: actions/checkout@v3
         with:
