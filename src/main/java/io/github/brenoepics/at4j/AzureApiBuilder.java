@@ -46,8 +46,7 @@ public class AzureApiBuilder {
    *
    * @param subscriptionKey The subscription key for the Azure API.
    * @return The current instance of AzureApiBuilder for method chaining.
-   * @see <a
-   *     href="https://brenoepics.github.io/at4j/guide/azure-subscription.html">Authentication
+   * @see <a href="https://brenoepics.github.io/at4j/guide/azure-subscription.html">Authentication
    *     keys and endpoint URL</a>
    */
   public AzureApiBuilder setKey(String subscriptionKey) {
@@ -136,7 +135,7 @@ public class AzureApiBuilder {
     if (this.subscriptionKey == null) {
       throw new NullPointerException("Subscription key cannot be null");
     }
-    
+
     HttpClient.Builder httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1);
 
     if (proxySelector != null) {
