@@ -137,7 +137,6 @@ public class AzureApiBuilder {
       throw new NullPointerException("Subscription key cannot be null");
     }
 
-    // The HTTP client used by the Azure API.
     HttpClient.Builder httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1);
 
     if (proxySelector != null) {
