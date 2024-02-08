@@ -89,7 +89,7 @@ class AzureApiTest {
     TranslateParams params = new TranslateParams("Hello World!", List.of("pt", "es"));
     Optional<TranslationResponse> translate = api.translate(params).join();
     assertTrue(translate.isPresent());
-    assertEquals(2, translate.get().getResultList().get(0).getTranslations().size());
+    assertEquals(2, translate.get().getFirstResult().getTranslations().size());
   }
 
   @Test

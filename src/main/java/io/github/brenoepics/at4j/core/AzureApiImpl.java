@@ -94,9 +94,9 @@ public class AzureApiImpl<T> implements AzureApi {
     }
 
     RestRequest<Optional<TranslationResponse>> request =
-        new RestRequest<Optional<TranslationResponse>>(
-                this, RestMethod.POST, RestEndpoint.TRANSLATE)
-            .setBody(params.getBody());
+        new RestRequest<>(this, RestMethod.POST, RestEndpoint.TRANSLATE);
+    request.setBody(params.getBody());
+
     params.getQueryParameters().forEach(request::addQueryParameter);
     params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
 
@@ -109,9 +109,8 @@ public class AzureApiImpl<T> implements AzureApi {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<DetectedLanguage>> request =
-        new RestRequest<Optional<DetectedLanguage>>(this, RestMethod.POST, RestEndpoint.DETECT)
-            .setBody(params.getBody());
+    RestRequest<Optional<DetectedLanguage>> request = new RestRequest<>(this, RestMethod.POST, RestEndpoint.DETECT);
+    request.setBody(params.getBody());
 
     return request.execute(
         response -> {
@@ -130,10 +129,9 @@ public class AzureApiImpl<T> implements AzureApi {
   public CompletableFuture<Optional<Collection<Language>>> getAvailableLanguages(
       AvailableLanguagesParams params) {
     RestRequest<Optional<Collection<Language>>> request =
-        new RestRequest<Optional<Collection<Language>>>(
-                this, RestMethod.GET, RestEndpoint.LANGUAGES)
-            .addQueryParameter("scope", params.getScope())
-            .includeAuthorizationHeader(false);
+        new RestRequest<>(this, RestMethod.GET, RestEndpoint.LANGUAGES);
+
+    request.addQueryParameter("scope", params.getScope()).includeAuthorizationHeader(false);
 
     if (params.getSourceLanguage() != null) {
       request.addHeader("Accept-Language", params.getSourceLanguage());

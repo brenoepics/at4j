@@ -41,6 +41,15 @@ public class TranslationResponse {
   }
 
   /**
+   * Method to retrieve the first translation result from the list.
+   *
+   * @return The first translation result from the list.
+   * @throws IndexOutOfBoundsException If the list is empty.
+   */
+  public TranslationResult getFirstResult() {
+    return resultList.get(0);
+  }
+  /**
    * Static factory method to create a new TranslationResponse with the provided list of results.
    *
    * @param results The list of translation results to be stored.

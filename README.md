@@ -29,37 +29,36 @@ The following example translates a simple Hello World to Portuguese, Spanish and
 
 ```java
 public class ExampleTranslator {
-	public static void main(String[] args) {
-		// Insert your Azure key and region here
-		String azureKey = "<Your Azure Subscription Key>";
-		String azureRegion = "<Your Azure Subscription Region>";
-		AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
 
-		// Set up translation parameters
-		List<String> targetLanguages = List.of("pt", "es", "fr");
-		TranslateParams params = new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
+ public static void main(String[] args) {
+  // Insert your Azure key and region here
+  String azureKey = "<Your Azure Subscription Key>";
+  String azureRegion = "<Your Azure Subscription Region>";
+  AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
 
-		// Translate the text
-		Optional<TranslationResponse> translationResult = api.translate(params).join();
+  // Set up translation parameters
+  List<String> targetLanguages = List.of("pt", "es", "fr");
+  TranslateParams params =
+          new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
 
-		// Print the translations
-		translationResult.ifPresent(response -> {
-			System.out.println("Translations:");
-			
-			// Create a single stream of translations from all results
-			response.getResultList()
-			.stream()
-			.flatMap(result -> result.getTranslations().stream())
-			.forEach(translation -> System.out.println(translation.getLanguageCode() + ": " + translation.getText()));
-		});
-		}
-    }
+  // Translate the text
+  Optional<TranslationResponse> translationResult = api.translate(params).join();
+
+  // Print the translations
+  translationResult.ifPresent(
+          response ->
+                  response.getFirstResult().getTranslations().forEach(ExampleTranslator::logLanguage));
+ }
+
+ public static void logLanguage(Translation translation) {
+  System.out.println(translation.getLanguageCode() + ": " + translation.getText());
+ }
+}
 ```
 <details>
      <summary>Expected Output</summary>
 
 ```console
-Translations:
 pt: Olá, Mundo!
 es: ¡Hola mundo!
 fr: Salut tout le monde!
