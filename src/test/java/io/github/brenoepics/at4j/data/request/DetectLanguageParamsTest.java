@@ -3,6 +3,7 @@ package io.github.brenoepics.at4j.data.request;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
@@ -57,5 +58,49 @@ class DetectLanguageParamsTest {
     Optional<DetectResponse> result = params.handleResponse(response);
     assertTrue(result.isPresent());
     assertEquals("en", result.get().getFirst().getLanguageCode());
+  }
+
+  @Test
+  void shouldReturnCorrectTextsWhenMultipleTextsAreAdded() {
+    DetectLanguageParams params = new DetectLanguageParams("Hello");
+    params.addText("Bonjour");
+    assertEquals("Hello", params.getTexts().get(1));
+    assertEquals("Bonjour", params.getTexts().get(2));
+  }
+
+  @Test
+  void shouldReturnNullBodyWhenNoTextsAreAdded() {
+    DetectLanguageParams params = new DetectLanguageParams(new ArrayList<>());
+    assertNull(params.getBody());
+  }
+  
+  @Test
+  void shouldHandleResponseWithEmptyJsonBody() {
+    DetectLanguageParams params = new DetectLanguageParams("Hello");
+    RestRequestResult mockResponse = mock(RestRequestResult.class);
+    JsonNode mockJsonBody = mock(JsonNode.class);
+
+    when(mockResponse.getJsonBody()).thenReturn(mockJsonBody);
+    when(mockJsonBody.isEmpty()).thenReturn(true);
+
+    Optional<DetectResponse> result = params.handleResponse(mockResponse);
+
+    assertFalse(result.isPresent());
+  }
+
+  @Test
+  void shouldHandleResponseWithValidJsonBody() {
+    DetectLanguageParams params = new DetectLanguageParams("Hello");
+    RestRequestResult mockResponse = mock(RestRequestResult.class);
+    JsonNode mockJsonBody = mock(JsonNode.class);
+    JsonNode mockDetectionNode = mock(JsonNode.class);
+
+    when(mockResponse.getJsonBody()).thenReturn(mockJsonBody);
+    when(mockJsonBody.get(0)).thenReturn(mockDetectionNode);
+    when(mockDetectionNode.has("language")).thenReturn(true);
+
+    Optional<DetectResponse> result = params.handleResponse(mockResponse);
+
+    assertTrue(result.isPresent());
   }
 }
