@@ -39,6 +39,7 @@ public class RestRequest<T> {
   private final Exception origin;
 
   public static final String ERROR_FIELD = "error";
+  public static final String REFERENCE_LINK = AT4J.DOCS_URL + "error-reference/#azure-";
 
   /**
    * Creates a new instance of this class.
@@ -58,12 +59,14 @@ public class RestRequest<T> {
 
   /**
    * Creates a new instance of this class.
+   *
    * @param api The api which will be used to execute the request.
    * @param method The http method of the request.
    * @param endpoint The endpoint to which the request should be sent.
    * @param includeAuthorizationHeader Whether the authorization header should be included or not.
    */
-  public RestRequest(AzureApi api, RestMethod method, RestEndpoint endpoint, boolean includeAuthorizationHeader) {
+  public RestRequest(
+      AzureApi api, RestMethod method, RestEndpoint endpoint, boolean includeAuthorizationHeader) {
     this.api = (AzureApiImpl) api;
     this.method = method;
     this.endpoint = endpoint;
@@ -237,10 +240,10 @@ public class RestRequest<T> {
    * @return The information for this rest request.
    * @throws AssertionError Thrown if the url is malformed.
    */
-  public RestRequestInformation asRestRequestInformation() {
+  public RestRequestInfo asRestRequestInformation() {
     try {
 
-      return new RestRequestInformationImpl(
+      return new RestRequestInfoImpl(
           api,
           endpoint.getHttpUrl(api.getBaseURL(), queryParameters).toURL(),
           queryParameters,
@@ -307,9 +310,9 @@ public class RestRequest<T> {
 
   private RestRequestResult<T> handleError(int resultCode, RestRequestResult<T> result)
       throws AzureException {
-    RestRequestInformation requestInformation = asRestRequestInformation();
-    RestRequestResponseInformation responseInformation =
-        new RestRequestResponseInformationImpl<>(requestInformation, result);
+    RestRequestInfo requestInformation = asRestRequestInformation();
+    RestRequestResponseInfo responseInformation =
+        new RestRequestResponseInfoImpl<>(requestInformation, result);
     Optional<RestRequestHttpResponseCode> responseCodeOptional =
         RestRequestHttpResponseCode.fromCode(resultCode);
 
@@ -362,15 +365,18 @@ public class RestRequest<T> {
       RestRequestHttpResponseCode responseCode,
       String code,
       String message,
-      RestRequestInformation requestInformation,
-      RestRequestResponseInformation responseInformation) {
+      RestRequestInfo requestInformation,
+      RestRequestResponseInfo responseInformation) {
 
     return RestRequestResultErrorCode.fromCode(code, responseCode)
         .flatMap(
             restRequestResultCode ->
                 restRequestResultCode.getAzureException(
                     origin,
-                    (message == null) ? restRequestResultCode.getMeaning() : message,
+                    ((message == null) ? restRequestResultCode.getMeaning() : message)
+                        + " (reference: "
+                        + restRequestResultCode.getReference()
+                        + ")",
                     requestInformation,
                     responseInformation));
   }

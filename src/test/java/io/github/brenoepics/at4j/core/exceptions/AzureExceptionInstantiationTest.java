@@ -1,7 +1,7 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
-import io.github.brenoepics.at4j.util.rest.RestRequestInformation;
-import io.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
+import io.github.brenoepics.at4j.util.rest.RestRequestInfo;
+import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AzureExceptionInstantiationTest {
 
   private final Exception origin = new Exception();
-  private final RestRequestInformation request = Mockito.mock(RestRequestInformation.class);
-  private final RestRequestResponseInformation response =
-      Mockito.mock(RestRequestResponseInformation.class);
+  private final RestRequestInfo request = Mockito.mock(RestRequestInfo.class);
+  private final RestRequestResponseInfo response =
+      Mockito.mock(RestRequestResponseInfo.class);
   private final AzureExceptionInstantiation<AzureException> azureExceptionInstantiation =
       AzureException::new;
 

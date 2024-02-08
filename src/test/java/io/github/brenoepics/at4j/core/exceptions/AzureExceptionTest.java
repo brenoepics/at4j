@@ -20,7 +20,7 @@ class AzureExceptionTest<T> {
 
   @Mock private AzureApiImpl<T> api;
   @Mock private RestRequestResult<T> result;
-  private RestRequestInformation request;
+  private RestRequestInfo request;
 
   @BeforeEach
   public void setup() throws MalformedURLException {
@@ -28,7 +28,7 @@ class AzureExceptionTest<T> {
     Map<String, Collection<String>> queryParameter = new HashMap<>();
     HashMap<String, String> headers = new HashMap<>();
     String body = "Test body";
-    request = new RestRequestInformationImpl(api, url, queryParameter, headers, body);
+    request = new RestRequestInfoImpl(api, url, queryParameter, headers, body);
   }
 
   @Test
@@ -49,8 +49,8 @@ class AzureExceptionTest<T> {
 
   @Test
   void responseInformationIsRetained() {
-    RestRequestResponseInformation response =
-        new RestRequestResponseInformationImpl<>(request, result);
+    RestRequestResponseInfo response =
+        new RestRequestResponseInfoImpl<>(request, result);
     AzureException exception = new AzureException(null, null, null, response);
 
     assertEquals(Optional.of(response), exception.getResponse());

@@ -1,7 +1,7 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
-import io.github.brenoepics.at4j.util.rest.RestRequestInformation;
-import io.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
+import io.github.brenoepics.at4j.util.rest.RestRequestInfo;
+import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfo;
 
 /** When something was not found (HTTP response code 404). */
 public class NotFoundException extends BadRequestException {
@@ -17,8 +17,8 @@ public class NotFoundException extends BadRequestException {
   public NotFoundException(
       Exception origin,
       String message,
-      RestRequestInformation request,
-      RestRequestResponseInformation response) {
+      RestRequestInfo request,
+      RestRequestResponseInfo response) {
     super(origin, message, request, response);
   }
 }

@@ -1,5 +1,6 @@
 package io.github.brenoepics.at4j.util.rest;
 
+import io.github.brenoepics.at4j.AT4J;
 import io.github.brenoepics.at4j.core.exceptions.*;
 
 import java.util.Arrays;
@@ -301,6 +302,16 @@ public enum RestRequestResultErrorCode {
   }
 
   /**
+   * Gets the reference to the documentation for this kind of result code.
+   *
+   * @return The reference to the documentation for this kind of result code.
+   * @see <a href="https://brenoepics.github.io/at4j/error-reference/">Error Reference</a>
+   */
+  public String getReference() {
+    return AT4J.DOCS_URL + "error-reference/#azure-" + code;
+  }
+
+  /**
    * Gets the response code for which the given instantiator should be used.
    *
    * @return The response code for which the given instantiator should be used.
@@ -321,8 +332,8 @@ public enum RestRequestResultErrorCode {
   public Optional<AzureException> getAzureException(
       Exception origin,
       String message,
-      RestRequestInformation request,
-      RestRequestResponseInformation response) {
+      RestRequestInfo request,
+      RestRequestResponseInfo response) {
     return Optional.ofNullable(azureExceptionInstantiation)
         .map(instantiate -> instantiate.createInstance(origin, message, request, response))
         .filter(

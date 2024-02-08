@@ -4,8 +4,8 @@ import io.github.brenoepics.at4j.AzureApi;
 import java.net.URL;
 import java.util.*;
 
-/** The implementation of {@link RestRequestInformation}. */
-public class RestRequestInformationImpl implements RestRequestInformation {
+/** The implementation of {@link RestRequestInfo}. */
+public class RestRequestInfoImpl implements RestRequestInfo {
 
   private final AzureApi api;
   private final URL url;
@@ -22,7 +22,7 @@ public class RestRequestInformationImpl implements RestRequestInformation {
    * @param headers The headers of the rest request.
    * @param body The body of the rest request.
    */
-  public RestRequestInformationImpl(
+  public RestRequestInfoImpl(
       AzureApi api,
       URL url,
       Map<String, Collection<String>> queryParameter,

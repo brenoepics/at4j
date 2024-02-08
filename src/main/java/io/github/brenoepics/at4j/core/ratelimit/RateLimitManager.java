@@ -5,7 +5,7 @@ import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
 import io.github.brenoepics.at4j.util.rest.RestRequestHandler;
-import io.github.brenoepics.at4j.util.rest.RestRequestResponseInformationImpl;
+import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfoImpl;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
 import java.net.http.HttpHeaders;
@@ -188,8 +188,8 @@ public class RateLimitManager<T> {
   private RestRequestResult<T> mapAzureException(Throwable t) {
     return ((AzureException) t)
         .getResponse()
-        .map(RestRequestResponseInformationImpl.class::cast)
-        .map(RestRequestResponseInformationImpl::getRestRequestResult)
+        .map(RestRequestResponseInfoImpl.class::cast)
+        .map(RestRequestResponseInfoImpl::getRestRequestResult)
         .orElse(null);
   }
 
