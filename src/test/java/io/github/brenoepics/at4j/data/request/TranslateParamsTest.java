@@ -1,6 +1,12 @@
 package io.github.brenoepics.at4j.data.request;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import io.github.brenoepics.at4j.azure.lang.Language;
+import io.github.brenoepics.at4j.azure.lang.LanguageDirection;
+import io.github.brenoepics.at4j.data.Translation;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityAction;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import io.github.brenoepics.at4j.data.request.optional.TextType;
@@ -67,10 +73,25 @@ class TranslateParamsTest {
   }
 
   @Test
+  void shouldSetAndGetSourceLanguage2() {
+    TranslateParams params = new TranslateParams("Hello", List.of("fr"));
+    params.setSourceLanguage(new Language("en", "English", "English", LanguageDirection.LTR));
+    assertEquals("en", params.getSourceLanguage());
+  }
+
+  @Test
   void shouldSetAndGetTargetLanguages() {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
     params.setTargetLanguages("de", "it");
     assertTrue(params.getTargetLanguages().containsAll(Arrays.asList("de", "it")));
+  }
+
+  @Test
+  void shouldSetAndGetTargetLanguages2() {
+    TranslateParams params = new TranslateParams("Hello", List.of("fr"));
+    params.setTargetLanguages(
+        Collections.singleton(new Language("en", "English", "English", LanguageDirection.LTR)));
+    assertTrue(params.getTargetLanguages().contains("en"));
   }
 
   @Test
@@ -220,5 +241,61 @@ class TranslateParamsTest {
     assertTrue(result.isPresent());
     assertNotNull(result.get());
     assertThrows(IndexOutOfBoundsException.class, result.get()::getFirstResult);
+  }
+
+  @Test
+  void shouldHandleJsonBodyNullTranslations() {
+    TranslateParams params = new TranslateParams("Hello", List.of("fr"));
+    RestRequestResult mockResponse = mock(RestRequestResult.class);
+    JsonNode mockJsonBody = mock(JsonNode.class);
+    when(mockResponse.getJsonBody()).thenReturn(mockJsonBody);
+    when(mockResponse.getJsonBody().isNull()).thenReturn(true);
+
+    Optional<TranslationResponse> result = params.handleResponse(mockResponse);
+
+    assertFalse(result.isPresent());
+  }
+
+  @Test
+  void shouldHandleJsonBodyWithValidTranslations() throws JsonProcessingException {
+    TranslateParams params = new TranslateParams("Hello", List.of("fr"));
+    String json =
+        "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":0.98},\"translations\":[{\"text\":\"Olá, mundo\",\"to\":\"pt\"}]}]";
+    RestRequestResult mockResponse = mock(RestRequestResult.class);
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode mockJsonBody = mapper.readTree(json);
+
+    when(mockResponse.getJsonBody()).thenReturn(mockJsonBody);
+
+    Optional<TranslationResponse> result = params.handleResponse(mockResponse);
+
+    assertTrue(result.isPresent());
+    assertNotNull(result.get());
+    assertEquals(
+        "Olá, mundo",
+        result
+            .get()
+            .getFirstResult()
+            .getFirstTranslation()
+            .orElse(new Translation("en", "err"))
+            .getText());
+  }
+
+  @Test
+  void shouldHandleJsonBodyWithNoValidTranslations() throws JsonProcessingException {
+    TranslateParams params = new TranslateParams("Hello", List.of("fr"));
+    String json =
+        "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":0.98},\"translations\":[]}]";
+    RestRequestResult mockResponse = mock(RestRequestResult.class);
+    ObjectMapper mapper = new ObjectMapper();
+    JsonNode mockJsonBody = mapper.readTree(json);
+
+    when(mockResponse.getJsonBody()).thenReturn(mockJsonBody);
+
+    Optional<TranslationResponse> result = params.handleResponse(mockResponse);
+
+    assertTrue(result.isPresent());
+    assertNotNull(result.get());
+    assertTrue(result.get().getFirstResult().getTranslations().isEmpty());
   }
 }
