@@ -13,6 +13,7 @@ import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
+import io.github.brenoepics.at4j.data.response.DetectResponse;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
@@ -96,64 +97,40 @@ public class AzureApiImpl<T> implements AzureApi {
     RestRequest<Optional<TranslationResponse>> request =
         new RestRequest<>(this, RestMethod.POST, RestEndpoint.TRANSLATE);
     request.setBody(params.getBody());
+    request.addQueryParameters(params.getQueryParameters());
 
-    params.getQueryParameters().forEach(request::addQueryParameter);
-    params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
+    if (params.getTargetLanguages() != null) {
+      params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
+    }
 
-    return request.execute(params::handleTranslations);
+    return request.execute(params::handleResponse);
   }
 
   @Override
-  public CompletableFuture<Optional<DetectedLanguage>> detectLanguage(DetectLanguageParams params) {
-    if (params.getText() == null || params.getText().isEmpty()) {
+  public CompletableFuture<Optional<DetectResponse>> detectLanguage(DetectLanguageParams params) {
+    if (params.getTexts() == null || params.getTexts().isEmpty()) {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<DetectedLanguage>> request = new RestRequest<>(this, RestMethod.POST, RestEndpoint.DETECT);
+    RestRequest<Optional<DetectResponse>> request =
+        new RestRequest<>(this, RestMethod.POST, RestEndpoint.DETECT);
     request.setBody(params.getBody());
 
-    return request.execute(
-        response -> {
-          if (response.getJsonBody().isNull()
-              || !response.getJsonBody().has(0)
-              || !response.getJsonBody().get(0).has("language")) return Optional.empty();
-
-          JsonNode jsonNode = response.getJsonBody().get(0);
-          if (!jsonNode.isObject()) return Optional.empty();
-
-          return Optional.of(DetectedLanguage.ofJSON((ObjectNode) jsonNode));
-        });
+    return request.execute(params::handleResponse);
   }
 
   @Override
   public CompletableFuture<Optional<Collection<Language>>> getAvailableLanguages(
       AvailableLanguagesParams params) {
     RestRequest<Optional<Collection<Language>>> request =
-        new RestRequest<>(this, RestMethod.GET, RestEndpoint.LANGUAGES);
-
-    request.addQueryParameter("scope", params.getScope()).includeAuthorizationHeader(false);
+        new RestRequest<>(this, RestMethod.GET, RestEndpoint.LANGUAGES, false);
+    request.addQueryParameter("scope", params.getScope());
 
     if (params.getSourceLanguage() != null) {
       request.addHeader("Accept-Language", params.getSourceLanguage());
     }
 
-    return request.execute(
-        response -> {
-          if (response.getJsonBody().isNull() || !response.getJsonBody().has("translation"))
-            return Optional.empty();
-
-          Collection<Language> languages = new ArrayList<>();
-          JsonNode jsonNode = response.getJsonBody().get("translation");
-          jsonNode
-              .fieldNames()
-              .forEachRemaining(
-                  key -> {
-                    Language language = Language.ofJSON(key, (ObjectNode) jsonNode.get(key));
-                    languages.add(language);
-                  });
-
-          return Optional.of(languages);
-        });
+    return request.execute(params::handleResponse);
   }
 
   @Override

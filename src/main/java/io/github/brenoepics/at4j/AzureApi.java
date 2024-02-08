@@ -7,8 +7,9 @@ import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
+import io.github.brenoepics.at4j.data.response.DetectResponse;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
-import io.github.brenoepics.at4j.data.response.TranslationResult;
+import io.github.brenoepics.at4j.data.TranslationResult;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -98,5 +99,5 @@ public interface AzureApi {
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-detect">Language
    *     Detection</a>
    */
-  CompletableFuture<Optional<DetectedLanguage>> detectLanguage(DetectLanguageParams params);
+  CompletableFuture<Optional<DetectResponse>> detectLanguage(DetectLanguageParams params);
 }
