@@ -67,12 +67,16 @@ export const sidebar = {
       text: 'Basic',
       items: [
         {
-          text: 'Guide',
-          link: '/guide/introduction'
+          text: 'Translate Hello World',
+          link: '/examples/#translator'
         },
         {
-          text: 'Hello World',
-          link: '/examples/#hello-world'
+          text: 'Detect Language',
+          link: '/examples/#detect'
+        },
+        {
+          text: 'Guide',
+          link: '/guide/introduction'
         }
       ]
     }
