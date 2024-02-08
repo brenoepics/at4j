@@ -3,7 +3,6 @@ package io.github.brenoepics.at4j.util.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.brenoepics.at4j.AT4J;
 import io.github.brenoepics.at4j.AzureApi;
-import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class RestRequest<T> {
   /** The (logger) of this class. */
   private static final Logger logger = LoggerUtil.getLogger(RestRequest.class);
 
-  private final AzureApiImpl<T> api;
+  private final AzureApi api;
   private final RestMethod method;
   private final RestEndpoint endpoint;
 
@@ -39,7 +38,6 @@ public class RestRequest<T> {
   private final Exception origin;
 
   public static final String ERROR_FIELD = "error";
-  public static final String REFERENCE_LINK = AT4J.DOCS_URL + "error-reference/#azure-";
 
   /**
    * Creates a new instance of this class.
@@ -49,7 +47,7 @@ public class RestRequest<T> {
    * @param endpoint The endpoint to which the request should be sent.
    */
   public RestRequest(AzureApi api, RestMethod method, RestEndpoint endpoint) {
-    this.api = (AzureApiImpl) api;
+    this.api = api;
     this.method = method;
     this.endpoint = endpoint;
     addQueryParameter("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
@@ -67,7 +65,7 @@ public class RestRequest<T> {
    */
   public RestRequest(
       AzureApi api, RestMethod method, RestEndpoint endpoint, boolean includeAuthorizationHeader) {
-    this.api = (AzureApiImpl) api;
+    this.api = api;
     this.method = method;
     this.endpoint = endpoint;
     addQueryParameter("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
@@ -81,7 +79,7 @@ public class RestRequest<T> {
    *
    * @return The api which is used for this request.
    */
-  public AzureApiImpl<T> getApi() {
+  public AzureApi getApi() {
     return api;
   }
 
@@ -133,36 +131,30 @@ public class RestRequest<T> {
   /**
    * Adds a query parameter to the url.
    *
-   * @param key The key of the parameter.
+   * @param key   The key of the parameter.
    * @param value The value of the parameter.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> addQueryParameter(String key, String value) {
+  public void addQueryParameter(String key, String value) {
     queryParameters.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
-    return this;
   }
 
   /**
    * Adds multiple query parameters to the url.
    *
    * @param parameters The parameters to add.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> addQueryParameters(Map<String, String> parameters) {
+  public void addQueryParameters(Map<String, String> parameters) {
     parameters.forEach(this::addQueryParameter);
-    return this;
   }
 
   /**
    * Adds a header to the request.
    *
-   * @param name The name of the header.
+   * @param name  The name of the header.
    * @param value The value of the header.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> addHeader(String name, String value) {
+  public void addHeader(String name, String value) {
     headers.put(name, value);
-    return this;
   }
 
   public Map<String, String> getHeaders() {
@@ -194,11 +186,9 @@ public class RestRequest<T> {
    * Sets if an authorization header should be included in this request.
    *
    * @param includeAuthorizationHeader Whether the authorization header should be included or not.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> includeAuthorizationHeader(boolean includeAuthorizationHeader) {
+  public void includeAuthorizationHeader(boolean includeAuthorizationHeader) {
     this.includeAuthorizationHeader = includeAuthorizationHeader;
-    return this;
   }
 
   /**
@@ -207,6 +197,7 @@ public class RestRequest<T> {
    * @param function A function which processes the rest response to the requested object.
    * @return A future which will contain the output of the function.
    */
+  @SuppressWarnings("unchecked")
   public CompletableFuture<T> execute(Function<RestRequestResult<T>, T> function) {
     api.getRatelimitManager().queueRequest(this);
     CompletableFuture<T> future = new CompletableFuture<>();

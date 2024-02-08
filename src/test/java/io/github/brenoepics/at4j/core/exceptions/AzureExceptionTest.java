@@ -1,7 +1,7 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
+import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.azure.BaseURL;
-import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.util.rest.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AzureExceptionTest<T> {
 
-  @Mock private AzureApiImpl<T> api;
+  @Mock private AzureApi api;
   @Mock private RestRequestResult<T> result;
   private RestRequestInfo request;
 

@@ -156,6 +156,6 @@ public class AzureApiBuilder {
       httpClient.connectTimeout(connectTimeout);
     }
 
-    return new AzureApiImpl<>(httpClient.build(), baseURL, subscriptionKey, subscriptionRegion);
+    return new AzureApiImpl(httpClient.build(), baseURL, subscriptionKey, subscriptionRegion);
   }
 }

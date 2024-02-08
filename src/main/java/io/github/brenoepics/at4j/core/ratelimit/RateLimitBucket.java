@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * This class represents a rate limit bucket for Azure API requests. It manages the rate limit for
  * each endpoint and major URL parameter combination.
  */
-public class RateLimitBucket<T> {
+public class RateLimitBucket<T, T4, T3> {
 
   private final ConcurrentLinkedQueue<RestRequest<T>> requestQueue = new ConcurrentLinkedQueue<>();
 
@@ -103,7 +103,7 @@ public class RateLimitBucket<T> {
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof RateLimitBucket) {
-      RateLimitBucket<T> otherBucket = (RateLimitBucket<T>) obj;
+      RateLimitBucket<T, T4, T3> otherBucket = (RateLimitBucket) obj;
       return endpointMatches(otherBucket.endpoint);
     }
     return false;

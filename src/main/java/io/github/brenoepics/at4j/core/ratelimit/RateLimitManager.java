@@ -1,13 +1,12 @@
 package io.github.brenoepics.at4j.core.ratelimit;
 
-import io.github.brenoepics.at4j.core.AzureApiImpl;
+import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
 import io.github.brenoepics.at4j.util.rest.RestRequestHandler;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfoImpl;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
-
 import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
 import java.util.HashSet;
@@ -16,20 +15,19 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-
 import org.apache.logging.log4j.Logger;
 
 /** This class manages rate-limits and keeps track of them. */
-public class RateLimitManager<T> {
+public class RateLimitManager<T, T3, T4> {
 
   /** The (logger) of this class. */
   private static final Logger logger = LoggerUtil.getLogger(RateLimitManager.class);
 
   /** The Azure API instance for this rate-limit manager. */
-  private final AzureApiImpl<T> api;
+  private final AzureApi api;
 
   /** All buckets. */
-  private final Set<RateLimitBucket<T>> buckets = new HashSet<>();
+  private final Set<RateLimitBucket<T, T4, T3>> buckets = new HashSet<>();
 
   /** The header for rate-limit remaining information. */
   public static final String RATE_LIMITED_HEADER = "X-RateLimit-Remaining";
@@ -48,7 +46,7 @@ public class RateLimitManager<T> {
    *
    * @param api The azure api instance for this rate-limit manager.
    */
-  public RateLimitManager(AzureApiImpl<T> api) {
+  public RateLimitManager(AzureApi api) {
     this.api = api;
   }
 
@@ -59,7 +57,7 @@ public class RateLimitManager<T> {
    * @param request The request to queue.
    */
   public void queueRequest(RestRequest<T> request) {
-    Optional<RateLimitBucket<T>> searchBucket = searchBucket(request);
+    Optional<RateLimitBucket<T, T4, T3>> searchBucket = searchBucket(request);
 
     if (searchBucket.isEmpty()) {
       return;
@@ -73,7 +71,7 @@ public class RateLimitManager<T> {
    *
    * @param bucket The bucket to submit the request to.
    */
-  private void submitRequest(RateLimitBucket<T> bucket) {
+  private void submitRequest(RateLimitBucket<T, T4, T3> bucket) {
     RestRequest<T> currentRequest = bucket.peekRequestFromQueue();
     RestRequestResult<T> result = null;
 
@@ -101,7 +99,7 @@ public class RateLimitManager<T> {
   RestRequestHandler<T> handleCurrentRequest(
       RestRequestResult<T> result,
       RestRequest<T> currentRequest,
-      RateLimitBucket<T> bucket,
+      RateLimitBucket<T, T4, T3> bucket,
       long responseTimestamp) {
 
     try {
@@ -141,7 +139,7 @@ public class RateLimitManager<T> {
    *
    * @param bucket The bucket to wait for.
    */
-  void waitUntilSpaceGetsAvailable(RateLimitBucket<T> bucket) {
+  void waitUntilSpaceGetsAvailable(RateLimitBucket<T, T4, T3> bucket) {
     int sleepTime = bucket.getTimeTillSpaceGetsAvailable();
     if (sleepTime > 0) {
       logger.debug(
@@ -166,7 +164,7 @@ public class RateLimitManager<T> {
    * @param bucket The bucket to retry the request for.
    * @return The request that was retried.
    */
-  RestRequest<T> retryRequest(RateLimitBucket<T> bucket) {
+  RestRequest<T> retryRequest(RateLimitBucket<T, T4, T3> bucket) {
     synchronized (buckets) {
       bucket.pollRequestFromQueue();
       RestRequest<T> request = bucket.peekRequestFromQueue();
@@ -199,9 +197,9 @@ public class RateLimitManager<T> {
    * @param request The request.
    * @return The bucket that fits to the request.
    */
-  Optional<RateLimitBucket<T>> searchBucket(RestRequest<T> request) {
+  Optional<RateLimitBucket<T, T4, T3>> searchBucket(RestRequest<T> request) {
     synchronized (buckets) {
-      RateLimitBucket<T> bucket = getMatchingBucket(request);
+      RateLimitBucket<T, T4, T3> bucket = getMatchingBucket(request);
 
       // Check if it is already in the queue, send not present
       if (bucket.peekRequestFromQueue() != null) {
@@ -220,7 +218,7 @@ public class RateLimitManager<T> {
    * @param request The request.
    * @return The bucket that matches the request.
    */
-  RateLimitBucket<T> getMatchingBucket(RestRequest<T> request) {
+  RateLimitBucket<T, T4, T3> getMatchingBucket(RestRequest<?> request) {
     synchronized (buckets) {
       return buckets.stream()
           .filter(b -> b.endpointMatches(request.getEndpoint()))
@@ -240,7 +238,7 @@ public class RateLimitManager<T> {
   void handleResponse(
       RestRequest<T> request,
       RestRequestResult<T> result,
-      RateLimitBucket<T> bucket,
+      RateLimitBucket<T, T4, T3> bucket,
       long responseTimestamp) {
     try {
       HttpResponse<String> response = result.getResponse();
@@ -279,7 +277,7 @@ public class RateLimitManager<T> {
    * @param headers The headers of the response.
    * @param bucket The bucket the request belongs to.
    */
-  private void handleCloudFlare(HttpHeaders headers, RateLimitBucket<T> bucket) {
+  private void handleCloudFlare(HttpHeaders headers, RateLimitBucket<T, T4, T3> bucket) {
     logger.warn(
         "Hit a CloudFlare API ban! {}",
         "You were sending a very large amount of invalid requests.");
@@ -300,7 +298,7 @@ public class RateLimitManager<T> {
   private void handleRateLimit(
       CompletableFuture<RestRequestResult<T>> request,
       RestRequestResult<T> result,
-      RateLimitBucket<T> bucket,
+      RateLimitBucket<T, T4, T3> bucket,
       HttpHeaders headers) {
 
     // Check if we didn't already complete it exceptionally.

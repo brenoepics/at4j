@@ -4,7 +4,6 @@ package io.github.brenoepics.at4j.util.rest;
  * This class is responsible for handling REST requests. It stores the result of a REST request, the
  * current request being processed, and the timestamp of the response.
  *
- * @param <T> the type of the request
  */
 public class RestRequestHandler<T> {
   // The result of the REST request

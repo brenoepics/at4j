@@ -213,7 +213,6 @@ public enum RestRequestResultErrorCode {
           + " from request header X-ClientTraceId.",
       ServiceUnavailableException::new,
       RestRequestHttpResponseCode.SERVICE_UNAVAILABLE);
-  ;
 
   /** A map for retrieving the enum instances by code. */
   private static final Map<String, RestRequestResultErrorCode> instanceByCode;
@@ -255,9 +254,9 @@ public enum RestRequestResultErrorCode {
    *
    * @param code The actual numeric close code.
    * @param meaning The textual meaning.
-   * @param azureExceptionInstantiation The azure exception instantiator that produces instances to
+   * @param azureExceptionInstantiation The azure exception instantiating that produces instances to
    *     throw for this kind of result code.
-   * @param responseCode The response code for which the given instantiator should be used.
+   * @param responseCode The response code for which the given instantiating should be used.
    */
   RestRequestResultErrorCode(
       int code,
@@ -312,9 +311,9 @@ public enum RestRequestResultErrorCode {
   }
 
   /**
-   * Gets the response code for which the given instantiator should be used.
+   * Gets the response code for which the given instantiating should be used.
    *
-   * @return The response code for which the given instantiator should be used.
+   * @return The response code for which the given instantiating should be used.
    */
   public RestRequestHttpResponseCode getResponseCode() {
     return responseCode;

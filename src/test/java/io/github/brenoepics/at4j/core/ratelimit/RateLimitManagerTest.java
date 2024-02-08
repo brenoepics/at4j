@@ -3,6 +3,7 @@ package io.github.brenoepics.at4j.core.ratelimit;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
@@ -16,10 +17,10 @@ import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RateLimitManagerTest<T> {
-  private AzureApiImpl<T> api;
+class RateLimitManagerTest<T, T3, T4> {
+  private AzureApi api;
   private RestRequest<T> request;
-  private RateLimitManager<T> rateLimitManager;
+  private RateLimitManager<T, T3, T4> rateLimitManager;
 
   @BeforeEach
   public void setUp() {
@@ -38,13 +39,13 @@ class RateLimitManagerTest<T> {
   @Test
   void testSearchBucket() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
-    Optional<RateLimitBucket<T>> bucket = rateLimitManager.searchBucket(request);
+    Optional<RateLimitBucket<T, T4, T3>> bucket = rateLimitManager.searchBucket(request);
     assertTrue(bucket.isPresent());
   }
 
   @Test
   void testWaitUntilSpaceGetsAvailable() {
-    RateLimitBucket<T> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     bucket.setRateLimitRemaining(1000);
     bucket.setRateLimitResetTimestamp(System.currentTimeMillis() + 1000);
     assertDoesNotThrow(() -> rateLimitManager.waitUntilSpaceGetsAvailable(bucket));
@@ -73,7 +74,7 @@ class RateLimitManagerTest<T> {
     HttpHeaders headers = mock(HttpHeaders.class);
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER)).thenReturn(Optional.of("1"));
     when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER)).thenReturn(Optional.of("0"));
-    RateLimitBucket<T> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     RestRequestResult<T> result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(200);
@@ -95,7 +96,7 @@ class RateLimitManagerTest<T> {
   @Test
   void searchBucketShouldReturnBucketWhenBucketMatchesRequest() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
-    Optional<RateLimitBucket<T>> bucket = rateLimitManager.searchBucket(request);
+    Optional<RateLimitBucket<T, T4, T3>> bucket = rateLimitManager.searchBucket(request);
     assertTrue(bucket.isPresent());
   }
 
@@ -104,7 +105,7 @@ class RateLimitManagerTest<T> {
     HttpHeaders headers = mock(HttpHeaders.class);
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER)).thenReturn(Optional.of("1"));
     when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER)).thenReturn(Optional.of("0"));
-    RateLimitBucket<T> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     RestRequestResult<T> result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(200);
@@ -122,7 +123,7 @@ class RateLimitManagerTest<T> {
     when(headers.firstValue("Via")).thenReturn(Optional.empty());
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER_CLOUDFLARE))
         .thenReturn(Optional.of("10"));
-    RateLimitBucket<T> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     RestRequestResult<T> result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(429);

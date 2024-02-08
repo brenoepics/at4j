@@ -1,6 +1,6 @@
 package io.github.brenoepics.at4j.util.rest;
 
-import io.github.brenoepics.at4j.core.AzureApiImpl;
+import io.github.brenoepics.at4j.AzureApi;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 class RestRequestTest<T> {
 
-  @Mock private AzureApiImpl<T> api;
+  @Mock private AzureApi api;
   @Mock private RestMethod method;
   @Mock private RestEndpoint endpoint;
 
@@ -29,6 +29,7 @@ class RestRequestTest<T> {
     restRequest.addQueryParameter("to", "pt");
     restRequest.addQueryParameter("to", "es");
     restRequest.addQueryParameter("to", "fr");
+    restRequest.includeAuthorizationHeader(false);
     Assertions.assertTrue(restRequest.getQueryParameters().containsKey("to"));
     Assertions.assertTrue(
         restRequest.getQueryParameters().get("to").containsAll(Arrays.asList("pt", "es", "fr")));

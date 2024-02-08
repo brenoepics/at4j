@@ -1,15 +1,12 @@
 package io.github.brenoepics.at4j.core;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.core.ratelimit.RateLimitManager;
 import io.github.brenoepics.at4j.core.thread.ThreadPool;
 import io.github.brenoepics.at4j.core.thread.ThreadPoolImpl;
-import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
@@ -18,9 +15,7 @@ import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
-
 import java.net.http.HttpClient;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -29,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
  * This class is an implementation of the AzureApi interface. It provides methods to interact with
  * Azure's translation API.
  */
-public class AzureApiImpl<T> implements AzureApi {
+public class AzureApiImpl implements AzureApi {
 
   /** The Http Client for this instance. */
   private final HttpClient httpClient;
@@ -47,7 +42,7 @@ public class AzureApiImpl<T> implements AzureApi {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   /** The ratelimit manager for this resource. */
-  private final RateLimitManager<T> ratelimitManager = new RateLimitManager<>(this);
+  private final RateLimitManager ratelimitManager = new RateLimitManager(this);
 
   /** The thread pool which is used internally. */
   private final ThreadPoolImpl threadPool = new ThreadPoolImpl();
@@ -143,6 +138,7 @@ public class AzureApiImpl<T> implements AzureApi {
    *
    * @return HttpClient - The used HttpClient.
    */
+  @Override
   public HttpClient getHttpClient() {
     return this.httpClient;
   }
@@ -152,6 +148,7 @@ public class AzureApiImpl<T> implements AzureApi {
    *
    * @return ObjectMapper - The used ObjectMapper.
    */
+  @Override
   public ObjectMapper getObjectMapper() {
     return objectMapper;
   }
@@ -161,7 +158,8 @@ public class AzureApiImpl<T> implements AzureApi {
    *
    * @return RateLimitManager - The used RateLimitManager.
    */
-  public RateLimitManager<T> getRatelimitManager() {
+  @Override
+  public RateLimitManager getRatelimitManager() {
     return ratelimitManager;
   }
 }
