@@ -9,17 +9,17 @@ import org.mockito.Mock;
 
 import java.util.Arrays;
 
-class RestRequestTest<T> {
+class RestRequestTest {
 
   @Mock private AzureApi api;
   @Mock private RestMethod method;
   @Mock private RestEndpoint endpoint;
 
-  private RestRequest<T> restRequest;
+  private RestRequest restRequest;
 
   @BeforeEach
   void setUp() {
-    restRequest = new RestRequest<>(api, method, endpoint);
+    restRequest = new RestRequest(api, method, endpoint);
   }
 
   @Test

@@ -24,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
  * This class is an implementation of the AzureApi interface. It provides methods to interact with
  * Azure's translation API.
  */
-public class AzureApiImpl implements AzureApi {
+public class AzureApiImpl<T> implements AzureApi {
 
   /** The Http Client for this instance. */
   private final HttpClient httpClient;
@@ -42,7 +42,7 @@ public class AzureApiImpl implements AzureApi {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   /** The ratelimit manager for this resource. */
-  private final RateLimitManager ratelimitManager = new RateLimitManager(this);
+  private final RateLimitManager<T, ?, ?> ratelimitManager = new RateLimitManager<>(this);
 
   /** The thread pool which is used internally. */
   private final ThreadPoolImpl threadPool = new ThreadPoolImpl();
@@ -89,8 +89,7 @@ public class AzureApiImpl implements AzureApi {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<TranslationResponse>> request =
-        new RestRequest<>(this, RestMethod.POST, RestEndpoint.TRANSLATE);
+    RestRequest request = new RestRequest(this, RestMethod.POST, RestEndpoint.TRANSLATE);
     request.setBody(params.getBody());
     request.addQueryParameters(params.getQueryParameters());
 
@@ -107,8 +106,7 @@ public class AzureApiImpl implements AzureApi {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<DetectResponse>> request =
-        new RestRequest<>(this, RestMethod.POST, RestEndpoint.DETECT);
+    RestRequest request = new RestRequest(this, RestMethod.POST, RestEndpoint.DETECT);
     request.setBody(params.getBody());
 
     return request.execute(params::handleResponse);
@@ -117,8 +115,7 @@ public class AzureApiImpl implements AzureApi {
   @Override
   public CompletableFuture<Optional<Collection<Language>>> getAvailableLanguages(
       AvailableLanguagesParams params) {
-    RestRequest<Optional<Collection<Language>>> request =
-        new RestRequest<>(this, RestMethod.GET, RestEndpoint.LANGUAGES, false);
+    RestRequest request = new RestRequest(this, RestMethod.GET, RestEndpoint.LANGUAGES, false);
     request.addQueryParameter("scope", params.getScope());
 
     if (params.getSourceLanguage() != null) {
@@ -158,8 +155,9 @@ public class AzureApiImpl implements AzureApi {
    *
    * @return RateLimitManager - The used RateLimitManager.
    */
+  @SuppressWarnings("unchecked")
   @Override
-  public RateLimitManager getRatelimitManager() {
+  public RateLimitManager<T, ?, ?> getRatelimitManager() {
     return ratelimitManager;
   }
 }

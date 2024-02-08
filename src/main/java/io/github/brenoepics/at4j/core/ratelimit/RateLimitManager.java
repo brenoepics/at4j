@@ -56,7 +56,7 @@ public class RateLimitManager<T, T3, T4> {
    *
    * @param request The request to queue.
    */
-  public void queueRequest(RestRequest<T> request) {
+  public void queueRequest(RestRequest request) {
     Optional<RateLimitBucket<T, T4, T3>> searchBucket = searchBucket(request);
 
     if (searchBucket.isEmpty()) {
@@ -72,13 +72,13 @@ public class RateLimitManager<T, T3, T4> {
    * @param bucket The bucket to submit the request to.
    */
   private void submitRequest(RateLimitBucket<T, T4, T3> bucket) {
-    RestRequest<T> currentRequest = bucket.peekRequestFromQueue();
-    RestRequestResult<T> result = null;
+    RestRequest currentRequest = bucket.peekRequestFromQueue();
+    RestRequestResult result = null;
 
     long responseTimestamp = System.currentTimeMillis();
 
     while (currentRequest != null) {
-      RestRequestHandler<T> newResult =
+      RestRequestHandler newResult =
           handleCurrentRequest(result, currentRequest, bucket, responseTimestamp);
 
       result = newResult.getResult();
@@ -96,9 +96,9 @@ public class RateLimitManager<T, T3, T4> {
    * @param responseTimestamp The timestamp directly after the response finished.
    * @return The result of the current request.
    */
-  RestRequestHandler<T> handleCurrentRequest(
-      RestRequestResult<T> result,
-      RestRequest<T> currentRequest,
+  RestRequestHandler handleCurrentRequest(
+      RestRequestResult result,
+      RestRequest currentRequest,
       RateLimitBucket<T, T4, T3> bucket,
       long responseTimestamp) {
 
@@ -131,7 +131,7 @@ public class RateLimitManager<T, T3, T4> {
       }
     }
 
-    return new RestRequestHandler<>(result, currentRequest, responseTimestamp);
+    return new RestRequestHandler(result, currentRequest, responseTimestamp);
   }
 
   /**
@@ -164,10 +164,10 @@ public class RateLimitManager<T, T3, T4> {
    * @param bucket The bucket to retry the request for.
    * @return The request that was retried.
    */
-  RestRequest<T> retryRequest(RateLimitBucket<T, T4, T3> bucket) {
+  RestRequest retryRequest(RateLimitBucket<T, T4, T3> bucket) {
     synchronized (buckets) {
       bucket.pollRequestFromQueue();
-      RestRequest<T> request = bucket.peekRequestFromQueue();
+      RestRequest request = bucket.peekRequestFromQueue();
       if (request == null) {
         buckets.remove(bucket);
       }
@@ -182,8 +182,7 @@ public class RateLimitManager<T, T3, T4> {
    * @param t The exception to map.
    * @return The mapped exception.
    */
-  @SuppressWarnings("unchecked")
-  private RestRequestResult<T> mapAzureException(Throwable t) {
+  private RestRequestResult mapAzureException(Throwable t) {
     return ((AzureException) t)
         .getResponse()
         .map(RestRequestResponseInfoImpl.class::cast)
@@ -197,7 +196,7 @@ public class RateLimitManager<T, T3, T4> {
    * @param request The request.
    * @return The bucket that fits to the request.
    */
-  Optional<RateLimitBucket<T, T4, T3>> searchBucket(RestRequest<T> request) {
+  Optional<RateLimitBucket<T, T4, T3>> searchBucket(RestRequest request) {
     synchronized (buckets) {
       RateLimitBucket<T, T4, T3> bucket = getMatchingBucket(request);
 
@@ -218,7 +217,7 @@ public class RateLimitManager<T, T3, T4> {
    * @param request The request.
    * @return The bucket that matches the request.
    */
-  RateLimitBucket<T, T4, T3> getMatchingBucket(RestRequest<?> request) {
+  RateLimitBucket<T, T4, T3> getMatchingBucket(RestRequest request) {
     synchronized (buckets) {
       return buckets.stream()
           .filter(b -> b.endpointMatches(request.getEndpoint()))
@@ -236,8 +235,8 @@ public class RateLimitManager<T, T3, T4> {
    * @param responseTimestamp The timestamp directly after the response finished.
    */
   void handleResponse(
-      RestRequest<T> request,
-      RestRequestResult<T> result,
+      RestRequest request,
+      RestRequestResult result,
       RateLimitBucket<T, T4, T3> bucket,
       long responseTimestamp) {
     try {
@@ -296,8 +295,8 @@ public class RateLimitManager<T, T3, T4> {
    * @param headers The headers of the response.
    */
   private void handleRateLimit(
-      CompletableFuture<RestRequestResult<T>> request,
-      RestRequestResult<T> result,
+      CompletableFuture<RestRequestResult> request,
+      RestRequestResult result,
       RateLimitBucket<T, T4, T3> bucket,
       HttpHeaders headers) {
 

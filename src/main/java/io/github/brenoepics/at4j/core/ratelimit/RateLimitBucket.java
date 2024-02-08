@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class RateLimitBucket<T, T4, T3> {
 
-  private final ConcurrentLinkedQueue<RestRequest<T>> requestQueue = new ConcurrentLinkedQueue<>();
+  private final ConcurrentLinkedQueue<RestRequest> requestQueue = new ConcurrentLinkedQueue<>();
 
   private final RestEndpoint endpoint;
 
@@ -31,7 +31,7 @@ public class RateLimitBucket<T, T4, T3> {
    *
    * @param request The request to add.
    */
-  public void addRequestToQueue(RestRequest<T> request) {
+  public void addRequestToQueue(RestRequest request) {
     requestQueue.add(request);
   }
 
@@ -45,7 +45,7 @@ public class RateLimitBucket<T, T4, T3> {
    *
    * @return The peeked request.
    */
-  public RestRequest<T> peekRequestFromQueue() {
+  public RestRequest peekRequestFromQueue() {
     return requestQueue.peek();
   }
 

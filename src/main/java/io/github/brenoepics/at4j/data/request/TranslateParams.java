@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * profanity, text type, alignment, sentence length, source language, target languages, and a
  * fallback language.
  */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class TranslateParams {
   // The text to be translated
   private LinkedHashMap<Integer, String> toTranslate;
@@ -346,7 +347,7 @@ public class TranslateParams {
    *     'translations'.
    */
   public Optional<TranslationResponse> handleResponse(
-      RestRequestResult<Optional<TranslationResponse>> response) {
+      RestRequestResult response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
     JsonNode jsonBody = response.getJsonBody();

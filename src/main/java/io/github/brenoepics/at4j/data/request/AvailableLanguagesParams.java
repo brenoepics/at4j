@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 /** This class represents the parameters for available languages. */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class AvailableLanguagesParams {
   // List of scopes for the languages
   private List<LanguageScope> scope = List.of(LanguageScope.TRANSLATION);
@@ -64,7 +65,7 @@ public class AvailableLanguagesParams {
    * @param response The response to handle.
    * @return An optional containing the collection of languages if the response was successful.
    */
-  public Optional<Collection<Language>> handleResponse(RestRequestResult<Optional<Collection<Language>>> response) {
+  public Optional<Collection<Language>> handleResponse(RestRequestResult response) {
     if (response.getJsonBody().isNull() || !response.getJsonBody().has("translation"))
       return Optional.empty();
 

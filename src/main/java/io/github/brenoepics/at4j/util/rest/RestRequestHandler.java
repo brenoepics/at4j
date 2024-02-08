@@ -5,11 +5,11 @@ package io.github.brenoepics.at4j.util.rest;
  * current request being processed, and the timestamp of the response.
  *
  */
-public class RestRequestHandler<T> {
+public class RestRequestHandler {
   // The result of the REST request
-  private final RestRequestResult<T> result;
+  private final RestRequestResult result;
   // The current request being processed
-  private final RestRequest<T> currentRequest;
+  private final RestRequest currentRequest;
   // The timestamp of the response
   private final long responseTimestamp;
 
@@ -22,7 +22,7 @@ public class RestRequestHandler<T> {
    * @param responseTimestamp the timestamp of the response
    */
   public RestRequestHandler(
-      RestRequestResult<T> result, RestRequest<T> currentRequest, long responseTimestamp) {
+      RestRequestResult result, RestRequest currentRequest, long responseTimestamp) {
     this.result = result;
     this.currentRequest = currentRequest;
     this.responseTimestamp = responseTimestamp;
@@ -33,7 +33,7 @@ public class RestRequestHandler<T> {
    *
    * @return the result of the REST request
    */
-  public RestRequestResult<T> getResult() {
+  public RestRequestResult getResult() {
     return result;
   }
 
@@ -42,7 +42,7 @@ public class RestRequestHandler<T> {
    *
    * @return the current request being processed
    */
-  public RestRequest<T> getCurrentRequest() {
+  public RestRequest getCurrentRequest() {
     return currentRequest;
   }
 

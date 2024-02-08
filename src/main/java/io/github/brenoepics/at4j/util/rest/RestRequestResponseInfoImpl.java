@@ -4,10 +4,10 @@ import io.github.brenoepics.at4j.AzureApi;
 import java.util.Optional;
 
 /** The implementation of {@link RestRequestResponseInfo}. */
-public class RestRequestResponseInfoImpl<T> implements RestRequestResponseInfo {
+public class RestRequestResponseInfoImpl implements RestRequestResponseInfo {
 
   private final RestRequestInfo request;
-  private final RestRequestResult<T> restRequestResult;
+  private final RestRequestResult restRequestResult;
 
   /**
    * Creates a new rest request response information.
@@ -16,7 +16,7 @@ public class RestRequestResponseInfoImpl<T> implements RestRequestResponseInfo {
    * @param restRequestResult The result of the response.
    */
   public RestRequestResponseInfoImpl(
-          RestRequestInfo request, RestRequestResult<T> restRequestResult) {
+          RestRequestInfo request, RestRequestResult restRequestResult) {
     this.request = request;
     this.restRequestResult = restRequestResult;
   }
@@ -26,7 +26,7 @@ public class RestRequestResponseInfoImpl<T> implements RestRequestResponseInfo {
    *
    * @return The rest request result.
    */
-  public RestRequestResult<T> getRestRequestResult() {
+  public RestRequestResult getRestRequestResult() {
     return restRequestResult;
   }
 

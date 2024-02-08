@@ -107,7 +107,7 @@ public interface AzureApi {
    *
    * @return RateLimitManager - The ratelimit manager.
    */
-		RateLimitManager getRatelimitManager();
+  <T, T3, T4> RateLimitManager<T, T3, T4> getRatelimitManager();
 
   /**
    * Gets the HttpClient.

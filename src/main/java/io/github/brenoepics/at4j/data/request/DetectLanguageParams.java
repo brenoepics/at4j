@@ -14,6 +14,7 @@ import java.util.*;
  * This class represents the parameters for a language detection request. It contains a single
  * field, 'text', which is the text to be analyzed for language detection.
  */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class DetectLanguageParams {
 
   // The text to be analyzed for language detection
@@ -88,7 +89,7 @@ public class DetectLanguageParams {
    *     'language'
    */
   public Optional<DetectResponse> handleResponse(
-      RestRequestResult<Optional<DetectResponse>> response) {
+      RestRequestResult response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
     JsonNode jsonBody = response.getJsonBody();

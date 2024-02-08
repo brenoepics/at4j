@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class AzureExceptionTest<T> {
 
   @Mock private AzureApi api;
-  @Mock private RestRequestResult<T> result;
+  @Mock private RestRequestResult result;
   private RestRequestInfo request;
 
   @BeforeEach
@@ -50,7 +50,7 @@ class AzureExceptionTest<T> {
   @Test
   void responseInformationIsRetained() {
     RestRequestResponseInfo response =
-        new RestRequestResponseInfoImpl<>(request, result);
+        new RestRequestResponseInfoImpl(request, result);
     AzureException exception = new AzureException(null, null, null, response);
 
     assertEquals(Optional.of(response), exception.getResponse());

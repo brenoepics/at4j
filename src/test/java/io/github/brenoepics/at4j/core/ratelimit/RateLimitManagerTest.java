@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 
 class RateLimitManagerTest<T, T3, T4> {
   private AzureApi api;
-  private RestRequest<T> request;
+  private RestRequest request;
   private RateLimitManager<T, T3, T4> rateLimitManager;
 
   @BeforeEach
@@ -55,7 +55,7 @@ class RateLimitManagerTest<T, T3, T4> {
   void testRetryRequest() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
     rateLimitManager.searchBucket(request);
-    RestRequest<T> retriedRequest =
+    RestRequest retriedRequest =
         rateLimitManager.retryRequest(new RateLimitBucket<>(RestEndpoint.LANGUAGES));
     assertNull(retriedRequest);
   }
@@ -64,7 +64,7 @@ class RateLimitManagerTest<T, T3, T4> {
   void retryRequestWhenBucketIsEmpty() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
     rateLimitManager.searchBucket(request);
-    RestRequest<T> retriedRequest =
+    RestRequest retriedRequest =
         rateLimitManager.retryRequest(new RateLimitBucket<>(RestEndpoint.LANGUAGES));
     assertNull(retriedRequest);
   }
@@ -75,11 +75,11 @@ class RateLimitManagerTest<T, T3, T4> {
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER)).thenReturn(Optional.of("1"));
     when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER)).thenReturn(Optional.of("0"));
     RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
-    RestRequestResult<T> result = mock(RestRequestResult.class);
+    RestRequestResult result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(200);
     when(result.getResponse().headers()).thenReturn(headers);
-    CompletableFuture<RestRequestResult<T>> future = new CompletableFuture<>();
+    CompletableFuture<RestRequestResult> future = new CompletableFuture<>();
     future.complete(result);
     when(request.getResult()).thenReturn(future);
     rateLimitManager.handleResponse(request, result, bucket, System.currentTimeMillis());
@@ -106,11 +106,11 @@ class RateLimitManagerTest<T, T3, T4> {
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER)).thenReturn(Optional.of("1"));
     when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER)).thenReturn(Optional.of("0"));
     RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
-    RestRequestResult<T> result = mock(RestRequestResult.class);
+    RestRequestResult result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(200);
     when(result.getResponse().headers()).thenReturn(headers);
-    CompletableFuture<RestRequestResult<T>> future = new CompletableFuture<>();
+    CompletableFuture<RestRequestResult> future = new CompletableFuture<>();
     future.complete(result);
     when(request.getResult()).thenReturn(future);
     rateLimitManager.handleResponse(request, result, bucket, System.currentTimeMillis());
@@ -124,7 +124,7 @@ class RateLimitManagerTest<T, T3, T4> {
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER_CLOUDFLARE))
         .thenReturn(Optional.of("10"));
     RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
-    RestRequestResult<T> result = mock(RestRequestResult.class);
+    RestRequestResult result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(429);
     when(result.getResponse().headers()).thenReturn(headers);

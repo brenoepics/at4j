@@ -18,7 +18,7 @@ import java.util.function.Function;
 import org.apache.logging.log4j.Logger;
 
 /** This class is used to wrap a rest request. */
-public class RestRequest<T> {
+public class RestRequest {
 
   /** The (logger) of this class. */
   private static final Logger logger = LoggerUtil.getLogger(RestRequest.class);
@@ -32,7 +32,7 @@ public class RestRequest<T> {
   private final Map<String, String> headers = new HashMap<>();
   private volatile String body = null;
 
-  private final CompletableFuture<RestRequestResult<T>> result = new CompletableFuture<>();
+  private final CompletableFuture<RestRequestResult> result = new CompletableFuture<>();
 
   /** The origin of the rest request. */
   private final Exception origin;
@@ -167,7 +167,7 @@ public class RestRequest<T> {
    * @param body The body of the request.
    * @return The current instance to chain call methods.
    */
-  public RestRequest<T> setBody(JsonNode body) {
+  public RestRequest setBody(JsonNode body) {
     return setBody(body.toString());
   }
 
@@ -177,7 +177,7 @@ public class RestRequest<T> {
    * @param body The body of the request.
    * @return The current instance to chain call methods.
    */
-  public RestRequest<T> setBody(String body) {
+  public RestRequest setBody(String body) {
     this.body = body;
     return this;
   }
@@ -197,8 +197,7 @@ public class RestRequest<T> {
    * @param function A function which processes the rest response to the requested object.
    * @return A future which will contain the output of the function.
    */
-  @SuppressWarnings("unchecked")
-  public CompletableFuture<T> execute(Function<RestRequestResult<T>, T> function) {
+  public <T> CompletableFuture<T> execute(Function<RestRequestResult, T> function) {
     api.getRatelimitManager().queueRequest(this);
     CompletableFuture<T> future = new CompletableFuture<>();
     result.whenComplete(
@@ -221,7 +220,7 @@ public class RestRequest<T> {
    *
    * @return Gets the result of this request.
    */
-  public CompletableFuture<RestRequestResult<T>> getResult() {
+  public CompletableFuture<RestRequestResult> getResult() {
     return result;
   }
 
@@ -252,7 +251,7 @@ public class RestRequest<T> {
    * @throws AzureException Thrown in case of an error while requesting azure.
    * @throws IOException Thrown if an error occurs while reading the response.
    */
-  public RestRequestResult<T> executeBlocking()
+  public RestRequestResult executeBlocking()
       throws AzureException, IOException, URISyntaxException {
     URI fullUrl = endpoint.getHttpUrl(api.getBaseURL(), queryParameters);
     HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(fullUrl);
@@ -276,14 +275,14 @@ public class RestRequest<T> {
         getApi()
             .getHttpClient()
             .sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
-    RestRequestResult<T> responseResult = handleResponse(fullUrl, response.join());
+    RestRequestResult responseResult = handleResponse(fullUrl, response.join());
     result.complete(responseResult);
     return responseResult;
   }
 
-  private RestRequestResult<T> handleResponse(URI fullUrl, HttpResponse<String> response)
+  private RestRequestResult handleResponse(URI fullUrl, HttpResponse<String> response)
       throws IOException, AzureException {
-    RestRequestResult<T> requestResult = new RestRequestResult<>(this, response);
+    RestRequestResult requestResult = new RestRequestResult(this, response);
     String bodyString = requestResult.getStringBody().orElse("empty");
     logger.debug(
         "Sent {} request to {} and received status code {} with body {}",
@@ -299,11 +298,11 @@ public class RestRequest<T> {
     return requestResult;
   }
 
-  private RestRequestResult<T> handleError(int resultCode, RestRequestResult<T> result)
+  private RestRequestResult handleError(int resultCode, RestRequestResult result)
       throws AzureException {
     RestRequestInfo requestInformation = asRestRequestInformation();
     RestRequestResponseInfo responseInformation =
-        new RestRequestResponseInfoImpl<>(requestInformation, result);
+        new RestRequestResponseInfoImpl(requestInformation, result);
     Optional<RestRequestHttpResponseCode> responseCodeOptional =
         RestRequestHttpResponseCode.fromCode(resultCode);
 
