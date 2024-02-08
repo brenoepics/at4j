@@ -192,6 +192,15 @@ public class RestRequest {
   }
 
   /**
+   * Returns if an authorization header should be included in this request.
+   *
+   * @return Whether the authorization header should be included or not.
+   */
+  public boolean isIncludeAuthorizationHeader() {
+    return includeAuthorizationHeader;
+  }
+
+  /**
    * Executes the request. This will automatically retry if we hit a ratelimit.
    *
    * @param function A function which processes the rest response to the requested object.

@@ -51,4 +51,42 @@ class RestRequestTest {
     Assertions.assertTrue(restRequest.getBody().isPresent());
     Assertions.assertEquals("bodyContent", restRequest.getBody().get());
   }
+
+  @Test
+  @DisplayName("Should include authorization header correctly")
+  void shouldIncludeAuthorizationHeader() {
+    restRequest.includeAuthorizationHeader(true);
+    Assertions.assertTrue(restRequest.isIncludeAuthorizationHeader());
+  }
+
+  @Test
+  @DisplayName("Should handle empty query parameters correctly")
+  void shouldHandleEmptyQueryParameters() {
+    restRequest.getQueryParameters().clear();
+    Assertions.assertTrue(restRequest.getQueryParameters().isEmpty());
+  }
+
+  @Test
+  @DisplayName("Should handle multiple query parameters correctly")
+  void shouldHandleMultipleQueryParameters() {
+    restRequest.addQueryParameter("param1", "value1");
+    restRequest.addQueryParameter("param2", "value2");
+    Assertions.assertTrue(restRequest.getQueryParameters().containsKey("param1"));
+    Assertions.assertTrue(restRequest.getQueryParameters().containsKey("param2"));
+  }
+
+  @Test
+  @DisplayName("Should handle empty headers correctly")
+  void shouldHandleEmptyHeaders() {
+    restRequest.getHeaders().clear();
+    Assertions.assertTrue(restRequest.getHeaders().isEmpty());
+  }
+
+  @Test
+  @DisplayName("Should handle multiple headers correctly")
+  void shouldHandleMultipleHeaders() {
+    restRequest.addHeader("header1", "value1");
+    restRequest.addHeader("header2", "value2");
+    Assertions.assertEquals(2, restRequest.getHeaders().size());
+  }
 }
