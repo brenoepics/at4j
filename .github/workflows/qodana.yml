@@ -7,7 +7,6 @@ on:
       - main
       - 'releases/*'
 
-version: 1.0
 jobs:
   qodana:
     runs-on: ubuntu-latest
