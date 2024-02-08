@@ -57,6 +57,23 @@ public class RestRequest<T> {
   }
 
   /**
+   * Creates a new instance of this class.
+   * @param api The api which will be used to execute the request.
+   * @param method The http method of the request.
+   * @param endpoint The endpoint to which the request should be sent.
+   * @param includeAuthorizationHeader Whether the authorization header should be included or not.
+   */
+  public RestRequest(AzureApi api, RestMethod method, RestEndpoint endpoint, boolean includeAuthorizationHeader) {
+    this.api = (AzureApiImpl) api;
+    this.method = method;
+    this.endpoint = endpoint;
+    addQueryParameter("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
+    this.includeAuthorizationHeader = includeAuthorizationHeader;
+
+    this.origin = new Exception("origin of RestRequest call");
+  }
+
+  /**
    * Gets the api which is used for this request.
    *
    * @return The api which is used for this request.
@@ -119,6 +136,17 @@ public class RestRequest<T> {
    */
   public RestRequest<T> addQueryParameter(String key, String value) {
     queryParameters.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
+    return this;
+  }
+
+  /**
+   * Adds multiple query parameters to the url.
+   *
+   * @param parameters The parameters to add.
+   * @return The current instance to chain call methods.
+   */
+  public RestRequest<T> addQueryParameters(Map<String, String> parameters) {
+    parameters.forEach(this::addQueryParameter);
     return this;
   }
 

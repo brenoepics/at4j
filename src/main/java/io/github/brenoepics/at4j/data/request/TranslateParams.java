@@ -11,7 +11,7 @@ import io.github.brenoepics.at4j.data.request.optional.ProfanityAction;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import io.github.brenoepics.at4j.data.request.optional.TextType;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
-import io.github.brenoepics.at4j.data.response.TranslationResult;
+import io.github.brenoepics.at4j.data.TranslationResult;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
 import java.util.*;
@@ -202,38 +202,83 @@ public class TranslateParams {
     return this;
   }
 
+  /**
+   * Returns the text to be translated.
+   *
+   * @return The text to be translated.
+   */
   public Map<Integer, String> getTexts() {
     return toTranslate;
   }
 
+  /**
+   * Returns if the alignment should be included in the response.
+   *
+   * @return Whether to include the alignment string in the response.
+   */
   public Boolean getIncludeAlignment() {
     return includeAlignment;
   }
 
+  /**
+   * Returns if the sentence length should be included in the response.
+   *
+   * @return Whether to include the number of characters in each translated sentence.
+   */
   public Boolean getIncludeSentenceLength() {
     return includeSentenceLength;
   }
 
+  /**
+   * Returns the type of the text to be translated.
+   *
+   * @return The type of the text to be translated.
+   */
   public TextType getTextType() {
     return textType;
   }
 
+  /**
+   * Returns the action to be taken on profanities in the text.
+   *
+   * @return Possible values are: Marked, Deleted or NoAction (default).
+   */
   public ProfanityAction getProfanityAction() {
     return profanityAction;
   }
 
+  /**
+   * Returns the marker to be used for profanities in the text.
+   *
+   * @return Possible values are: Asterisk (default) or Tag.
+   */
   public ProfanityMarker getProfanityMarker() {
     return profanityMarker;
   }
 
+  /**
+   * Gets the source language of the text.
+   *
+   * @return The source language of the text.
+   */
   public String getSourceLanguage() {
     return sourceLanguage;
   }
 
+  /**
+   * Returns the target languages for the translation.
+   *
+   * @return The target languages for the translation.
+   */
   public Collection<String> getTargetLanguages() {
     return targetLanguages;
   }
 
+  /**
+   * Returns the suggested language if the source language can't be identified.
+   *
+   * @return The suggested language if the source language can't be identified.
+   */
   public String getSuggestedFromLanguage() {
     return suggestedFromLanguage;
   }
@@ -290,36 +335,54 @@ public class TranslateParams {
     return body;
   }
 
-  public Optional<TranslationResponse> handleTranslations(
+  /**
+   * Handles the response from the API. If the response is null, or the JSON body is null, or the
+   * JSON body does not contain a field 'translations', it returns an empty Optional. Otherwise, it
+   * creates a TranslationResponse object from the JSON body and returns it as an Optional.
+   *
+   * @param response The response from the API.
+   * @return An Optional containing the TranslationResponse object, or an empty Optional if the
+   *     response is null, or the JSON body is null, or the JSON body does not contain a field
+   *     'translations'.
+   */
+  public Optional<TranslationResponse> handleResponse(
       RestRequestResult<Optional<TranslationResponse>> response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
-
+    JsonNode jsonBody = response.getJsonBody();
     TranslationResponse responses = new TranslationResponse();
+
     getTexts()
         .forEach(
             (index, baseText) -> {
-              JsonNode jsonNode = response.getJsonBody().get(index - 1);
-              if (!jsonNode.has("translations")) return;
-
-              Collection<Translation> translations = new ArrayList<>();
-              jsonNode
-                  .get("translations")
-                  .forEach(node -> translations.add(Translation.ofJSON((ObjectNode) node)));
-
-              if (jsonNode.has("detectedLanguage")) {
-                JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
-                responses.addResult(
-                    new TranslationResult(
-                        baseText,
-                        DetectedLanguage.ofJSON((ObjectNode) detectedLanguage),
-                        translations));
-                return;
-              }
-
-              responses.addResult(new TranslationResult(baseText, translations));
+              TranslationResult result = getTranslationResult(baseText, jsonBody.get(index - 1));
+              if (result != null) responses.addResult(result);
             });
 
     return Optional.of(responses);
+  }
+
+  /**
+   * Creates a TranslationResult object from a JSON node.
+   *
+   * @param baseText The translated text.
+   * @param jsonNode The JSON node.
+   * @return The TranslationResult object.
+   */
+  private TranslationResult getTranslationResult(String baseText, JsonNode jsonNode) {
+    if (jsonNode.isNull() || !jsonNode.has("translations")) return null;
+
+    Collection<Translation> translations = new ArrayList<>();
+    jsonNode
+        .get("translations")
+        .forEach(node -> translations.add(Translation.ofJSON((ObjectNode) node)));
+
+    if (jsonNode.has("detectedLanguage")) {
+      JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
+      return new TranslationResult(
+          baseText, DetectedLanguage.ofJSON(baseText, (ObjectNode) detectedLanguage), translations);
+    }
+
+    return new TranslationResult(baseText, translations);
   }
 }

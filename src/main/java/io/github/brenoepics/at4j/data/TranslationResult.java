@@ -1,7 +1,5 @@
-package io.github.brenoepics.at4j.data.response;
+package io.github.brenoepics.at4j.data;
 
-import io.github.brenoepics.at4j.data.DetectedLanguage;
-import io.github.brenoepics.at4j.data.Translation;
 
 import java.util.Collection;
 import java.util.Optional;

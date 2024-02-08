@@ -1,5 +1,7 @@
 package io.github.brenoepics.at4j.data.response;
 
+import io.github.brenoepics.at4j.data.TranslationResult;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +51,7 @@ public class TranslationResponse {
   public TranslationResult getFirstResult() {
     return resultList.get(0);
   }
+
   /**
    * Static factory method to create a new TranslationResponse with the provided list of results.
    *
