@@ -21,7 +21,8 @@ class DetectLanguageParamsTest {
 
   @Test
   void getTexts_returnsCorrectTexts() {
-    DetectLanguageParams params = new DetectLanguageParams(Arrays.asList("text1", "text2"));
+    DetectLanguageParams params =
+        new DetectLanguageParams(Arrays.asList("text1", "text2"));
     assertEquals("text1", params.getTexts().get(1));
     assertEquals("text2", params.getTexts().get(2));
   }
@@ -43,7 +44,8 @@ class DetectLanguageParamsTest {
   }
 
   @Test
-  void handleResponse_returnsDetectResponseForValidJsonBody() throws IOException {
+  void handleResponse_returnsDetectResponseForValidJsonBody()
+      throws IOException {
     DetectLanguageParams params = new DetectLanguageParams("test text");
     RestRequest request = mock(RestRequest.class);
     AzureApi azureApi = mock(AzureApiImpl.class);
@@ -73,7 +75,7 @@ class DetectLanguageParamsTest {
     DetectLanguageParams params = new DetectLanguageParams(new ArrayList<>());
     assertNull(params.getBody());
   }
-  
+
   @Test
   void shouldHandleResponseWithEmptyJsonBody() {
     DetectLanguageParams params = new DetectLanguageParams("Hello");

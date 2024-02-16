@@ -14,11 +14,9 @@ public class NotFoundException extends BadRequestException {
    * @param request The information about the request.
    * @param response The information about the response.
    */
-  public NotFoundException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+  public NotFoundException(Exception origin, String message,
+                           RestRequestInfo request,
+                           RestRequestResponseInfo response) {
     super(origin, message, request, response);
   }
 }

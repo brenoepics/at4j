@@ -21,8 +21,8 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * This class is an implementation of the AzureApi interface. It provides methods to interact with
- * Azure's translation API.
+ * This class is an implementation of the AzureApi interface. It provides
+ * methods to interact with Azure's translation API.
  */
 public class AzureApiImpl<T> implements AzureApi {
 
@@ -42,7 +42,8 @@ public class AzureApiImpl<T> implements AzureApi {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   /** The ratelimit manager for this resource. */
-  private final RateLimitManager<T, ?, ?> ratelimitManager = new RateLimitManager<>(this);
+  private final RateLimitManager<T, ?, ?> ratelimitManager =
+      new RateLimitManager<>(this);
 
   /** The thread pool which is used internally. */
   private final ThreadPoolImpl threadPool = new ThreadPoolImpl();
@@ -55,8 +56,8 @@ public class AzureApiImpl<T> implements AzureApi {
    * @param subscriptionKey The subscription key for this instance.
    * @param subscriptionRegion The subscription region for this instance.
    */
-  public AzureApiImpl(
-      HttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion) {
+  public AzureApiImpl(HttpClient httpClient, BaseURL baseURL,
+                      String subscriptionKey, String subscriptionRegion) {
     this.httpClient = httpClient;
     this.baseURL = baseURL;
     this.subscriptionKey = subscriptionKey;
@@ -84,38 +85,44 @@ public class AzureApiImpl<T> implements AzureApi {
   }
 
   @Override
-  public CompletableFuture<Optional<TranslationResponse>> translate(TranslateParams params) {
+  public CompletableFuture<Optional<TranslationResponse>>
+  translate(TranslateParams params) {
     if (params.getTexts() == null || params.getTexts().isEmpty()) {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest request = new RestRequest(this, RestMethod.POST, RestEndpoint.TRANSLATE);
+    RestRequest request =
+        new RestRequest(this, RestMethod.POST, RestEndpoint.TRANSLATE);
     request.setBody(params.getBody());
     request.addQueryParameters(params.getQueryParameters());
 
     if (params.getTargetLanguages() != null) {
-      params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
+      params.getTargetLanguages().forEach(
+          lang -> request.addQueryParameter("to", lang));
     }
 
     return request.execute(params::handleResponse);
   }
 
   @Override
-  public CompletableFuture<Optional<DetectResponse>> detectLanguage(DetectLanguageParams params) {
+  public CompletableFuture<Optional<DetectResponse>>
+  detectLanguage(DetectLanguageParams params) {
     if (params.getTexts() == null || params.getTexts().isEmpty()) {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest request = new RestRequest(this, RestMethod.POST, RestEndpoint.DETECT);
+    RestRequest request =
+        new RestRequest(this, RestMethod.POST, RestEndpoint.DETECT);
     request.setBody(params.getBody());
 
     return request.execute(params::handleResponse);
   }
 
   @Override
-  public CompletableFuture<Optional<Collection<Language>>> getAvailableLanguages(
-      AvailableLanguagesParams params) {
-    RestRequest request = new RestRequest(this, RestMethod.GET, RestEndpoint.LANGUAGES, false);
+  public CompletableFuture<Optional<Collection<Language>>>
+  getAvailableLanguages(AvailableLanguagesParams params) {
+    RestRequest request =
+        new RestRequest(this, RestMethod.GET, RestEndpoint.LANGUAGES, false);
     request.addQueryParameter("scope", params.getScope());
 
     if (params.getSourceLanguage() != null) {

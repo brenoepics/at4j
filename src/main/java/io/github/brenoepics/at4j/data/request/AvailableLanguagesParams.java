@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.data.request.optional.LanguageScope;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +24,9 @@ public class AvailableLanguagesParams {
    * @return A string representation of the scope.
    */
   public String getScope() {
-    return String.join(",", scope.stream().map(LanguageScope::getValue).toArray(String[]::new));
+    return String.join(
+        ",",
+        scope.stream().map(LanguageScope::getValue).toArray(String[] ::new));
   }
 
   /**
@@ -44,9 +45,7 @@ public class AvailableLanguagesParams {
    *
    * @return The source language.
    */
-  public String getSourceLanguage() {
-    return sourceLanguage;
-  }
+  public String getSourceLanguage() { return sourceLanguage; }
 
   /**
    * Sets the source language.
@@ -63,21 +62,21 @@ public class AvailableLanguagesParams {
    * Method to handle the response from the API.
    *
    * @param response The response to handle.
-   * @return An optional containing the collection of languages if the response was successful.
+   * @return An optional containing the collection of languages if the response
+   *     was successful.
    */
-  public Optional<Collection<Language>> handleResponse(RestRequestResult response) {
-    if (response.getJsonBody().isNull() || !response.getJsonBody().has("translation"))
+  public Optional<Collection<Language>>
+  handleResponse(RestRequestResult response) {
+    if (response.getJsonBody().isNull() ||
+        !response.getJsonBody().has("translation"))
       return Optional.empty();
 
     Collection<Language> languages = new ArrayList<>();
     JsonNode jsonNode = response.getJsonBody().get("translation");
-    jsonNode
-        .fieldNames()
-        .forEachRemaining(
-            key -> {
-              Language language = Language.ofJSON(key, (ObjectNode) jsonNode.get(key));
-              languages.add(language);
-            });
+    jsonNode.fieldNames().forEachRemaining(key -> {
+      Language language = Language.ofJSON(key, (ObjectNode)jsonNode.get(key));
+      languages.add(language);
+    });
 
     return Optional.of(languages);
   }

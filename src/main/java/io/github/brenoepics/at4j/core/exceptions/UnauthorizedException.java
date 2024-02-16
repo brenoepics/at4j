@@ -14,11 +14,9 @@ public class UnauthorizedException extends AzureException {
    * @param request The information about the request.
    * @param response The information about the response.
    */
-  public UnauthorizedException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+  public UnauthorizedException(Exception origin, String message,
+                               RestRequestInfo request,
+                               RestRequestResponseInfo response) {
     super(origin, message, request, response);
   }
 }

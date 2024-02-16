@@ -1,20 +1,19 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.util.rest.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 class AzureExceptionTest<T> {
 

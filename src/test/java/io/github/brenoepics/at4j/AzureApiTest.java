@@ -21,7 +21,8 @@ class AzureApiTest {
   @Test
   void BuildNullKey() {
     AzureApiBuilder builder = new AzureApiBuilder();
-    assertThrows(NullPointerException.class, builder::build, "Subscription key cannot be null");
+    assertThrows(NullPointerException.class, builder::build,
+                 "Subscription key cannot be null");
   }
 
   @Test
@@ -33,11 +34,15 @@ class AzureApiTest {
 
   @Test
   void getLanguages() {
-    AzureApi api =
-        new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
+    AzureApi api = new AzureApiBuilder()
+                       .baseURL(BaseURL.GLOBAL)
+                       .setKey("test")
+                       .region("test")
+                       .build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
-        api.getAvailableLanguages(new AvailableLanguagesParams().setSourceLanguage("en"));
+        api.getAvailableLanguages(
+            new AvailableLanguagesParams().setSourceLanguage("en"));
     languages.whenComplete((s, throwable) -> assertNull(throwable));
     assertNotNull(languages.join());
     api.disconnect();
@@ -45,7 +50,11 @@ class AzureApiTest {
 
   @Test
   void getLanguagesEmptyKey() {
-    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
+    AzureApi api = new AzureApiBuilder()
+                       .baseURL(BaseURL.GLOBAL)
+                       .setKey("")
+                       .region("test")
+                       .build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams());
@@ -55,8 +64,11 @@ class AzureApiTest {
 
   @Test
   void getLanguagesEmptySourceLanguage() {
-    AzureApi api =
-        new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("test").region("test").build();
+    AzureApi api = new AzureApiBuilder()
+                       .baseURL(BaseURL.GLOBAL)
+                       .setKey("test")
+                       .region("test")
+                       .build();
 
     CompletableFuture<Optional<Collection<Language>>> languages =
         api.getAvailableLanguages(new AvailableLanguagesParams());
@@ -66,10 +78,16 @@ class AzureApiTest {
 
   @Test
   void translateEmptyKey() {
-    AzureApi api = new AzureApiBuilder().baseURL(BaseURL.GLOBAL).setKey("").region("test").build();
+    AzureApi api = new AzureApiBuilder()
+                       .baseURL(BaseURL.GLOBAL)
+                       .setKey("")
+                       .region("test")
+                       .build();
 
-    TranslateParams params = new TranslateParams("test", List.of("pt")).setSourceLanguage("en");
-    CompletableFuture<Optional<TranslationResponse>> translation = api.translate(params);
+    TranslateParams params =
+        new TranslateParams("test", List.of("pt")).setSourceLanguage("en");
+    CompletableFuture<Optional<TranslationResponse>> translation =
+        api.translate(params);
     assertThrows(CompletionException.class, translation::join);
     api.disconnect();
   }
@@ -78,15 +96,17 @@ class AzureApiTest {
   void translateHelloWorld() {
     String azureKey = System.getenv("AZURE_KEY");
     String region = System.getenv("AZURE_REGION");
-    Assumptions.assumeTrue(
-        azureKey != null && region != null, "Azure Credentials are null, skipping the test");
-    Assumptions.assumeTrue(
-        !azureKey.isEmpty() && !region.isEmpty(), "Azure Credentials are empty, skipping the test");
+    Assumptions.assumeTrue(azureKey != null && region != null,
+                           "Azure Credentials are null, skipping the test");
+    Assumptions.assumeTrue(!azureKey.isEmpty() && !region.isEmpty(),
+                           "Azure Credentials are empty, skipping the test");
 
-    AzureApiBuilder builder = new AzureApiBuilder().setKey(azureKey).region(region);
+    AzureApiBuilder builder =
+        new AzureApiBuilder().setKey(azureKey).region(region);
     AzureApi api = builder.build();
 
-    TranslateParams params = new TranslateParams("Hello World!", List.of("pt", "es"));
+    TranslateParams params =
+        new TranslateParams("Hello World!", List.of("pt", "es"));
     Optional<TranslationResponse> translate = api.translate(params).join();
     assertTrue(translate.isPresent());
     assertEquals(2, translate.get().getFirstResult().getTranslations().size());
@@ -96,16 +116,17 @@ class AzureApiTest {
   void translateMultiText() {
     String azureKey = System.getenv("AZURE_KEY");
     String region = System.getenv("AZURE_REGION");
-    Assumptions.assumeTrue(
-        azureKey != null && region != null, "Azure Credentials are null, skipping the test");
-    Assumptions.assumeTrue(
-        !azureKey.isEmpty() && !region.isEmpty(), "Azure Credentials are empty, skipping the test");
+    Assumptions.assumeTrue(azureKey != null && region != null,
+                           "Azure Credentials are null, skipping the test");
+    Assumptions.assumeTrue(!azureKey.isEmpty() && !region.isEmpty(),
+                           "Azure Credentials are empty, skipping the test");
 
-    AzureApiBuilder builder = new AzureApiBuilder().setKey(azureKey).region(region);
+    AzureApiBuilder builder =
+        new AzureApiBuilder().setKey(azureKey).region(region);
     AzureApi api = builder.build();
 
-    TranslateParams params =
-        new TranslateParams(List.of("Hello World!", "How are you?"), List.of("pt", "es"));
+    TranslateParams params = new TranslateParams(
+        List.of("Hello World!", "How are you?"), List.of("pt", "es"));
     Optional<TranslationResponse> translate = api.translate(params).join();
     assertTrue(translate.isPresent());
 
@@ -116,12 +137,13 @@ class AzureApiTest {
   void detectHelloWorldLanguage() {
     String azureKey = System.getenv("AZURE_KEY");
     String region = System.getenv("AZURE_REGION");
-    Assumptions.assumeTrue(
-        azureKey != null && region != null, "Azure Credentials are null, skipping the test");
-    Assumptions.assumeTrue(
-        !azureKey.isEmpty() && !region.isEmpty(), "Azure Credentials are empty, skipping the test");
+    Assumptions.assumeTrue(azureKey != null && region != null,
+                           "Azure Credentials are null, skipping the test");
+    Assumptions.assumeTrue(!azureKey.isEmpty() && !region.isEmpty(),
+                           "Azure Credentials are empty, skipping the test");
 
-    AzureApiBuilder builder = new AzureApiBuilder().setKey(azureKey).region(region);
+    AzureApiBuilder builder =
+        new AzureApiBuilder().setKey(azureKey).region(region);
     AzureApi api = builder.build();
 
     Optional<DetectResponse> detect =

@@ -1,13 +1,12 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.AzureApi;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
-import java.util.Arrays;
 
 class RestRequestTest {
 
@@ -32,7 +31,8 @@ class RestRequestTest {
     restRequest.includeAuthorizationHeader(false);
     Assertions.assertTrue(restRequest.getQueryParameters().containsKey("to"));
     Assertions.assertTrue(
-        restRequest.getQueryParameters().get("to").containsAll(Arrays.asList("pt", "es", "fr")));
+        restRequest.getQueryParameters().get("to").containsAll(
+            Arrays.asList("pt", "es", "fr")));
   }
 
   @Test
@@ -41,7 +41,8 @@ class RestRequestTest {
     restRequest.addHeader("headerName", "headerValue");
     Assertions.assertEquals(1, restRequest.getHeaders().size());
     Assertions.assertTrue(restRequest.getHeaders().containsKey("headerName"));
-    Assertions.assertEquals("headerValue", restRequest.getHeaders().get("headerName"));
+    Assertions.assertEquals("headerValue",
+                            restRequest.getHeaders().get("headerName"));
   }
 
   @Test
@@ -71,8 +72,10 @@ class RestRequestTest {
   void shouldHandleMultipleQueryParameters() {
     restRequest.addQueryParameter("param1", "value1");
     restRequest.addQueryParameter("param2", "value2");
-    Assertions.assertTrue(restRequest.getQueryParameters().containsKey("param1"));
-    Assertions.assertTrue(restRequest.getQueryParameters().containsKey("param2"));
+    Assertions.assertTrue(
+        restRequest.getQueryParameters().containsKey("param1"));
+    Assertions.assertTrue(
+        restRequest.getQueryParameters().containsKey("param2"));
   }
 
   @Test

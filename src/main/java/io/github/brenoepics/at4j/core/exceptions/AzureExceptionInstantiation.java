@@ -4,8 +4,9 @@ import io.github.brenoepics.at4j.util.rest.RestRequestInfo;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfo;
 
 /**
- * Represents a function that accepts four arguments ({@code Exception}, {@code String}, {@code
- * RestRequest<?>} and {@code RestRequestResult}) and produces an azure exception of type {@code T}.
+ * Represents a function that accepts four arguments ({@code Exception}, {@code
+ * String}, {@code RestRequest<?>} and {@code RestRequestResult}) and produces
+ * an azure exception of type {@code T}.
  *
  * @param <T> The type of the azure exception that is produced.
  */
@@ -21,9 +22,6 @@ public interface AzureExceptionInstantiation<T extends AzureException> {
    * @param response The information about the response.
    * @return The new instance.
    */
-  T createInstance(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response);
+  T createInstance(Exception origin, String message, RestRequestInfo request,
+                   RestRequestResponseInfo response);
 }

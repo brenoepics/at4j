@@ -7,13 +7,11 @@ import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
-
+import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-
-import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,30 +31,34 @@ class RateLimitManagerTest<T, T3, T4> {
   void testQueueRequest() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
     rateLimitManager.queueRequest(request);
-    verify(api.getThreadPool().getExecutorService()).submit(any(Runnable.class));
+    verify(api.getThreadPool().getExecutorService())
+        .submit(any(Runnable.class));
   }
 
   @Test
   void testSearchBucket() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
-    Optional<RateLimitBucket<T, T4, T3>> bucket = rateLimitManager.searchBucket(request);
+    Optional<RateLimitBucket<T, T4, T3>> bucket =
+        rateLimitManager.searchBucket(request);
     assertTrue(bucket.isPresent());
   }
 
   @Test
   void testWaitUntilSpaceGetsAvailable() {
-    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    RateLimitBucket<T, T4, T3> bucket =
+        new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     bucket.setRateLimitRemaining(1000);
     bucket.setRateLimitResetTimestamp(System.currentTimeMillis() + 1000);
-    assertDoesNotThrow(() -> rateLimitManager.waitUntilSpaceGetsAvailable(bucket));
+    assertDoesNotThrow(
+        () -> rateLimitManager.waitUntilSpaceGetsAvailable(bucket));
   }
 
   @Test
   void testRetryRequest() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
     rateLimitManager.searchBucket(request);
-    RestRequest retriedRequest =
-        rateLimitManager.retryRequest(new RateLimitBucket<>(RestEndpoint.LANGUAGES));
+    RestRequest retriedRequest = rateLimitManager.retryRequest(
+        new RateLimitBucket<>(RestEndpoint.LANGUAGES));
     assertNull(retriedRequest);
   }
 
@@ -64,17 +66,20 @@ class RateLimitManagerTest<T, T3, T4> {
   void retryRequestWhenBucketIsEmpty() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
     rateLimitManager.searchBucket(request);
-    RestRequest retriedRequest =
-        rateLimitManager.retryRequest(new RateLimitBucket<>(RestEndpoint.LANGUAGES));
+    RestRequest retriedRequest = rateLimitManager.retryRequest(
+        new RateLimitBucket<>(RestEndpoint.LANGUAGES));
     assertNull(retriedRequest);
   }
 
   @Test
   void handleResponseWhenStatusCodeIsNot429() {
     HttpHeaders headers = mock(HttpHeaders.class);
-    when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER)).thenReturn(Optional.of("1"));
-    when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER)).thenReturn(Optional.of("0"));
-    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER))
+        .thenReturn(Optional.of("1"));
+    when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER))
+        .thenReturn(Optional.of("0"));
+    RateLimitBucket<T, T4, T3> bucket =
+        new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     RestRequestResult result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(200);
@@ -82,7 +87,8 @@ class RateLimitManagerTest<T, T3, T4> {
     CompletableFuture<RestRequestResult> future = new CompletableFuture<>();
     future.complete(result);
     when(request.getResult()).thenReturn(future);
-    rateLimitManager.handleResponse(request, result, bucket, System.currentTimeMillis());
+    rateLimitManager.handleResponse(request, result, bucket,
+                                    System.currentTimeMillis());
     assertEquals(1, bucket.getRateLimitRemaining());
   }
 
@@ -90,22 +96,27 @@ class RateLimitManagerTest<T, T3, T4> {
   void queueRequestShouldSubmitToExecutorServiceWhenBucketIsPresent() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
     rateLimitManager.queueRequest(request);
-    verify(api.getThreadPool().getExecutorService()).submit(any(Runnable.class));
+    verify(api.getThreadPool().getExecutorService())
+        .submit(any(Runnable.class));
   }
 
   @Test
   void searchBucketShouldReturnBucketWhenBucketMatchesRequest() {
     when(request.getEndpoint()).thenReturn(RestEndpoint.LANGUAGES);
-    Optional<RateLimitBucket<T, T4, T3>> bucket = rateLimitManager.searchBucket(request);
+    Optional<RateLimitBucket<T, T4, T3>> bucket =
+        rateLimitManager.searchBucket(request);
     assertTrue(bucket.isPresent());
   }
 
   @Test
   void handleResponseShouldUpdateBucketWhenStatusCodeIsNot429() {
     HttpHeaders headers = mock(HttpHeaders.class);
-    when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER)).thenReturn(Optional.of("1"));
-    when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER)).thenReturn(Optional.of("0"));
-    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER))
+        .thenReturn(Optional.of("1"));
+    when(headers.firstValue(RateLimitManager.RATE_LIMIT_RESET_HEADER))
+        .thenReturn(Optional.of("0"));
+    RateLimitBucket<T, T4, T3> bucket =
+        new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     RestRequestResult result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(200);
@@ -113,22 +124,26 @@ class RateLimitManagerTest<T, T3, T4> {
     CompletableFuture<RestRequestResult> future = new CompletableFuture<>();
     future.complete(result);
     when(request.getResult()).thenReturn(future);
-    rateLimitManager.handleResponse(request, result, bucket, System.currentTimeMillis());
+    rateLimitManager.handleResponse(request, result, bucket,
+                                    System.currentTimeMillis());
     assertEquals(1, bucket.getRateLimitRemaining());
   }
 
   @Test
-  void handleResponseShouldHandleCloudFlareWhenStatusCodeIs429AndViaHeaderIsNotPresent() {
+  void
+  handleResponseShouldHandleCloudFlareWhenStatusCodeIs429AndViaHeaderIsNotPresent() {
     HttpHeaders headers = mock(HttpHeaders.class);
     when(headers.firstValue("Via")).thenReturn(Optional.empty());
     when(headers.firstValue(RateLimitManager.RATE_LIMITED_HEADER_CLOUDFLARE))
         .thenReturn(Optional.of("10"));
-    RateLimitBucket<T, T4, T3> bucket = new RateLimitBucket<>(RestEndpoint.LANGUAGES);
+    RateLimitBucket<T, T4, T3> bucket =
+        new RateLimitBucket<>(RestEndpoint.LANGUAGES);
     RestRequestResult result = mock(RestRequestResult.class);
     when(result.getResponse()).thenReturn(mock(HttpResponse.class));
     when(result.getResponse().statusCode()).thenReturn(429);
     when(result.getResponse().headers()).thenReturn(headers);
-    rateLimitManager.handleResponse(request, result, bucket, System.currentTimeMillis());
+    rateLimitManager.handleResponse(request, result, bucket,
+                                    System.currentTimeMillis());
     assertEquals(10000, bucket.getRateLimitRemaining());
   }
 }

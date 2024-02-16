@@ -14,11 +14,9 @@ public class BadRequestException extends AzureException {
    * @param request The information about the request.
    * @param response The information about the response.
    */
-  public BadRequestException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+  public BadRequestException(Exception origin, String message,
+                             RestRequestInfo request,
+                             RestRequestResponseInfo response) {
     super(origin, message, request, response);
   }
 }

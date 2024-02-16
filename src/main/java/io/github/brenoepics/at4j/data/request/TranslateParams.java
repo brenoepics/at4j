@@ -7,20 +7,19 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.Translation;
+import io.github.brenoepics.at4j.data.TranslationResult;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityAction;
 import io.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import io.github.brenoepics.at4j.data.request.optional.TextType;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
-import io.github.brenoepics.at4j.data.TranslationResult;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
-
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class represents the parameters for a translation request. It includes options for handling
- * profanity, text type, alignment, sentence length, source language, target languages, and a
- * fallback language.
+ * This class represents the parameters for a translation request. It includes
+ * options for handling profanity, text type, alignment, sentence length, source
+ * language, target languages, and a fallback language.
  */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public class TranslateParams {
@@ -61,7 +60,8 @@ public class TranslateParams {
    * @param texts The text list to be translated.
    * @param targetLanguages The target languages for the translation.
    */
-  public TranslateParams(Collection<String> texts, Collection<String> targetLanguages) {
+  public TranslateParams(Collection<String> texts,
+                         Collection<String> targetLanguages) {
     this.toTranslate = new LinkedHashMap<>();
     texts.forEach(t -> this.toTranslate.put(this.toTranslate.size() + 1, t));
     this.targetLanguages = targetLanguages;
@@ -80,8 +80,8 @@ public class TranslateParams {
   }
 
   /**
-   * Defines whether the text being translated is plain text or HTML text. Any HTML needs to be a
-   * well-formed, complete element.
+   * Defines whether the text being translated is plain text or HTML text. Any
+   * HTML needs to be a well-formed, complete element.
    *
    * @param textType Possible values are: plain (default) or html.
    * @return This instance.
@@ -94,7 +94,8 @@ public class TranslateParams {
   /**
    * Specifies how profanities should be treated in translations.
    *
-   * @param profanityAction Possible values are: Marked, Deleted or NoAction (default).
+   * @param profanityAction Possible values are: Marked, Deleted or NoAction
+   *     (default).
    * @return This instance.
    * @see <a
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-translate#handle-profanity">Handle
@@ -108,8 +109,8 @@ public class TranslateParams {
   /**
    * Specifies how profanities should be marked in translations.
    *
-   * @param profanityMarker Possible values are: Asterisk (default) or Tag. To understand ways to
-   *     treat profanity.
+   * @param profanityMarker Possible values are: Asterisk (default) or Tag. To
+   *     understand ways to treat profanity.
    * @return This instance.
    * @see <a
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-translate#handle-profanity">Profanity
@@ -121,11 +122,13 @@ public class TranslateParams {
   }
 
   /**
-   * Specifies whether to include the alignment string in the response. The alignment string is a
-   * string of alphanumeric pairs separated by spaces. Each pair indicates the start and end of the
-   * corresponding word in the translated text.
+   * Specifies whether to include the alignment string in the response. The
+   * alignment string is a string of alphanumeric pairs separated by spaces.
+   * Each pair indicates the start and end of the corresponding word in the
+   * translated text.
    *
-   * @param includeAlignment Specifies whether to include the alignment string in the response.
+   * @param includeAlignment Specifies whether to include the alignment string
+   *     in the response.
    * @return This instance.
    */
   public TranslateParams setIncludeAlignment(Boolean includeAlignment) {
@@ -134,26 +137,30 @@ public class TranslateParams {
   }
 
   /**
-   * Specifies whether to include the number of characters in each translated sentence.
+   * Specifies whether to include the number of characters in each translated
+   * sentence.
    *
-   * @param includeSentenceLength Specifies whether to include the number of characters in each
-   *     translated sentence.
+   * @param includeSentenceLength Specifies whether to include the number of
+   *     characters in each translated sentence.
    * @return This instance.
    */
-  public TranslateParams setIncludeSentenceLength(Boolean includeSentenceLength) {
+  public TranslateParams
+  setIncludeSentenceLength(Boolean includeSentenceLength) {
     this.includeSentenceLength = includeSentenceLength;
     return this;
   }
 
   /**
-   * Specifies a fallback language if the language of the input text can't be identified. <br>
-   * Language autodetect is applied when the form parameter is omitted. If detection fails, the
-   * `suggestedFrom` language is assumed
+   * Specifies a fallback language if the language of the input text can't be
+   * identified. <br> Language autodetect is applied when the form parameter is
+   * omitted. If detection fails, the `suggestedFrom` language is assumed
    *
-   * @param suggestedFromLanguage A string representing the language code of the translation text.
+   * @param suggestedFromLanguage A string representing the language code of the
+   *     translation text.
    * @return This instance.
    */
-  public TranslateParams setSuggestedFromLanguage(String suggestedFromLanguage) {
+  public TranslateParams
+  setSuggestedFromLanguage(String suggestedFromLanguage) {
     this.suggestedFromLanguage = suggestedFromLanguage;
     return this;
   }
@@ -186,9 +193,11 @@ public class TranslateParams {
    * @param targetLanguages The target languages for the translation.
    * @return This instance.
    */
-  public TranslateParams setTargetLanguages(Collection<Language> targetLanguages) {
-    this.targetLanguages =
-        targetLanguages.stream().map(Language::getCode).collect(Collectors.toUnmodifiableList());
+  public TranslateParams
+  setTargetLanguages(Collection<Language> targetLanguages) {
+    this.targetLanguages = targetLanguages.stream()
+                               .map(Language::getCode)
+                               .collect(Collectors.toUnmodifiableList());
     return this;
   }
 
@@ -208,81 +217,64 @@ public class TranslateParams {
    *
    * @return The text to be translated.
    */
-  public Map<Integer, String> getTexts() {
-    return toTranslate;
-  }
+  public Map<Integer, String> getTexts() { return toTranslate; }
 
   /**
    * Returns if the alignment should be included in the response.
    *
    * @return Whether to include the alignment string in the response.
    */
-  public Boolean getIncludeAlignment() {
-    return includeAlignment;
-  }
+  public Boolean getIncludeAlignment() { return includeAlignment; }
 
   /**
    * Returns if the sentence length should be included in the response.
    *
-   * @return Whether to include the number of characters in each translated sentence.
+   * @return Whether to include the number of characters in each translated
+   *     sentence.
    */
-  public Boolean getIncludeSentenceLength() {
-    return includeSentenceLength;
-  }
+  public Boolean getIncludeSentenceLength() { return includeSentenceLength; }
 
   /**
    * Returns the type of the text to be translated.
    *
    * @return The type of the text to be translated.
    */
-  public TextType getTextType() {
-    return textType;
-  }
+  public TextType getTextType() { return textType; }
 
   /**
    * Returns the action to be taken on profanities in the text.
    *
    * @return Possible values are: Marked, Deleted or NoAction (default).
    */
-  public ProfanityAction getProfanityAction() {
-    return profanityAction;
-  }
+  public ProfanityAction getProfanityAction() { return profanityAction; }
 
   /**
    * Returns the marker to be used for profanities in the text.
    *
    * @return Possible values are: Asterisk (default) or Tag.
    */
-  public ProfanityMarker getProfanityMarker() {
-    return profanityMarker;
-  }
+  public ProfanityMarker getProfanityMarker() { return profanityMarker; }
 
   /**
    * Gets the source language of the text.
    *
    * @return The source language of the text.
    */
-  public String getSourceLanguage() {
-    return sourceLanguage;
-  }
+  public String getSourceLanguage() { return sourceLanguage; }
 
   /**
    * Returns the target languages for the translation.
    *
    * @return The target languages for the translation.
    */
-  public Collection<String> getTargetLanguages() {
-    return targetLanguages;
-  }
+  public Collection<String> getTargetLanguages() { return targetLanguages; }
 
   /**
    * Returns the suggested language if the source language can't be identified.
    *
    * @return The suggested language if the source language can't be identified.
    */
-  public String getSuggestedFromLanguage() {
-    return suggestedFromLanguage;
-  }
+  public String getSuggestedFromLanguage() { return suggestedFromLanguage; }
 
   /**
    * Returns the parameters as a map.
@@ -310,7 +302,8 @@ public class TranslateParams {
     }
 
     if (getIncludeSentenceLength() != null) {
-      params.put("includeSentenceLength", getIncludeSentenceLength().toString());
+      params.put("includeSentenceLength",
+                 getIncludeSentenceLength().toString());
     }
 
     if (getSuggestedFromLanguage() != null) {
@@ -337,28 +330,29 @@ public class TranslateParams {
   }
 
   /**
-   * Handles the response from the API. If the response is null, or the JSON body is null, or the
-   * JSON body does not contain a field 'translations', it returns an empty Optional. Otherwise, it
-   * creates a TranslationResponse object from the JSON body and returns it as an Optional.
+   * Handles the response from the API. If the response is null, or the JSON
+   * body is null, or the JSON body does not contain a field 'translations', it
+   * returns an empty Optional. Otherwise, it creates a TranslationResponse
+   * object from the JSON body and returns it as an Optional.
    *
    * @param response The response from the API.
-   * @return An Optional containing the TranslationResponse object, or an empty Optional if the
-   *     response is null, or the JSON body is null, or the JSON body does not contain a field
-   *     'translations'.
+   * @return An Optional containing the TranslationResponse object, or an empty
+   *     Optional if the response is null, or the JSON body is null, or the JSON
+   *     body does not contain a field 'translations'.
    */
-  public Optional<TranslationResponse> handleResponse(
-      RestRequestResult response) {
+  public Optional<TranslationResponse>
+  handleResponse(RestRequestResult response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
     JsonNode jsonBody = response.getJsonBody();
     TranslationResponse responses = new TranslationResponse();
 
-    getTexts()
-        .forEach(
-            (index, baseText) -> {
-              TranslationResult result = getTranslationResult(baseText, jsonBody.get(index - 1));
-              if (result != null) responses.addResult(result);
-            });
+    getTexts().forEach((index, baseText) -> {
+      TranslationResult result =
+          getTranslationResult(baseText, jsonBody.get(index - 1));
+      if (result != null)
+        responses.addResult(result);
+    });
 
     return Optional.of(responses);
   }
@@ -370,18 +364,22 @@ public class TranslateParams {
    * @param jsonNode The JSON node.
    * @return The TranslationResult object.
    */
-  private TranslationResult getTranslationResult(String baseText, JsonNode jsonNode) {
-    if (jsonNode.isNull() || !jsonNode.has("translations")) return null;
+  private TranslationResult getTranslationResult(String baseText,
+                                                 JsonNode jsonNode) {
+    if (jsonNode.isNull() || !jsonNode.has("translations"))
+      return null;
 
     Collection<Translation> translations = new ArrayList<>();
-    jsonNode
-        .get("translations")
-        .forEach(node -> translations.add(Translation.ofJSON((ObjectNode) node)));
+    jsonNode.get("translations")
+        .forEach(
+            node -> translations.add(Translation.ofJSON((ObjectNode)node)));
 
     if (jsonNode.has("detectedLanguage")) {
       JsonNode detectedLanguage = jsonNode.get("detectedLanguage");
       return new TranslationResult(
-          baseText, DetectedLanguage.ofJSON(baseText, (ObjectNode) detectedLanguage), translations);
+          baseText,
+          DetectedLanguage.ofJSON(baseText, (ObjectNode)detectedLanguage),
+          translations);
     }
 
     return new TranslationResult(baseText, translations);

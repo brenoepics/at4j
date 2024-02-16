@@ -3,7 +3,10 @@ package io.github.brenoepics.at4j.core.exceptions;
 import io.github.brenoepics.at4j.util.rest.RestRequestInfo;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfo;
 
-/** This exception is thrown when the Azure API returns a 403 Forbidden response. */
+/**
+ * This exception is thrown when the Azure API returns a 403 Forbidden
+ * response.
+ */
 public class ForbiddenException extends AzureException {
 
   /**
@@ -14,11 +17,9 @@ public class ForbiddenException extends AzureException {
    * @param request The information about the request.
    * @param response The information about the response.
    */
-  public ForbiddenException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+  public ForbiddenException(Exception origin, String message,
+                            RestRequestInfo request,
+                            RestRequestResponseInfo response) {
     super(origin, message, request, response);
   }
 }

@@ -14,7 +14,8 @@ import org.apache.logging.log4j.Logger;
 public class RestRequestResult {
 
   /** The (logger) of this class. */
-  private static final Logger logger = LoggerUtil.getLogger(RestRequestResult.class);
+  private static final Logger logger =
+      LoggerUtil.getLogger(RestRequestResult.class);
 
   private final RestRequest request;
   private final HttpResponse<String> response;
@@ -55,18 +56,14 @@ public class RestRequestResult {
    *
    * @return The Request which belongs to this result.
    */
-  public RestRequest getRequest() {
-    return request;
-  }
+  public RestRequest getRequest() { return request; }
 
   /**
    * Gets the response of the {@link RestRequest}.
    *
    * @return The response of the RestRequest.
    */
-  public HttpResponse<String> getResponse() {
-    return response;
-  }
+  public HttpResponse<String> getResponse() { return response; }
 
   /**
    * Gets the string body of the response.
@@ -78,12 +75,10 @@ public class RestRequestResult {
   }
 
   /**
-   * Gets the json body of the response. Returns a {@link NullNode} if the response had none body or
-   * the body is not in a valid json format.
+   * Gets the json body of the response. Returns a {@link NullNode} if the
+   * response had none body or the body is not in a valid json format.
    *
    * @return The json body of the response.
    */
-  public JsonNode getJsonBody() {
-    return jsonBody;
-  }
+  public JsonNode getJsonBody() { return jsonBody; }
 }

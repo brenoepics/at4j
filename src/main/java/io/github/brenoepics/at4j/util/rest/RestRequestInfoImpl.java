@@ -22,12 +22,9 @@ public class RestRequestInfoImpl implements RestRequestInfo {
    * @param headers The headers of the rest request.
    * @param body The body of the rest request.
    */
-  public RestRequestInfoImpl(
-      AzureApi api,
-      URL url,
-      Map<String, Collection<String>> queryParameter,
-      Map<String, String> headers,
-      String body) {
+  public RestRequestInfoImpl(AzureApi api, URL url,
+                             Map<String, Collection<String>> queryParameter,
+                             Map<String, String> headers, String body) {
     this.api = api;
     this.url = url;
     this.queryParameters = queryParameter;

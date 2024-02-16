@@ -5,12 +5,13 @@ import io.github.brenoepics.at4j.util.rest.RestRequest;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * This class represents a rate limit bucket for Azure API requests. It manages the rate limit for
- * each endpoint and major URL parameter combination.
+ * This class represents a rate limit bucket for Azure API requests. It manages
+ * the rate limit for each endpoint and major URL parameter combination.
  */
 public class RateLimitBucket<T, T4, T3> {
 
-  private final ConcurrentLinkedQueue<RestRequest> requestQueue = new ConcurrentLinkedQueue<>();
+  private final ConcurrentLinkedQueue<RestRequest> requestQueue =
+      new ConcurrentLinkedQueue<>();
 
   private final RestEndpoint endpoint;
 
@@ -22,9 +23,7 @@ public class RateLimitBucket<T, T4, T3> {
    *
    * @param endpoint The REST endpoint the rate-limit is tracked for.
    */
-  public RateLimitBucket(RestEndpoint endpoint) {
-    this.endpoint = endpoint;
-  }
+  public RateLimitBucket(RestEndpoint endpoint) { this.endpoint = endpoint; }
 
   /**
    * Adds the given request to the bucket's queue.
@@ -36,18 +35,14 @@ public class RateLimitBucket<T, T4, T3> {
   }
 
   /** Polls a request from the bucket's queue. */
-  public void pollRequestFromQueue() {
-    requestQueue.poll();
-  }
+  public void pollRequestFromQueue() { requestQueue.poll(); }
 
   /**
    * Peeks a request from the bucket's queue.
    *
    * @return The peeked request.
    */
-  public RestRequest peekRequestFromQueue() {
-    return requestQueue.peek();
-  }
+  public RestRequest peekRequestFromQueue() { return requestQueue.peek(); }
 
   /**
    * Sets the remaining requests till rate-limit.
@@ -68,9 +63,11 @@ public class RateLimitBucket<T, T4, T3> {
   }
 
   /**
-   * Gets the time in seconds how long you have to wait till there's space in the bucket again.
+   * Gets the time in seconds how long you have to wait till there's space in
+   * the bucket again.
    *
-   * @return The time in seconds how long you have to wait till there's space in the bucket again.
+   * @return The time in seconds how long you have to wait till there's space in
+   *     the bucket again.
    */
   public int getTimeTillSpaceGetsAvailable() {
     long globalRLResetTimestamp = 0L;
@@ -78,7 +75,8 @@ public class RateLimitBucket<T, T4, T3> {
     if (rateLimitRemaining > 0 && (globalRLResetTimestamp - timestamp) <= 0) {
       return 0;
     }
-    return (int) (Math.max(rateLimitResetTimestamp, globalRLResetTimestamp) - timestamp);
+    return (int)(Math.max(rateLimitResetTimestamp, globalRLResetTimestamp) -
+                 timestamp);
   }
 
   /**
@@ -86,15 +84,15 @@ public class RateLimitBucket<T, T4, T3> {
    *
    * @return int the remaining RateLimit
    */
-  public int getRateLimitRemaining() {
-    return rateLimitRemaining;
-  }
+  public int getRateLimitRemaining() { return rateLimitRemaining; }
 
   /**
-   * Checks if a bucket created with the given parameters would equal this bucket.
+   * Checks if a bucket created with the given parameters would equal this
+   * bucket.
    *
    * @param endpoint The endpoint.
-   * @return Whether a bucket created with the given parameters would equal this bucket or not.
+   * @return Whether a bucket created with the given parameters would equal this
+   *     bucket or not.
    */
   public boolean endpointMatches(RestEndpoint endpoint) {
     return this.endpoint == endpoint;
@@ -103,7 +101,7 @@ public class RateLimitBucket<T, T4, T3> {
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof RateLimitBucket) {
-      RateLimitBucket<T, T4, T3> otherBucket = (RateLimitBucket) obj;
+      RateLimitBucket<T, T4, T3> otherBucket = (RateLimitBucket)obj;
       return endpointMatches(otherBucket.endpoint);
     }
     return false;
@@ -119,6 +117,7 @@ public class RateLimitBucket<T, T4, T3> {
 
   @Override
   public String toString() {
-    return "Endpoint: " + (endpoint == null ? "global" : endpoint.getEndpointUrl());
+    return "Endpoint: " +
+        (endpoint == null ? "global" : endpoint.getEndpointUrl());
   }
 }

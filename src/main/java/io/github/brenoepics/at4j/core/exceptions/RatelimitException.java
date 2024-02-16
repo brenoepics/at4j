@@ -12,7 +12,8 @@ public class RatelimitException extends AzureException {
    * @param message The message of the exception.
    * @param request The information about the request.
    */
-  public RatelimitException(Exception origin, String message, RestRequestInfo request) {
+  public RatelimitException(Exception origin, String message,
+                            RestRequestInfo request) {
     super(origin, message, request, null);
   }
 }

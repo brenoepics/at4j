@@ -1,11 +1,11 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import io.github.brenoepics.at4j.util.rest.RestRequestInfo;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfo;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class AzureExceptionInstantiationTest {
 
@@ -13,14 +13,14 @@ class AzureExceptionInstantiationTest {
   private final RestRequestInfo request = Mockito.mock(RestRequestInfo.class);
   private final RestRequestResponseInfo response =
       Mockito.mock(RestRequestResponseInfo.class);
-  private final AzureExceptionInstantiation<AzureException> azureExceptionInstantiation =
-      AzureException::new;
+  private final AzureExceptionInstantiation<AzureException>
+      azureExceptionInstantiation = AzureException::new;
 
   @Test
   void createInstance_withValidInputs_returnsNewInstance() {
     String message = "Test message";
-    AzureException result =
-        azureExceptionInstantiation.createInstance(origin, message, request, response);
+    AzureException result = azureExceptionInstantiation.createInstance(
+        origin, message, request, response);
 
     assertNotNull(result);
     assertTrue(result.getRequest().isPresent());

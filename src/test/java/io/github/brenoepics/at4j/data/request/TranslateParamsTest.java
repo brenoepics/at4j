@@ -1,5 +1,9 @@
 package io.github.brenoepics.at4j.data.request;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,14 +16,9 @@ import io.github.brenoepics.at4j.data.request.optional.ProfanityMarker;
 import io.github.brenoepics.at4j.data.request.optional.TextType;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
+import java.util.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 class TranslateParamsTest {
 
@@ -41,7 +40,8 @@ class TranslateParamsTest {
   void shouldSetAndGetProfanityAction() {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
     params.setProfanityAction(ProfanityAction.MARKED);
-    Assertions.assertEquals(ProfanityAction.MARKED, params.getProfanityAction());
+    Assertions.assertEquals(ProfanityAction.MARKED,
+                            params.getProfanityAction());
   }
 
   @Test
@@ -75,7 +75,8 @@ class TranslateParamsTest {
   @Test
   void shouldSetAndGetSourceLanguage2() {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
-    params.setSourceLanguage(new Language("en", "English", "English", LanguageDirection.LTR));
+    params.setSourceLanguage(
+        new Language("en", "English", "English", LanguageDirection.LTR));
     assertEquals("en", params.getSourceLanguage());
   }
 
@@ -83,14 +84,15 @@ class TranslateParamsTest {
   void shouldSetAndGetTargetLanguages() {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
     params.setTargetLanguages("de", "it");
-    assertTrue(params.getTargetLanguages().containsAll(Arrays.asList("de", "it")));
+    assertTrue(
+        params.getTargetLanguages().containsAll(Arrays.asList("de", "it")));
   }
 
   @Test
   void shouldSetAndGetTargetLanguages2() {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
-    params.setTargetLanguages(
-        Collections.singleton(new Language("en", "English", "English", LanguageDirection.LTR)));
+    params.setTargetLanguages(Collections.singleton(
+        new Language("en", "English", "English", LanguageDirection.LTR)));
     assertTrue(params.getTargetLanguages().contains("en"));
   }
 
@@ -126,7 +128,8 @@ class TranslateParamsTest {
 
   @Test
   void whenTextsAreSet_thenTextsShouldBeCorrectlyMapped() {
-    TranslateParams params = new TranslateParams(List.of("Hello", "Bonjour"), List.of("fr", "de"));
+    TranslateParams params =
+        new TranslateParams(List.of("Hello", "Bonjour"), List.of("fr", "de"));
     assertEquals("Hello", params.getTexts().get(1));
     assertEquals("Bonjour", params.getTexts().get(2));
   }
@@ -196,9 +199,11 @@ class TranslateParamsTest {
     when(mockResponse.getJsonBody()).thenReturn(mockJsonBody);
     when(mockJsonBody.get(0)).thenReturn(mockTranslationNode);
     when(mockTranslationNode.has("translations")).thenReturn(true);
-    when(mockTranslationNode.get("detectedLanguage")).thenReturn(mockDetectedLanguageNode);
+    when(mockTranslationNode.get("detectedLanguage"))
+        .thenReturn(mockDetectedLanguageNode);
 
-    Assertions.assertThrows(NullPointerException.class, () -> params.handleResponse(mockResponse));
+    Assertions.assertThrows(NullPointerException.class,
+                            () -> params.handleResponse(mockResponse));
   }
 
   @Test
@@ -208,7 +213,8 @@ class TranslateParamsTest {
 
     when(mockResponse.getJsonBody()).thenReturn(null);
 
-    Assertions.assertThrows(NullPointerException.class, () -> params.handleResponse(mockResponse));
+    Assertions.assertThrows(NullPointerException.class,
+                            () -> params.handleResponse(mockResponse));
   }
 
   @Test
@@ -257,7 +263,8 @@ class TranslateParamsTest {
   }
 
   @Test
-  void shouldHandleJsonBodyWithValidTranslations() throws JsonProcessingException {
+  void shouldHandleJsonBodyWithValidTranslations()
+      throws JsonProcessingException {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
     String json =
         "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":0.98},\"translations\":[{\"text\":\"Olá, mundo\",\"to\":\"pt\"}]}]";
@@ -271,18 +278,16 @@ class TranslateParamsTest {
 
     assertTrue(result.isPresent());
     assertNotNull(result.get());
-    assertEquals(
-        "Olá, mundo",
-        result
-            .get()
-            .getFirstResult()
-            .getFirstTranslation()
-            .orElse(new Translation("en", "err"))
-            .getText());
+    assertEquals("Olá, mundo", result.get()
+                                   .getFirstResult()
+                                   .getFirstTranslation()
+                                   .orElse(new Translation("en", "err"))
+                                   .getText());
   }
 
   @Test
-  void shouldHandleJsonBodyWithNoValidTranslations() throws JsonProcessingException {
+  void shouldHandleJsonBodyWithNoValidTranslations()
+      throws JsonProcessingException {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
     String json =
         "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":0.98},\"translations\":[]}]";

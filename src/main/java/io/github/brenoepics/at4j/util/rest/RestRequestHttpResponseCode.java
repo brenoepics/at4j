@@ -1,7 +1,6 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.core.exceptions.*;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -27,81 +26,80 @@ public enum RestRequestHttpResponseCode {
   /** The entity was not modified (no action was taken). */
   NOT_MODIFIED(304, "The entity was not modified (no action was taken)"),
 
-  /** The request was improperly formatted, or the server couldn't understand it. */
+  /**
+   * The request was improperly formatted, or the server couldn't understand
+   * it.
+   */
   BAD_REQUEST(
       400,
       "The request was improperly formatted, or the server couldn't understand it",
-      BadRequestException::new,
-      BadRequestException.class),
+      BadRequestException::new, BadRequestException.class),
 
   /** The Authorization header was missing or invalid. */
-  UNAUTHORIZED(
-      401,
-      "The Authorization header was missing or invalid",
-      UnauthorizedException::new,
-      UnauthorizedException.class),
+  UNAUTHORIZED(401, "The Authorization header was missing or invalid",
+               UnauthorizedException::new, UnauthorizedException.class),
 
-  /** The Authorization token you passed did not have permission to the resource. */
+  /**
+   * The Authorization token you passed did not have permission to the
+   * resource.
+   */
   FORBIDDEN(
       403,
       "The Authorization token you passed did not have permission to the resource",
-      ForbiddenException::new,
-      ForbiddenException.class),
+      ForbiddenException::new, ForbiddenException.class),
 
   /** The resource at the location specified doesn't exist. */
-  NOT_FOUND(
-      404,
-      "The resource at the location specified doesn't exist",
-      NotFoundException::new,
-      NotFoundException.class),
+  NOT_FOUND(404, "The resource at the location specified doesn't exist",
+            NotFoundException::new, NotFoundException.class),
 
   /** The HTTP method used is not valid for the location specified. */
   METHOD_NOT_ALLOWED(
-      405,
-      "The HTTP method used is not valid for the location specified",
-      MethodNotAllowedException::new,
-      MethodNotAllowedException.class),
+      405, "The HTTP method used is not valid for the location specified",
+      MethodNotAllowedException::new, MethodNotAllowedException.class),
 
-  /** The request timed out, you can retry it again later with the same parameters. */
-  REQUEST_TIMEOUT(
-      408,
-      "The request timed out, you can retry it again later",
-      RequestTimeoutException::new,
-      RequestTimeoutException.class),
+  /**
+   * The request timed out, you can retry it again later with the same
+   * parameters.
+   */
+  REQUEST_TIMEOUT(408, "The request timed out, you can retry it again later",
+                  RequestTimeoutException::new, RequestTimeoutException.class),
 
-  /** The request entity has a media type which the server or resource does not support. */
+  /**
+   * The request entity has a media type which the server or resource does not
+   * support.
+   */
   UNSUPPORTED_MEDIA_TYPE(
       415,
       "The request entity has a media type which the server or resource does not support",
-      UnsupportedMediaTypeException::new,
-      UnsupportedMediaTypeException.class),
+      UnsupportedMediaTypeException::new, UnsupportedMediaTypeException.class),
   /** You've made too many requests. */
   TOO_MANY_REQUESTS(429, "You've made too many requests"),
 
-  /** There was not a gateway available to process your request. Wait a bit and retry. */
+  /**
+   * There was not a gateway available to process your request. Wait a bit and
+   * retry.
+   */
   GATEWAY_UNAVAILABLE(
-      502, "There was not a gateway available to process your request. Wait a bit and retry"),
+      502,
+      "There was not a gateway available to process your request. Wait a bit and retry"),
 
   /** There was an internal server error while processing your request. */
   INTERNAL_SERVER_ERROR(
-      500,
-      "There was an internal server error while processing your request",
-      InternalServerErrorException::new,
-      InternalServerErrorException.class),
+      500, "There was an internal server error while processing your request",
+      InternalServerErrorException::new, InternalServerErrorException.class),
 
   /** There was a service unavailable while processing your request. */
   SERVICE_UNAVAILABLE(
-      503,
-      "There was a service unavailable while processing your request",
-      ServiceUnavailableException::new,
-      ServiceUnavailableException.class);
+      503, "There was a service unavailable while processing your request",
+      ServiceUnavailableException::new, ServiceUnavailableException.class);
 
   /** A map for retrieving the enum instances by code. */
   private static final Map<Integer, RestRequestHttpResponseCode> instanceByCode;
 
   /** A map for retrieving the enum instances by exception class. */
-  private static final Map<Class<? extends AzureException>, RestRequestHttpResponseCode>
-      instanceByExceptionClass;
+  private static final
+      Map<Class<? extends AzureException>, RestRequestHttpResponseCode>
+          instanceByExceptionClass;
 
   /** The actual numeric result code. */
   private final int code;
@@ -110,7 +108,8 @@ public enum RestRequestHttpResponseCode {
   private final String meaning;
 
   /**
-   * The azure exception instantiated that produces instances to throw for this kind of result code.
+   * The azure exception instantiated that produces instances to throw for this
+   * kind of result code.
    */
   private final AzureExceptionInstantiation<?> azureExceptionInstantiation;
 
@@ -118,23 +117,20 @@ public enum RestRequestHttpResponseCode {
   private final Class<? extends AzureException> azureExceptionClass;
 
   static {
-    instanceByCode =
-        Collections.unmodifiableMap(
-            Arrays.stream(values())
-                .collect(
-                    Collectors.toMap(RestRequestHttpResponseCode::getCode, Function.identity())));
+    instanceByCode = Collections.unmodifiableMap(
+        Arrays.stream(values()).collect(Collectors.toMap(
+            RestRequestHttpResponseCode::getCode, Function.identity())));
 
-    instanceByExceptionClass =
-        Collections.unmodifiableMap(
-            Arrays.stream(values())
-                .filter(
-                    restRequestHttpResponseCode ->
-                        restRequestHttpResponseCode.getAzureExceptionClass().isPresent())
-                .collect(
-                    Collectors.toMap(
-                        restRequestHttpResponseCode ->
-                            restRequestHttpResponseCode.getAzureExceptionClass().orElse(null),
-                        Function.identity())));
+    instanceByExceptionClass = Collections.unmodifiableMap(
+        Arrays.stream(values())
+            .filter(restRequestHttpResponseCode
+                    -> restRequestHttpResponseCode.getAzureExceptionClass()
+                           .isPresent())
+            .collect(Collectors.toMap(
+                restRequestHttpResponseCode
+                -> restRequestHttpResponseCode.getAzureExceptionClass().orElse(
+                    null),
+                Function.identity())));
   }
 
   /**
@@ -152,12 +148,11 @@ public enum RestRequestHttpResponseCode {
    *
    * @param code The actual numeric response code.
    * @param meaning The textual meaning.
-   * @param exceptionInstantiator The azure exception instantiator that produces instances to throw
-   *     for this kind of result code.
+   * @param exceptionInstantiator The azure exception instantiator that produces
+   *     instances to throw for this kind of result code.
    */
   <T extends AzureException> RestRequestHttpResponseCode(
-      int code,
-      String meaning,
+      int code, String meaning,
       AzureExceptionInstantiation<T> exceptionInstantiator,
       Class<T> azureExceptionClass) {
     this.code = code;
@@ -165,8 +160,8 @@ public enum RestRequestHttpResponseCode {
     this.azureExceptionInstantiation = exceptionInstantiator;
     this.azureExceptionClass = azureExceptionClass;
 
-    if ((exceptionInstantiator == null) && (azureExceptionClass != null)
-        || (exceptionInstantiator != null) && (azureExceptionClass == null)) {
+    if ((exceptionInstantiator == null) && (azureExceptionClass != null) ||
+        (exceptionInstantiator != null) && (azureExceptionClass == null)) {
 
       throw new IllegalArgumentException(
           "exceptionInstantiator and azureExceptionClass do not match");
@@ -177,29 +172,30 @@ public enum RestRequestHttpResponseCode {
    * Gets the rest request http response code by actual numeric response code.
    *
    * @param code The actual numeric response code.
-   * @return The rest request http response code with the actual numeric response code.
+   * @return The rest request http response code with the actual numeric
+   *     response code.
    */
   public static Optional<RestRequestHttpResponseCode> fromCode(int code) {
     return Optional.ofNullable(instanceByCode.get(code));
   }
 
   /**
-   * Gets the rest request http response code by azure exception class. If no entry for the given
-   * class is found, the parents are checked until match is found or {@code AzureException} is
-   * reached.
+   * Gets the rest request http response code by azure exception class. If no
+   * entry for the given class is found, the parents are checked until match is
+   * found or {@code AzureException} is reached.
    *
    * @param azureExceptionClass The azure exception class.
    * @return The rest request http response code with the azure exception class.
    */
   @SuppressWarnings("unchecked")
-  public static Optional<RestRequestHttpResponseCode> fromAzureExceptionClass(
-      Class<? extends AzureException> azureExceptionClass) {
+  public static Optional<RestRequestHttpResponseCode>
+  fromAzureExceptionClass(Class<? extends AzureException> azureExceptionClass) {
     Class<? extends AzureException> clazz = azureExceptionClass;
     while (instanceByExceptionClass.get(clazz) == null) {
       if (clazz == AzureException.class) {
         return Optional.empty();
       }
-      clazz = (Class<? extends AzureException>) clazz.getSuperclass();
+      clazz = (Class<? extends AzureException>)clazz.getSuperclass();
     }
     return Optional.of(instanceByExceptionClass.get(clazz));
   }
@@ -209,18 +205,14 @@ public enum RestRequestHttpResponseCode {
    *
    * @return The actual numeric response code.
    */
-  public int getCode() {
-    return code;
-  }
+  public int getCode() { return code; }
 
   /**
    * Gets the textual meaning.
    *
    * @return The textual meaning.
    */
-  public String getMeaning() {
-    return meaning;
-  }
+  public String getMeaning() { return meaning; }
 
   /**
    * Gets the azure exception to throw for this kind of result code.
@@ -231,13 +223,13 @@ public enum RestRequestHttpResponseCode {
    * @param response The information about the response.
    * @return The azure exception to throw for this kind of result code.
    */
-  public Optional<? extends AzureException> getAzureException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+  public Optional<? extends AzureException>
+  getAzureException(Exception origin, String message, RestRequestInfo request,
+                    RestRequestResponseInfo response) {
     return Optional.ofNullable(azureExceptionInstantiation)
-        .map(instantiator -> instantiator.createInstance(origin, message, request, response));
+        .map(
+            instantiator
+            -> instantiator.createInstance(origin, message, request, response));
   }
 
   /**
@@ -245,7 +237,8 @@ public enum RestRequestHttpResponseCode {
    *
    * @return The azure exception class to throw for this kind of result code.
    */
-  public Optional<? extends Class<? extends AzureException>> getAzureExceptionClass() {
+  public Optional<? extends Class<? extends AzureException>>
+  getAzureExceptionClass() {
     return Optional.ofNullable(azureExceptionClass);
   }
 }
