@@ -76,7 +76,7 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
 
 <details>
   <summary>Gradle</summary>
-    
+
 ```gradle
 implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.0.0'
 ```
