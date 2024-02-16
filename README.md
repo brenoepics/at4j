@@ -1,8 +1,9 @@
-# Azure Translator 4 Java (AT4J) 
+# Azure Translator 4 Java (AT4J)
+
 [![Maven Central](https://img.shields.io/maven-central/v/io.github.brenoepics/at4j?color=blue)](https://central.sonatype.com/artifact/io.github.brenoepics/at4j)
-![Static Badge](https://img.shields.io/badge/azure--api-3.0-blue?style=flat&logo=microsoftazure&logoColor=%230080FF&color=%230080FF&link=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fazure%2Fai-services%2Ftranslator%2Freference%2Fv3-0-reference) 
+![Static Badge](https://img.shields.io/badge/azure--api-3.0-blue?style=flat&logo=microsoftazure&logoColor=%230080FF&color=%230080FF&link=https%3A%2F%2Flearn.microsoft.com%2Fen-us%2Fazure%2Fai-services%2Ftranslator%2Freference%2Fv3-0-reference)
 [![Static Badge](https://img.shields.io/badge/run-l?logo=postman&label=Postman&color=EF5B25)](https://www.postman.com/maintenance-astronaut-2993290/workspace/brenoepics/collection/18589822-dfe7a640-9b94-47a8-b19f-46cb9cc8843e?action=share&creator=18589822)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) 
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j)
 
 An unofficial Java library for translating text using Azure AI Cognitive Services.
@@ -21,6 +22,7 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 - [JavaDoc](https://brenoepics.github.io/at4j/javadoc/)
 
 ## 🎉 Basic Usage
+
 > [!NOTE]
 > Example repository [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
 
@@ -54,6 +56,7 @@ public class ExampleTranslator {
  }
 }
 ```
+
 <details>
      <summary>Expected Output</summary>
 
@@ -62,6 +65,7 @@ pt: Olá, Mundo!
 es: ¡Hola mundo!
 fr: Salut tout le monde!
 ```
+
 </details>
 
 ## 📦 Download / Installation
@@ -87,6 +91,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.0.0'
     <version>1.0.0</version>
 </dependency>
 ```
+
 </details>
 <details>
   <summary>Sbt</summary>
@@ -94,6 +99,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.0.0'
 ```sbt
 libraryDependencies += "io.github.brenoepics" % "at4j" % "1.0.0"
 ```
+
 </details>
 
 ### Frequently Asked Questions (FAQ)
@@ -108,9 +114,10 @@ Optional Logger Dependency
 **A:** While our project is compatible with any Log4j-2-compatible logging framework, integrating one can enhance your logging experience significantly. This allows you to configure log format, log targets (console, file, database, etc.), log levels per class, and more. For further details, please visit our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency).
 
 ## 🤝 Thank You!
+
 - **Microsoft Azure**: Supporting our project with a generous grant of $10,000+ in Azure credits, enabling us to utilize virtual machines, document translation and other essential cloud resources for our development needs.
 - We extend our sincere thanks to all contributors for their invaluable contributions.
-  
+
 ## 🧑‍💻 Contributing
 
 Contributions of any kind are welcome. You can start contributing to this library by creating issues, submitting pull requests or giving a star to the project.

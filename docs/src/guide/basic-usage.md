@@ -7,6 +7,7 @@ footer: false
 This section will guide you through the basic usage of AT4J.
 
 ## Simple Hello World Translation {#hello-world}
+
 ```java
 import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.AzureApiBuilder;
@@ -18,7 +19,7 @@ import java.util.Optional;
 
 public class ExampleApi {
   private static AzureApi azureApi;
-  
+
 	public static void main(String[] args) {
 		// Insert your Azure key and region here
 		String azureKey = "<Your Azure Subscription Key>";
@@ -35,7 +36,7 @@ public class ExampleApi {
     result.ifPresent(response ->
       response.getFirstResult().getTranslations().forEach(ExampleApi::log));
   }
-  
+
   public static void log(Translation translation) {
     System.out.println(translation.getLanguageCode() + ": " + translation.getText());
   }
@@ -43,6 +44,7 @@ public class ExampleApi {
 ```
 
 **Input**
+
 ```console
 Hello, World!
 ```
