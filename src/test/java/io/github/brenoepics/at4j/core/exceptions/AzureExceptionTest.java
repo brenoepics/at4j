@@ -49,8 +49,7 @@ class AzureExceptionTest<T> {
 
   @Test
   void responseInformationIsRetained() {
-    RestRequestResponseInfo response =
-        new RestRequestResponseInfoImpl(request, result);
+    RestRequestResponseInfo response = new RestRequestResponseInfoImpl(request, result);
     AzureException exception = new AzureException(null, null, null, response);
 
     assertEquals(Optional.of(response), exception.getResponse());

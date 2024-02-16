@@ -3,7 +3,6 @@ package io.github.brenoepics.at4j.data.request;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.azure.lang.LanguageDirection;
 import io.github.brenoepics.at4j.data.Translation;
@@ -260,7 +259,8 @@ class TranslateParamsTest {
   void shouldHandleJsonBodyWithValidTranslations() throws JsonProcessingException {
     TranslateParams params = new TranslateParams("Hello", List.of("fr"));
     String json =
-        "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":0.98},\"translations\":[{\"text\":\"Olá, mundo\",\"to\":\"pt\"}]}]";
+        "[{\"detectedLanguage\":{\"language\":\"en\",\"score\":0.98},\"translations\":[{\"text\":\"Olá,"
+            + " mundo\",\"to\":\"pt\"}]}]";
     RestRequestResult mockResponse = mock(RestRequestResult.class);
     ObjectMapper mapper = new ObjectMapper();
     JsonNode mockJsonBody = mapper.readTree(json);

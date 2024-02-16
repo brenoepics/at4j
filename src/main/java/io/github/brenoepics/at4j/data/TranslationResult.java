@@ -1,6 +1,5 @@
 package io.github.brenoepics.at4j.data;
 
-
 import java.util.Collection;
 import java.util.Optional;
 

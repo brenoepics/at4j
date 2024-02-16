@@ -131,7 +131,7 @@ public class RestRequest {
   /**
    * Adds a query parameter to the url.
    *
-   * @param key   The key of the parameter.
+   * @param key The key of the parameter.
    * @param value The value of the parameter.
    */
   public void addQueryParameter(String key, String value) {
@@ -150,7 +150,7 @@ public class RestRequest {
   /**
    * Adds a header to the request.
    *
-   * @param name  The name of the header.
+   * @param name The name of the header.
    * @param value The value of the header.
    */
   public void addHeader(String name, String value) {

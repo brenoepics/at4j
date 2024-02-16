@@ -18,6 +18,7 @@ public class AzureException extends Exception {
    * request.
    */
   private final transient RestRequestResponseInfo response;
+
   /**
    * Creates a new instance of this class.
    *
@@ -27,10 +28,7 @@ public class AzureException extends Exception {
    * @param response The information about the response.
    */
   public AzureException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+      Exception origin, String message, RestRequestInfo request, RestRequestResponseInfo response) {
     super(message, origin);
     this.request = request;
     this.response = response;

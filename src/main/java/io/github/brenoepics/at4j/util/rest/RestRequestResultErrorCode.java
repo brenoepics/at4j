@@ -329,10 +329,7 @@ public enum RestRequestResultErrorCode {
    * @return The azure exception to throw for this kind of result code.
    */
   public Optional<AzureException> getAzureException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+      Exception origin, String message, RestRequestInfo request, RestRequestResponseInfo response) {
     return Optional.ofNullable(azureExceptionInstantiation)
         .map(instantiate -> instantiate.createInstance(origin, message, request, response))
         .filter(

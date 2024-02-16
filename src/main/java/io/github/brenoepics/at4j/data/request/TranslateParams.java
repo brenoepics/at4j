@@ -346,8 +346,7 @@ public class TranslateParams {
    *     response is null, or the JSON body is null, or the JSON body does not contain a field
    *     'translations'.
    */
-  public Optional<TranslationResponse> handleResponse(
-      RestRequestResult response) {
+  public Optional<TranslationResponse> handleResponse(RestRequestResult response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
     JsonNode jsonBody = response.getJsonBody();

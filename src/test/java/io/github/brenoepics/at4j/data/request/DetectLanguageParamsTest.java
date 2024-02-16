@@ -73,7 +73,7 @@ class DetectLanguageParamsTest {
     DetectLanguageParams params = new DetectLanguageParams(new ArrayList<>());
     assertNull(params.getBody());
   }
-  
+
   @Test
   void shouldHandleResponseWithEmptyJsonBody() {
     DetectLanguageParams params = new DetectLanguageParams("Hello");
