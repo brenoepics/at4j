@@ -1,25 +1,21 @@
 package io.github.brenoepics.at4j.core;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.core.ratelimit.RateLimitManager;
 import io.github.brenoepics.at4j.core.thread.ThreadPool;
 import io.github.brenoepics.at4j.core.thread.ThreadPoolImpl;
-import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
+import io.github.brenoepics.at4j.data.response.DetectResponse;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import io.github.brenoepics.at4j.util.rest.RestEndpoint;
 import io.github.brenoepics.at4j.util.rest.RestMethod;
 import io.github.brenoepics.at4j.util.rest.RestRequest;
-
 import java.net.http.HttpClient;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -46,7 +42,7 @@ public class AzureApiImpl<T> implements AzureApi {
   private final ObjectMapper objectMapper = new ObjectMapper();
 
   /** The ratelimit manager for this resource. */
-  private final RateLimitManager<T> ratelimitManager = new RateLimitManager<>(this);
+  private final RateLimitManager<T, ?, ?> ratelimitManager = new RateLimitManager<>(this);
 
   /** The thread pool which is used internally. */
   private final ThreadPoolImpl threadPool = new ThreadPoolImpl();
@@ -93,69 +89,40 @@ public class AzureApiImpl<T> implements AzureApi {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<TranslationResponse>> request =
-        new RestRequest<Optional<TranslationResponse>>(
-                this, RestMethod.POST, RestEndpoint.TRANSLATE)
-            .setBody(params.getBody());
-    params.getQueryParameters().forEach(request::addQueryParameter);
-    params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
+    RestRequest request = new RestRequest(this, RestMethod.POST, RestEndpoint.TRANSLATE);
+    request.setBody(params.getBody());
+    request.addQueryParameters(params.getQueryParameters());
 
-    return request.execute(params::handleTranslations);
+    if (params.getTargetLanguages() != null) {
+      params.getTargetLanguages().forEach(lang -> request.addQueryParameter("to", lang));
+    }
+
+    return request.execute(params::handleResponse);
   }
 
   @Override
-  public CompletableFuture<Optional<DetectedLanguage>> detectLanguage(DetectLanguageParams params) {
-    if (params.getText() == null || params.getText().isEmpty()) {
+  public CompletableFuture<Optional<DetectResponse>> detectLanguage(DetectLanguageParams params) {
+    if (params.getTexts() == null || params.getTexts().isEmpty()) {
       return CompletableFuture.completedFuture(Optional.empty());
     }
 
-    RestRequest<Optional<DetectedLanguage>> request =
-        new RestRequest<Optional<DetectedLanguage>>(this, RestMethod.POST, RestEndpoint.DETECT)
-            .setBody(params.getBody());
+    RestRequest request = new RestRequest(this, RestMethod.POST, RestEndpoint.DETECT);
+    request.setBody(params.getBody());
 
-    return request.execute(
-        response -> {
-          if (response.getJsonBody().isNull()
-              || !response.getJsonBody().has(0)
-              || !response.getJsonBody().get(0).has("language")) return Optional.empty();
-
-          JsonNode jsonNode = response.getJsonBody().get(0);
-          if (!jsonNode.isObject()) return Optional.empty();
-
-          return Optional.of(DetectedLanguage.ofJSON((ObjectNode) jsonNode));
-        });
+    return request.execute(params::handleResponse);
   }
 
   @Override
   public CompletableFuture<Optional<Collection<Language>>> getAvailableLanguages(
       AvailableLanguagesParams params) {
-    RestRequest<Optional<Collection<Language>>> request =
-        new RestRequest<Optional<Collection<Language>>>(
-                this, RestMethod.GET, RestEndpoint.LANGUAGES)
-            .addQueryParameter("scope", params.getScope())
-            .includeAuthorizationHeader(false);
+    RestRequest request = new RestRequest(this, RestMethod.GET, RestEndpoint.LANGUAGES, false);
+    request.addQueryParameter("scope", params.getScope());
 
     if (params.getSourceLanguage() != null) {
       request.addHeader("Accept-Language", params.getSourceLanguage());
     }
 
-    return request.execute(
-        response -> {
-          if (response.getJsonBody().isNull() || !response.getJsonBody().has("translation"))
-            return Optional.empty();
-
-          Collection<Language> languages = new ArrayList<>();
-          JsonNode jsonNode = response.getJsonBody().get("translation");
-          jsonNode
-              .fieldNames()
-              .forEachRemaining(
-                  key -> {
-                    Language language = Language.ofJSON(key, (ObjectNode) jsonNode.get(key));
-                    languages.add(language);
-                  });
-
-          return Optional.of(languages);
-        });
+    return request.execute(params::handleResponse);
   }
 
   @Override
@@ -168,6 +135,7 @@ public class AzureApiImpl<T> implements AzureApi {
    *
    * @return HttpClient - The used HttpClient.
    */
+  @Override
   public HttpClient getHttpClient() {
     return this.httpClient;
   }
@@ -177,6 +145,7 @@ public class AzureApiImpl<T> implements AzureApi {
    *
    * @return ObjectMapper - The used ObjectMapper.
    */
+  @Override
   public ObjectMapper getObjectMapper() {
     return objectMapper;
   }
@@ -186,7 +155,9 @@ public class AzureApiImpl<T> implements AzureApi {
    *
    * @return RateLimitManager - The used RateLimitManager.
    */
-  public RateLimitManager<T> getRatelimitManager() {
+  @SuppressWarnings("unchecked")
+  @Override
+  public RateLimitManager<T, ?, ?> getRatelimitManager() {
     return ratelimitManager;
   }
 }

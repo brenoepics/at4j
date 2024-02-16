@@ -1,5 +1,6 @@
 package io.github.brenoepics.at4j.util.rest;
 
+import io.github.brenoepics.at4j.AT4J;
 import io.github.brenoepics.at4j.core.exceptions.*;
 
 import java.util.Arrays;
@@ -212,7 +213,6 @@ public enum RestRequestResultErrorCode {
           + " from request header X-ClientTraceId.",
       ServiceUnavailableException::new,
       RestRequestHttpResponseCode.SERVICE_UNAVAILABLE);
-  ;
 
   /** A map for retrieving the enum instances by code. */
   private static final Map<String, RestRequestResultErrorCode> instanceByCode;
@@ -254,9 +254,9 @@ public enum RestRequestResultErrorCode {
    *
    * @param code The actual numeric close code.
    * @param meaning The textual meaning.
-   * @param azureExceptionInstantiation The azure exception instantiator that produces instances to
+   * @param azureExceptionInstantiation The azure exception instantiating that produces instances to
    *     throw for this kind of result code.
-   * @param responseCode The response code for which the given instantiator should be used.
+   * @param responseCode The response code for which the given instantiating should be used.
    */
   RestRequestResultErrorCode(
       int code,
@@ -301,9 +301,19 @@ public enum RestRequestResultErrorCode {
   }
 
   /**
-   * Gets the response code for which the given instantiator should be used.
+   * Gets the reference to the documentation for this kind of result code.
    *
-   * @return The response code for which the given instantiator should be used.
+   * @return The reference to the documentation for this kind of result code.
+   * @see <a href="https://brenoepics.github.io/at4j/error-reference/">Error Reference</a>
+   */
+  public String getReference() {
+    return AT4J.DOCS_URL + "error-reference/#azure-" + code;
+  }
+
+  /**
+   * Gets the response code for which the given instantiating should be used.
+   *
+   * @return The response code for which the given instantiating should be used.
    */
   public RestRequestHttpResponseCode getResponseCode() {
     return responseCode;
@@ -321,8 +331,8 @@ public enum RestRequestResultErrorCode {
   public Optional<AzureException> getAzureException(
       Exception origin,
       String message,
-      RestRequestInformation request,
-      RestRequestResponseInformation response) {
+      RestRequestInfo request,
+      RestRequestResponseInfo response) {
     return Optional.ofNullable(azureExceptionInstantiation)
         .map(instantiate -> instantiate.createInstance(origin, message, request, response))
         .filter(

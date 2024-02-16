@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /** Some information about a rest request. */
-public interface RestRequestInformation {
+public interface RestRequestInfo {
 
   /**
    * Gets the azure api instance which created the request.

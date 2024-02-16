@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 /** Represents a detected language. */
 public class DetectedLanguage {
 
+  private final String baseText;
+
   // The language code of the detected language
   private final String languageCode;
 
@@ -28,10 +30,12 @@ public class DetectedLanguage {
    *     transliteration.
    */
   public DetectedLanguage(
+      String baseText,
       String languageCode,
       float score,
       boolean isTranslationSupported,
       boolean isTransliterationSupported) {
+    this.baseText = baseText;
     this.languageCode = languageCode;
     this.score = score;
     this.isTranslationSupported = isTranslationSupported;
@@ -43,8 +47,44 @@ public class DetectedLanguage {
    *
    * @param languageCode The language code of the detected language.
    * @param score The confidence score of the detected language.
+   * @param isTranslationSupported A boolean indicating if the language is supported for
+   *     translation.
+   * @param isTransliterationSupported A boolean indicating if the language is supported for
+   *     transliteration.
+   */
+  public DetectedLanguage(
+      String languageCode,
+      float score,
+      boolean isTranslationSupported,
+      boolean isTransliterationSupported) {
+    this.baseText = null;
+    this.languageCode = languageCode;
+    this.score = score;
+    this.isTranslationSupported = isTranslationSupported;
+    this.isTransliterationSupported = isTransliterationSupported;
+  }
+
+  /**
+   * Constructor for DetectedLanguage class.
+   *
+   * @param baseText The text analyzed for language detection.
+   * @param languageCode The language code of the detected language.
+   * @param score The confidence score of the detected language.
+   */
+  public DetectedLanguage(String baseText, String languageCode, float score) {
+    this.baseText = baseText;
+    this.languageCode = languageCode;
+    this.score = score;
+  }
+
+  /**
+   * Constructor for DetectedLanguage class.
+   *
+   * @param languageCode The language code of the detected language.
+   * @param score The confidence score of the detected language.
    */
   public DetectedLanguage(String languageCode, float score) {
+    this.baseText = null;
     this.languageCode = languageCode;
     this.score = score;
   }
@@ -56,10 +96,22 @@ public class DetectedLanguage {
    * @return The new instance.
    */
   public static DetectedLanguage ofJSON(ObjectNode jsonNode) {
+    return ofJSON(null, jsonNode);
+  }
+
+  /**
+   * Creates a new instance of this class from a json node.
+   *
+   * @param baseText The text analyzed for language detection.
+   * @param jsonNode The json node.
+   * @return The new instance.
+   */
+  public static DetectedLanguage ofJSON(String baseText, ObjectNode jsonNode) {
     if (jsonNode == null || !jsonNode.has("language") || !jsonNode.has("score")) return null;
 
     DetectedLanguage detected =
-        new DetectedLanguage(jsonNode.get("language").asText(), jsonNode.get("score").floatValue());
+        new DetectedLanguage(
+            baseText, jsonNode.get("language").asText(), jsonNode.get("score").floatValue());
 
     if (jsonNode.has("isTranslationSupported")) {
       detected.isTranslationSupported = jsonNode.get("isTranslationSupported").asBoolean();
@@ -70,6 +122,15 @@ public class DetectedLanguage {
     }
 
     return detected;
+  }
+
+  /**
+   * Gets the text analyzed for language detection.
+   *
+   * @return The text analyzed for language detection.
+   */
+  public String getBaseText() {
+    return baseText;
   }
 
   /**

@@ -1,7 +1,7 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
+import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.azure.BaseURL;
-import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.util.rest.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AzureExceptionTest<T> {
 
-  @Mock private AzureApiImpl<T> api;
-  @Mock private RestRequestResult<T> result;
-  private RestRequestInformation request;
+  @Mock private AzureApi api;
+  @Mock private RestRequestResult result;
+  private RestRequestInfo request;
 
   @BeforeEach
   public void setup() throws MalformedURLException {
@@ -28,7 +28,7 @@ class AzureExceptionTest<T> {
     Map<String, Collection<String>> queryParameter = new HashMap<>();
     HashMap<String, String> headers = new HashMap<>();
     String body = "Test body";
-    request = new RestRequestInformationImpl(api, url, queryParameter, headers, body);
+    request = new RestRequestInfoImpl(api, url, queryParameter, headers, body);
   }
 
   @Test
@@ -49,8 +49,8 @@ class AzureExceptionTest<T> {
 
   @Test
   void responseInformationIsRetained() {
-    RestRequestResponseInformation response =
-        new RestRequestResponseInformationImpl<>(request, result);
+    RestRequestResponseInfo response =
+        new RestRequestResponseInfoImpl(request, result);
     AzureException exception = new AzureException(null, null, null, response);
 
     assertEquals(Optional.of(response), exception.getResponse());

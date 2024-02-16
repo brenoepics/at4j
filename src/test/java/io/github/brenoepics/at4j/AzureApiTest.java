@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
-import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
+import io.github.brenoepics.at4j.data.response.DetectResponse;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
 import java.util.Collection;
 import java.util.List;
@@ -89,7 +89,7 @@ class AzureApiTest {
     TranslateParams params = new TranslateParams("Hello World!", List.of("pt", "es"));
     Optional<TranslationResponse> translate = api.translate(params).join();
     assertTrue(translate.isPresent());
-    assertEquals(2, translate.get().getResultList().get(0).getTranslations().size());
+    assertEquals(2, translate.get().getFirstResult().getTranslations().size());
   }
 
   @Test
@@ -124,10 +124,10 @@ class AzureApiTest {
     AzureApiBuilder builder = new AzureApiBuilder().setKey(azureKey).region(region);
     AzureApi api = builder.build();
 
-    Optional<DetectedLanguage> detect =
+    Optional<DetectResponse> detect =
         api.detectLanguage(new DetectLanguageParams("Hello World!")).join();
 
     assertTrue(detect.isPresent());
-    assertEquals("en", detect.get().getLanguageCode());
+    assertEquals("en", detect.get().getFirst().getLanguageCode());
   }
 }

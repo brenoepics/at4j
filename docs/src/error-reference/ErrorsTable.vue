@@ -28,7 +28,7 @@ defineProps<{
 
 <style scoped>
 .highlight {
-  color: var(--vt-c-yellow-darker);
+  color: var(--vp-c-yellow-soft);
   font-weight: bold;
 }
 </style>

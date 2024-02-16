@@ -1,5 +1,6 @@
 package io.github.brenoepics.at4j.core;
 
+import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.AzureApiBuilder;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
@@ -14,14 +15,14 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AzureApiImplTest<T> {
+class AzureApiImplTest {
 
-  @Mock private AzureApiImpl<T> azureApi;
+  @Mock private AzureApi azureApi;
   private TranslateParams translateParams;
 
   @BeforeEach
   public void setup() {
-    azureApi = (AzureApiImpl<T>) new AzureApiBuilder().setKey("testKey").build();
+    azureApi = new AzureApiBuilder().setKey("testKey").build();
     translateParams =
         new TranslateParams("Hello", Collections.singleton("pt")).setSourceLanguage("en");
   }

@@ -58,6 +58,8 @@ public class AT4J {
   /** The GitHub url of AT4J. */
   public static final String GITHUB_URL = "https://github.com/brenoepics/at4j";
 
+  public static final String DOCS_URL = "https://brenoepics.github.io/at4j/";
+
   /**
    * The user agent used for requests. It is composed of the GitHub URL and the display version of
    * AT4J.

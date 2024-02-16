@@ -3,11 +3,11 @@ package io.github.brenoepics.at4j.util.rest;
 import io.github.brenoepics.at4j.AzureApi;
 import java.util.Optional;
 
-/** The implementation of {@link RestRequestResponseInformation}. */
-public class RestRequestResponseInformationImpl<T> implements RestRequestResponseInformation {
+/** The implementation of {@link RestRequestResponseInfo}. */
+public class RestRequestResponseInfoImpl implements RestRequestResponseInfo {
 
-  private final RestRequestInformation request;
-  private final RestRequestResult<T> restRequestResult;
+  private final RestRequestInfo request;
+  private final RestRequestResult restRequestResult;
 
   /**
    * Creates a new rest request response information.
@@ -15,8 +15,8 @@ public class RestRequestResponseInformationImpl<T> implements RestRequestRespons
    * @param request The request which this response answered.
    * @param restRequestResult The result of the response.
    */
-  public RestRequestResponseInformationImpl(
-      RestRequestInformation request, RestRequestResult<T> restRequestResult) {
+  public RestRequestResponseInfoImpl(
+          RestRequestInfo request, RestRequestResult restRequestResult) {
     this.request = request;
     this.restRequestResult = restRequestResult;
   }
@@ -26,7 +26,7 @@ public class RestRequestResponseInformationImpl<T> implements RestRequestRespons
    *
    * @return The rest request result.
    */
-  public RestRequestResult<T> getRestRequestResult() {
+  public RestRequestResult getRestRequestResult() {
     return restRequestResult;
   }
 
@@ -36,7 +36,7 @@ public class RestRequestResponseInformationImpl<T> implements RestRequestRespons
   }
 
   @Override
-  public RestRequestInformation getRequest() {
+  public RestRequestInfo getRequest() {
     return request;
   }
 

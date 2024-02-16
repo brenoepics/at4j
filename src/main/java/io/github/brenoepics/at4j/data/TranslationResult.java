@@ -1,9 +1,8 @@
-package io.github.brenoepics.at4j.data.response;
+package io.github.brenoepics.at4j.data;
 
-import io.github.brenoepics.at4j.data.DetectedLanguage;
-import io.github.brenoepics.at4j.data.Translation;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * This class represents a response from a translation service. It contains the detected language of
@@ -63,6 +62,16 @@ public class TranslationResult {
    */
   public Collection<Translation> getTranslations() {
     return translations;
+  }
+
+  /**
+   * Returns the first translation in the collection. If the collection is empty, it returns null.
+   *
+   * @return The first translation in the collection.
+   * @see Translation
+   */
+  public Optional<Translation> getFirstTranslation() {
+    return translations.stream().findFirst();
   }
 
   /**

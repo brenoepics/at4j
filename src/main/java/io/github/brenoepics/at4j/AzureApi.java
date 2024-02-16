@@ -1,15 +1,17 @@
 package io.github.brenoepics.at4j;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.azure.lang.Language;
+import io.github.brenoepics.at4j.core.ratelimit.RateLimitManager;
 import io.github.brenoepics.at4j.core.thread.ThreadPool;
-import io.github.brenoepics.at4j.data.DetectedLanguage;
+import io.github.brenoepics.at4j.data.TranslationResult;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import io.github.brenoepics.at4j.data.request.DetectLanguageParams;
 import io.github.brenoepics.at4j.data.request.TranslateParams;
+import io.github.brenoepics.at4j.data.response.DetectResponse;
 import io.github.brenoepics.at4j.data.response.TranslationResponse;
-import io.github.brenoepics.at4j.data.response.TranslationResult;
-
+import java.net.http.HttpClient;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -98,5 +100,26 @@ public interface AzureApi {
    *     href="https://learn.microsoft.com/en-us/azure/ai-services/translator/reference/v3-0-detect">Language
    *     Detection</a>
    */
-  CompletableFuture<Optional<DetectedLanguage>> detectLanguage(DetectLanguageParams params);
+  CompletableFuture<Optional<DetectResponse>> detectLanguage(DetectLanguageParams params);
+
+  /**
+   * Gets the ratelimit manager.
+   *
+   * @return RateLimitManager - The ratelimit manager.
+   */
+  <T, T3, T4> RateLimitManager<T, T3, T4> getRatelimitManager();
+
+  /**
+   * Gets the HttpClient.
+   *
+   * @return HttpClient - The HttpClient.
+   */
+  HttpClient getHttpClient();
+
+  /**
+   * Gets the ObjectMapper.
+   *
+   * @return ObjectMapper - The ObjectMapper.
+   */
+  ObjectMapper getObjectMapper();
 }

@@ -1,5 +1,7 @@
 package io.github.brenoepics.at4j.data.response;
 
+import io.github.brenoepics.at4j.data.TranslationResult;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +40,16 @@ public class TranslationResponse {
    */
   public List<TranslationResult> getResultList() {
     return resultList;
+  }
+
+  /**
+   * Method to retrieve the first translation result from the list.
+   *
+   * @return The first translation result from the list.
+   * @throws IndexOutOfBoundsException If the list is empty.
+   */
+  public TranslationResult getFirstResult() {
+    return resultList.get(0);
   }
 
   /**

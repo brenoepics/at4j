@@ -1,10 +1,18 @@
 package io.github.brenoepics.at4j.data.request;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.github.brenoepics.at4j.azure.lang.Language;
 import io.github.brenoepics.at4j.data.request.optional.LanguageScope;
+import io.github.brenoepics.at4j.util.rest.RestRequestResult;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /** This class represents the parameters for available languages. */
+@SuppressWarnings({"unused", "UnusedReturnValue"})
 public class AvailableLanguagesParams {
   // List of scopes for the languages
   private List<LanguageScope> scope = List.of(LanguageScope.TRANSLATION);
@@ -49,5 +57,28 @@ public class AvailableLanguagesParams {
   public AvailableLanguagesParams setSourceLanguage(String sourceLanguage) {
     this.sourceLanguage = sourceLanguage;
     return this;
+  }
+
+  /**
+   * Method to handle the response from the API.
+   *
+   * @param response The response to handle.
+   * @return An optional containing the collection of languages if the response was successful.
+   */
+  public Optional<Collection<Language>> handleResponse(RestRequestResult response) {
+    if (response.getJsonBody().isNull() || !response.getJsonBody().has("translation"))
+      return Optional.empty();
+
+    Collection<Language> languages = new ArrayList<>();
+    JsonNode jsonNode = response.getJsonBody().get("translation");
+    jsonNode
+        .fieldNames()
+        .forEachRemaining(
+            key -> {
+              Language language = Language.ofJSON(key, (ObjectNode) jsonNode.get(key));
+              languages.add(language);
+            });
+
+    return Optional.of(languages);
   }
 }

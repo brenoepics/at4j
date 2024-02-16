@@ -11,12 +11,12 @@ import java.util.Optional;
 import org.apache.logging.log4j.Logger;
 
 /** The result of a {@link RestRequest}. */
-public class RestRequestResult<T> {
+public class RestRequestResult {
 
   /** The (logger) of this class. */
   private static final Logger logger = LoggerUtil.getLogger(RestRequestResult.class);
 
-  private final RestRequest<T> request;
+  private final RestRequest request;
   private final HttpResponse<String> response;
   private final String stringBody;
   private final JsonNode jsonBody;
@@ -28,7 +28,7 @@ public class RestRequestResult<T> {
    * @param response The response of the RestRequest.
    * @throws IOException Passed on from {@link HttpResponse#body()}.
    */
-  public RestRequestResult(RestRequest<T> request, HttpResponse<String> response)
+  public RestRequestResult(RestRequest request, HttpResponse<String> response)
       throws IOException {
     this.request = request;
     this.response = response;
@@ -55,7 +55,7 @@ public class RestRequestResult<T> {
    *
    * @return The Request which belongs to this result.
    */
-  public RestRequest<T> getRequest() {
+  public RestRequest getRequest() {
     return request;
   }
 

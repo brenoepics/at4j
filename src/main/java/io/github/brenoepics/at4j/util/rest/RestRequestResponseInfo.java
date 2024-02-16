@@ -4,7 +4,7 @@ import io.github.brenoepics.at4j.AzureApi;
 import java.util.Optional;
 
 /** Some information about a rest request response. */
-public interface RestRequestResponseInformation {
+public interface RestRequestResponseInfo {
 
   /**
    * Gets the azure api instance which created the request.
@@ -18,7 +18,7 @@ public interface RestRequestResponseInformation {
    *
    * @return The request which this response answered.
    */
-  RestRequestInformation getRequest();
+  RestRequestInfo getRequest();
 
   /**
    * Gets the response code of the response.

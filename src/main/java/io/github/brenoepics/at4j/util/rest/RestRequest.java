@@ -3,7 +3,6 @@ package io.github.brenoepics.at4j.util.rest;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.github.brenoepics.at4j.AT4J;
 import io.github.brenoepics.at4j.AzureApi;
-import io.github.brenoepics.at4j.core.AzureApiImpl;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
 import java.io.IOException;
@@ -19,12 +18,12 @@ import java.util.function.Function;
 import org.apache.logging.log4j.Logger;
 
 /** This class is used to wrap a rest request. */
-public class RestRequest<T> {
+public class RestRequest {
 
   /** The (logger) of this class. */
   private static final Logger logger = LoggerUtil.getLogger(RestRequest.class);
 
-  private final AzureApiImpl<T> api;
+  private final AzureApi api;
   private final RestMethod method;
   private final RestEndpoint endpoint;
 
@@ -33,7 +32,7 @@ public class RestRequest<T> {
   private final Map<String, String> headers = new HashMap<>();
   private volatile String body = null;
 
-  private final CompletableFuture<RestRequestResult<T>> result = new CompletableFuture<>();
+  private final CompletableFuture<RestRequestResult> result = new CompletableFuture<>();
 
   /** The origin of the rest request. */
   private final Exception origin;
@@ -48,10 +47,29 @@ public class RestRequest<T> {
    * @param endpoint The endpoint to which the request should be sent.
    */
   public RestRequest(AzureApi api, RestMethod method, RestEndpoint endpoint) {
-    this.api = (AzureApiImpl) api;
+    this.api = api;
     this.method = method;
     this.endpoint = endpoint;
     addQueryParameter("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
+
+    this.origin = new Exception("origin of RestRequest call");
+  }
+
+  /**
+   * Creates a new instance of this class.
+   *
+   * @param api The api which will be used to execute the request.
+   * @param method The http method of the request.
+   * @param endpoint The endpoint to which the request should be sent.
+   * @param includeAuthorizationHeader Whether the authorization header should be included or not.
+   */
+  public RestRequest(
+      AzureApi api, RestMethod method, RestEndpoint endpoint, boolean includeAuthorizationHeader) {
+    this.api = api;
+    this.method = method;
+    this.endpoint = endpoint;
+    addQueryParameter("api-version", AT4J.AZURE_TRANSLATOR_API_VERSION);
+    this.includeAuthorizationHeader = includeAuthorizationHeader;
 
     this.origin = new Exception("origin of RestRequest call");
   }
@@ -61,7 +79,7 @@ public class RestRequest<T> {
    *
    * @return The api which is used for this request.
    */
-  public AzureApiImpl<T> getApi() {
+  public AzureApi getApi() {
     return api;
   }
 
@@ -113,25 +131,30 @@ public class RestRequest<T> {
   /**
    * Adds a query parameter to the url.
    *
-   * @param key The key of the parameter.
+   * @param key   The key of the parameter.
    * @param value The value of the parameter.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> addQueryParameter(String key, String value) {
+  public void addQueryParameter(String key, String value) {
     queryParameters.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
-    return this;
+  }
+
+  /**
+   * Adds multiple query parameters to the url.
+   *
+   * @param parameters The parameters to add.
+   */
+  public void addQueryParameters(Map<String, String> parameters) {
+    parameters.forEach(this::addQueryParameter);
   }
 
   /**
    * Adds a header to the request.
    *
-   * @param name The name of the header.
+   * @param name  The name of the header.
    * @param value The value of the header.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> addHeader(String name, String value) {
+  public void addHeader(String name, String value) {
     headers.put(name, value);
-    return this;
   }
 
   public Map<String, String> getHeaders() {
@@ -144,7 +167,7 @@ public class RestRequest<T> {
    * @param body The body of the request.
    * @return The current instance to chain call methods.
    */
-  public RestRequest<T> setBody(JsonNode body) {
+  public RestRequest setBody(JsonNode body) {
     return setBody(body.toString());
   }
 
@@ -154,7 +177,7 @@ public class RestRequest<T> {
    * @param body The body of the request.
    * @return The current instance to chain call methods.
    */
-  public RestRequest<T> setBody(String body) {
+  public RestRequest setBody(String body) {
     this.body = body;
     return this;
   }
@@ -163,11 +186,18 @@ public class RestRequest<T> {
    * Sets if an authorization header should be included in this request.
    *
    * @param includeAuthorizationHeader Whether the authorization header should be included or not.
-   * @return The current instance to chain call methods.
    */
-  public RestRequest<T> includeAuthorizationHeader(boolean includeAuthorizationHeader) {
+  public void includeAuthorizationHeader(boolean includeAuthorizationHeader) {
     this.includeAuthorizationHeader = includeAuthorizationHeader;
-    return this;
+  }
+
+  /**
+   * Returns if an authorization header should be included in this request.
+   *
+   * @return Whether the authorization header should be included or not.
+   */
+  public boolean isIncludeAuthorizationHeader() {
+    return includeAuthorizationHeader;
   }
 
   /**
@@ -176,7 +206,7 @@ public class RestRequest<T> {
    * @param function A function which processes the rest response to the requested object.
    * @return A future which will contain the output of the function.
    */
-  public CompletableFuture<T> execute(Function<RestRequestResult<T>, T> function) {
+  public <T> CompletableFuture<T> execute(Function<RestRequestResult, T> function) {
     api.getRatelimitManager().queueRequest(this);
     CompletableFuture<T> future = new CompletableFuture<>();
     result.whenComplete(
@@ -199,7 +229,7 @@ public class RestRequest<T> {
    *
    * @return Gets the result of this request.
    */
-  public CompletableFuture<RestRequestResult<T>> getResult() {
+  public CompletableFuture<RestRequestResult> getResult() {
     return result;
   }
 
@@ -209,10 +239,10 @@ public class RestRequest<T> {
    * @return The information for this rest request.
    * @throws AssertionError Thrown if the url is malformed.
    */
-  public RestRequestInformation asRestRequestInformation() {
+  public RestRequestInfo asRestRequestInformation() {
     try {
 
-      return new RestRequestInformationImpl(
+      return new RestRequestInfoImpl(
           api,
           endpoint.getHttpUrl(api.getBaseURL(), queryParameters).toURL(),
           queryParameters,
@@ -230,7 +260,7 @@ public class RestRequest<T> {
    * @throws AzureException Thrown in case of an error while requesting azure.
    * @throws IOException Thrown if an error occurs while reading the response.
    */
-  public RestRequestResult<T> executeBlocking()
+  public RestRequestResult executeBlocking()
       throws AzureException, IOException, URISyntaxException {
     URI fullUrl = endpoint.getHttpUrl(api.getBaseURL(), queryParameters);
     HttpRequest.Builder requestBuilder = HttpRequest.newBuilder().uri(fullUrl);
@@ -254,14 +284,14 @@ public class RestRequest<T> {
         getApi()
             .getHttpClient()
             .sendAsync(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
-    RestRequestResult<T> responseResult = handleResponse(fullUrl, response.join());
+    RestRequestResult responseResult = handleResponse(fullUrl, response.join());
     result.complete(responseResult);
     return responseResult;
   }
 
-  private RestRequestResult<T> handleResponse(URI fullUrl, HttpResponse<String> response)
+  private RestRequestResult handleResponse(URI fullUrl, HttpResponse<String> response)
       throws IOException, AzureException {
-    RestRequestResult<T> requestResult = new RestRequestResult<>(this, response);
+    RestRequestResult requestResult = new RestRequestResult(this, response);
     String bodyString = requestResult.getStringBody().orElse("empty");
     logger.debug(
         "Sent {} request to {} and received status code {} with body {}",
@@ -277,11 +307,11 @@ public class RestRequest<T> {
     return requestResult;
   }
 
-  private RestRequestResult<T> handleError(int resultCode, RestRequestResult<T> result)
+  private RestRequestResult handleError(int resultCode, RestRequestResult result)
       throws AzureException {
-    RestRequestInformation requestInformation = asRestRequestInformation();
-    RestRequestResponseInformation responseInformation =
-        new RestRequestResponseInformationImpl<>(requestInformation, result);
+    RestRequestInfo requestInformation = asRestRequestInformation();
+    RestRequestResponseInfo responseInformation =
+        new RestRequestResponseInfoImpl(requestInformation, result);
     Optional<RestRequestHttpResponseCode> responseCodeOptional =
         RestRequestHttpResponseCode.fromCode(resultCode);
 
@@ -334,15 +364,18 @@ public class RestRequest<T> {
       RestRequestHttpResponseCode responseCode,
       String code,
       String message,
-      RestRequestInformation requestInformation,
-      RestRequestResponseInformation responseInformation) {
+      RestRequestInfo requestInformation,
+      RestRequestResponseInfo responseInformation) {
 
     return RestRequestResultErrorCode.fromCode(code, responseCode)
         .flatMap(
             restRequestResultCode ->
                 restRequestResultCode.getAzureException(
                     origin,
-                    (message == null) ? restRequestResultCode.getMeaning() : message,
+                    ((message == null) ? restRequestResultCode.getMeaning() : message)
+                        + " (reference: "
+                        + restRequestResultCode.getReference()
+                        + ")",
                     requestInformation,
                     responseInformation));
   }

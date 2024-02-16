@@ -1,7 +1,7 @@
 package io.github.brenoepics.at4j.core.exceptions;
 
-import io.github.brenoepics.at4j.util.rest.RestRequestInformation;
-import io.github.brenoepics.at4j.util.rest.RestRequestResponseInformation;
+import io.github.brenoepics.at4j.util.rest.RestRequestInfo;
+import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfo;
 import java.util.Optional;
 
 /** This exception is always thrown whenever a request to azure failed. */
@@ -11,14 +11,13 @@ public class AzureException extends Exception {
   /**
    * The request. May be <code>null</code> if the exception was thrown before creating a request.
    */
-  private final transient RestRequestInformation request;
+  private final transient RestRequestInfo request;
 
   /**
    * The rest request result. May be <code>null</code> if the exception was thrown before sending a
    * request.
    */
-  private final transient RestRequestResponseInformation response;
-
+  private final transient RestRequestResponseInfo response;
   /**
    * Creates a new instance of this class.
    *
@@ -30,8 +29,8 @@ public class AzureException extends Exception {
   public AzureException(
       Exception origin,
       String message,
-      RestRequestInformation request,
-      RestRequestResponseInformation response) {
+      RestRequestInfo request,
+      RestRequestResponseInfo response) {
     super(message, origin);
     this.request = request;
     this.response = response;
@@ -43,7 +42,7 @@ public class AzureException extends Exception {
    *
    * @return Information about the request which caused the exception.
    */
-  public Optional<RestRequestInformation> getRequest() {
+  public Optional<RestRequestInfo> getRequest() {
     return Optional.ofNullable(request);
   }
 
@@ -53,7 +52,7 @@ public class AzureException extends Exception {
    *
    * @return Information about the response which caused the exception.
    */
-  public Optional<RestRequestResponseInformation> getResponse() {
+  public Optional<RestRequestResponseInfo> getResponse() {
     return Optional.ofNullable(response);
   }
 }

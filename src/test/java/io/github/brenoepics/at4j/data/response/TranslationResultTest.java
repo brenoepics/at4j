@@ -2,6 +2,7 @@ package io.github.brenoepics.at4j.data.response;
 
 import io.github.brenoepics.at4j.data.DetectedLanguage;
 import io.github.brenoepics.at4j.data.Translation;
+import io.github.brenoepics.at4j.data.TranslationResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -14,7 +15,7 @@ class TranslationResultTest {
 
   @Test
   void createsTranslationResponseWithDetectedLanguageAndTranslations() {
-    DetectedLanguage detectedLanguage = new DetectedLanguage("en", 1.0f);
+    DetectedLanguage detectedLanguage = new DetectedLanguage("Hello World!", "en", 1.0f);
     Translation translation = new Translation("pt", "Olá, mundo!");
     TranslationResult response =
         new TranslationResult(translation.getText(), detectedLanguage, List.of(translation));

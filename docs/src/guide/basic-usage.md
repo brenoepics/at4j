@@ -23,42 +23,33 @@ public class ExampleApi {
 		// Insert your Azure key and region here
 		String azureKey = "<Your Azure Subscription Key>";
 		String azureRegion = "<Your Azure Subscription Region>";
-		azureApi = new AzureApiBuilder().setKey(azureKey).region(azureRegion)
-        .build();
+		azureApi = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
+
+    translate(args.join(" "), List.of("pt", "es", "fr"));
 	}
+
+  private static void translate(String inputText, List<String> targetLanguages) {
+    TranslateParams params = new TranslateParams(inputText, targetLanguages);
+    Optional<TranslationResponse> result = azureApi.translate(params).join();
+
+    result.ifPresent(response ->
+      response.getFirstResult().getTranslations().forEach(ExampleApi::log));
+  }
+  
+  public static void log(Translation translation) {
+    System.out.println(translation.getLanguageCode() + ": " + translation.getText());
+  }
 }
 ```
 
-```java
-private static void translate(String inputText, List<String> targetLanguages) {
-  TranslateParams params = new TranslateParams(inputText, targetLanguages);
-  Optional<TranslationResponse> request = azureApi.translate(params).join();
-
-  request.ifPresent(
-    response -> {
-      System.out.println("Translations:");
-
-      // Create a single stream of translations from all results
-      response.getResultList().stream()
-        .flatMap(result -> result.getTranslations().stream())
-        .forEach(
-          translation ->
-            System.out.println(
-              translation.getLanguageCode() + ": " + translation.getText()));
-    });
-}
-```
-
-```java
-private static void example() {
-  translate("Hello World!", List.of("pt", "es", "fr"));
-}
+**Input**
+```console
+Hello, World!
 ```
 
 **Result**
 
 ```console
-Translations:
 pt: Olá, Mundo!
 es: ¡Hola mundo!
 fr: Salut tout le monde!

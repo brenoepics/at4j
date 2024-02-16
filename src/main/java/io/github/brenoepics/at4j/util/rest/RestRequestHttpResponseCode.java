@@ -234,8 +234,8 @@ public enum RestRequestHttpResponseCode {
   public Optional<? extends AzureException> getAzureException(
       Exception origin,
       String message,
-      RestRequestInformation request,
-      RestRequestResponseInformation response) {
+      RestRequestInfo request,
+      RestRequestResponseInfo response) {
     return Optional.ofNullable(azureExceptionInstantiation)
         .map(instantiator -> instantiator.createInstance(origin, message, request, response));
   }
