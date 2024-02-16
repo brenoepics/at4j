@@ -113,6 +113,9 @@ log levels per class, and much more.
 
 More info at our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency)
 
+## 🤝 Sponsors
+- **Microsoft Azure**: Supporting our project with a generous grant of $10,000+ in Azure credits, enabling us to utilize virtual machines, document translation and other essential cloud resources for our development needs.
+
 ## 📋 Version Numbers
 
 The version number has a 3-digit format: `major.minor.trivial`
