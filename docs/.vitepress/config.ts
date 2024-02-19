@@ -2,7 +2,7 @@ import { defineConfigWithTheme, DefaultTheme } from 'vitepress'
 import { replaceTextPlugin } from './replaceTextPlugin'
 import { AT4J_VERSION, AT4JRelease } from './repository'
 import baseConfig from 'vitepress-carbon/config'
-import type { ThemeConfig } from 'vitepress-carbon/config'
+import type { ThemeConfig } from 'vitepress-carbon'
 
 const REPO_VERSION: string = await AT4J_VERSION()
 
