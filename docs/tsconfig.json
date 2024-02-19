@@ -9,10 +9,7 @@
     "allowJs": true,
     "strict": true,
     "jsx": "preserve",
-    "baseUrl": ".",
-    "paths": {
-      "@theme/*": [".vitepress/theme/*"]
-    }
+    "baseUrl": "."
   },
   "include": ["env.d.ts", "src/**/*", ".vitepress/**/*"]
 }
