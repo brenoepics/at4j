@@ -5,7 +5,6 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=coverage)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j) 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brenoepics_at4j&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=brenoepics_at4j)
 
-
 An unofficial Java library for translating text using Azure AI Cognitive Services.
 
 ## ✨ Features
@@ -97,38 +96,21 @@ libraryDependencies += "io.github.brenoepics" % "at4j" % "1.0.0"
 ```
 </details>
 
-### 🔑 Azure Translator Keys
-> [!WARNING]
-> Remember to **keep your keys secure and do not share them publicly**. If you believe that a key has been compromised, you must regenerate it in Azure's Panel.
-> For more information, visit the [Azure portal](https://portal.azure.com/).
+### Frequently Asked Questions (FAQ)
 
-- [How to generate my own keys?](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-subscription)
-- [Azure Free Tier](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-free-tier)
+**Q:** How do I access Azure Translator Keys for my project?
 
-### Optional Logger Dependency
+**A:** You can access your Azure Translator Keys through your Azure portal. Remember to keep your keys secure and refrain from sharing them publicly. If you suspect a key has been compromised, it's crucial to regenerate it promptly. For detailed instructions on generating your own keys, refer to [this guide](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-subscription). Additionally, you can explore the [Azure Free Tier](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-free-tier) for more information.
 
-Any Log4j-2-compatible logging framework can be used to provide a more sophisticated logging experience
-with being able to configure log format, log targets (console, file, database, etc.),
-log levels per class, and much more.
+Optional Logger Dependency
+**Q:** Is there a recommended logger dependency for the project?
 
-More info at our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency)
+**A:** While our project is compatible with any Log4j-2-compatible logging framework, integrating one can enhance your logging experience significantly. This allows you to configure log format, log targets (console, file, database, etc.), log levels per class, and more. For further details, please visit our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency).
 
-## 📋 Version Numbers
-
-The version number has a 3-digit format: `major.minor.trivial`
-* `major`: Increased extremely rarely to mark a major release (usually a rewrite affecting very huge parts of the library).
-* `minor`: Any backward incompatible change to the api wrapper.
-* `trivial`: A backward compatible change to the **api wrapper**. This is usually an important bugfix (or a bunch of smaller ones)
- or a backwards compatible feature addition.
- 
-## 🔨 Deprecation Policy
-
-A method or class that is marked as deprecated can be removed with the next minor release (but it will usually stay for
-several minor releases). A minor release might remove a class or method without having it deprecated, but we will do our
-best to deprecate it before removing it. We are unable to guarantee this though, because we might have to remove / replace
-something due to changes made by Azure, which we are unable to control. Usually you can expect a deprecated method or
-class to stay for at least 6 months before it finally gets removed, but this is not guaranteed.
-
+## 🤝 Thank You!
+- **Microsoft Azure**: Supporting our project with a generous grant of $10,000+ in Azure credits, enabling us to utilize virtual machines, document translation and other essential cloud resources for our development needs.
+- We extend our sincere thanks to all contributors for their invaluable contributions.
+  
 ## 🧑‍💻 Contributing
 
 Contributions of any kind are welcome. You can start contributing to this library by creating issues, submitting pull requests or giving a star to the project.
