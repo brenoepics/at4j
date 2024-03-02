@@ -28,8 +28,7 @@ public class RestRequestResult {
    * @param response The response of the RestRequest.
    * @throws IOException Passed on from {@link HttpResponse#body()}.
    */
-  public RestRequestResult(RestRequest request, HttpResponse<String> response)
-      throws IOException {
+  public RestRequestResult(RestRequest request, HttpResponse<String> response) throws IOException {
     this.request = request;
     this.response = response;
     this.stringBody = response.body();

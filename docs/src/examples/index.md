@@ -6,7 +6,7 @@ footer: false
 outline: false
 ---
 
-# Examples {#examples}
+## Examples {#examples}
 
 This section contains examples of how to use AT4J in different scenarios.
 

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { data } from './errors.data.ts'
+import { data } from './errors.data.mts'
 import ErrorsTable from './ErrorsTable.vue'
 
 const highlight = ref()

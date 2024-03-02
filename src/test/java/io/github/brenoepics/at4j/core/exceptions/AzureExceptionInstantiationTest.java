@@ -11,8 +11,7 @@ class AzureExceptionInstantiationTest {
 
   private final Exception origin = new Exception();
   private final RestRequestInfo request = Mockito.mock(RestRequestInfo.class);
-  private final RestRequestResponseInfo response =
-      Mockito.mock(RestRequestResponseInfo.class);
+  private final RestRequestResponseInfo response = Mockito.mock(RestRequestResponseInfo.class);
   private final AzureExceptionInstantiation<AzureException> azureExceptionInstantiation =
       AzureException::new;
 

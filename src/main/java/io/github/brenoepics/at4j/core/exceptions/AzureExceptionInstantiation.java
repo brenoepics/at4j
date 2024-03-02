@@ -22,8 +22,5 @@ public interface AzureExceptionInstantiation<T extends AzureException> {
    * @return The new instance.
    */
   T createInstance(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response);
+      Exception origin, String message, RestRequestInfo request, RestRequestResponseInfo response);
 }

@@ -15,10 +15,7 @@ public class InternalServerErrorException extends AzureException {
    * @param response The information about the response.
    */
   public InternalServerErrorException(
-      Exception origin,
-      String message,
-      RestRequestInfo request,
-      RestRequestResponseInfo response) {
+      Exception origin, String message, RestRequestInfo request, RestRequestResponseInfo response) {
     super(origin, message, request, response);
   }
 }

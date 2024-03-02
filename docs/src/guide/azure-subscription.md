@@ -12,8 +12,8 @@ For more information, visit the [Azure portal](https://portal.azure.com/).
   :::
 
 Azure Text Translation is able to translate text instantly or in batches across [more than 100 languages](https://go.microsoft.com/fwlink/?linkid=2216841),
-Support a wide range of use cases, such as translation for call centers, 
-multilingual conversational agents, 
+Support a wide range of use cases, such as translation for call centers,
+multilingual conversational agents,
 or in-app communication.
 
 ## Free Tier {#azure-free-tier}
@@ -24,6 +24,7 @@ The free tier includes a monthly allowance of two million characters for Transla
 Please note that the free tier usage limits are subject to change by Azure, and it's recommended to check the current details on the [Azure Pricing](https://azure.microsoft.com/en-us/pricing/details/cognitive-services/translator/) page.
 
 ## How to generate an Azure Translation Subscription {#generate-azure-subscription}
+
 > [Generate Here](https://portal.azure.com/#view/Microsoft_Azure_ProjectOxford/CognitiveServicesHub/~/TextTranslation).
 
 1. Sign in to the [Azure portal](https://portal.azure.com/).
@@ -33,7 +34,7 @@ Please note that the free tier usage limits are subject to change by Azure, and 
 5. Fill in the required details:
    * **Name:** Enter a unique name for your resource.
    * **Subscription:** Select the Azure subscription that you want to use.
-   * **Resource Group:** You can create a new resource group or select an existing one. 
+   * **Resource Group:** You can create a new resource group or select an existing one.
    * **Pricing tier:** Select the pricing tier that suits your needs.
 6. Click on the "Review + create" button.
 7. Review your settings and click on the "Create" button.

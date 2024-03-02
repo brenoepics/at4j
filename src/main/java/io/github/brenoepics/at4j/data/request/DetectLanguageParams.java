@@ -88,8 +88,7 @@ public class DetectLanguageParams {
    *     response is null, or the JSON body is null, or the JSON body does not contain a field
    *     'language'
    */
-  public Optional<DetectResponse> handleResponse(
-      RestRequestResult response) {
+  public Optional<DetectResponse> handleResponse(RestRequestResult response) {
     if (response.getJsonBody().isNull() || response.getJsonBody().isEmpty())
       return Optional.empty();
     JsonNode jsonBody = response.getJsonBody();
