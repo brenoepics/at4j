@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.Optional;
+
 /** The result of a {@link RestRequest}. */
 public class RestRequestResult {
 
