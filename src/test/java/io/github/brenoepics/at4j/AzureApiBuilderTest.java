@@ -56,7 +56,8 @@ class AzureApiBuilderTest {
   @Test
   void shouldSetThreadPoolWhenProvided() {
     ExecutorService executorService = ThreadPoolImpl.newAt4jDefault();
-    AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey").executorService(executorService);
+    AzureApiBuilder builder =
+        new AzureApiBuilder().setKey("testKey").executorService(executorService);
     AzureApi api = builder.build();
     assertEquals(executorService, api.getThreadPool().getExecutorService());
   }
