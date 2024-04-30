@@ -18,61 +18,8 @@ public interface ThreadPool {
   ExecutorService getExecutorService();
 
   /**
-   * Gets the used scheduler.
+   * Shutdowns the thread pool.
    *
-   * @return The used scheduler.
    */
-  ScheduledExecutorService getScheduler();
-
-  /**
-   * Gets the used daemon scheduler.
-   *
-   * @return The used daemon scheduler.
-   */
-  ScheduledExecutorService getDaemonScheduler();
-
-  /**
-   * Gets an executor service which only uses a single thread.
-   *
-   * @param threadName The thread name of the executor service. Will create a new one if the thread
-   *     name is used the first time.
-   * @return The executor service with the given thread name. Never {@code null}!
-   */
-  ExecutorService getSingleThreadExecutorService(String threadName);
-
-  /**
-   * Gets an executor service which only uses a single daemon thread.
-   *
-   * @param threadName The thread name of the executor service. Will create a new one if the thread
-   *     name is used the first time.
-   * @return The executor service with the given thread name. Never {@code null}!
-   */
-  ExecutorService getSingleDaemonThreadExecutorService(String threadName);
-
-  /**
-   * Removes an existing executor service.
-   *
-   * <p>This allows you to get a fresh executor service when calling {@link
-   * #getSingleThreadExecutorService(String)} again.
-   *
-   * @param threadName The thread name of the executor service.
-   * @return The removed and shutdown executor service with the given thread name.
-   */
-  Optional<ExecutorService> removeAndShutdownSingleThreadExecutorService(String threadName);
-
-  /**
-   * Executes code after a given duration.
-   *
-   * <p>Tasks will be scheduled on the daemon executor, allowing the bot to shut down without all
-   * tasks being executed. This method is not meant to persist a scheduled task over multiple bot
-   * life cycles.
-   *
-   * @param task The code to run.
-   * @param duration The duration to run the code after.
-   * @param unit The unit of the duration given.
-   * @return A future that completes when the scheduled task is finished.
-   * @param <T> The return type of the future.
-   */
-  <T> CompletableFuture<T> runAfter(
-      Supplier<CompletableFuture<T>> task, long duration, TimeUnit unit);
+  void shutdown();
 }

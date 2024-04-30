@@ -9,6 +9,7 @@ import javax.net.ssl.SSLParameters;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Builder class for constructing instances of AzureApi.
@@ -23,6 +24,7 @@ public class AzureApiBuilder {
   private SSLContext sslContext;
   private SSLParameters sslParameters;
   private Duration connectTimeout;
+  private ExecutorService executorService;
 
   /** Default constructor initializes the base URL to the global endpoint. */
   public AzureApiBuilder() {
@@ -125,6 +127,21 @@ public class AzureApiBuilder {
     return this;
   }
 
+
+  /**
+   * Sets the executor service for the Azure API.
+   *
+   * @param executorService The executor service for the Azure API.
+   * @return The current instance of AzureApiBuilder for method chaining.
+   * @see <a
+   *     href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/concurrent/ExecutorService.html"
+   *     >ExecutorService</a>
+   */
+  public AzureApiBuilder executorService(ExecutorService executorService) {
+    this.executorService = executorService;
+    return this;
+  }
+
   /**
    * Builds and returns an instance of AzureApi with the configured parameters.
    *
@@ -156,6 +173,10 @@ public class AzureApiBuilder {
       httpClient.connectTimeout(connectTimeout);
     }
 
-    return new AzureApiImpl<>(httpClient.build(), baseURL, subscriptionKey, subscriptionRegion);
+    if (executorService != null) {
+      httpClient.executor(executorService);
+    }
+
+    return new AzureApiImpl<>(httpClient.build(), baseURL, subscriptionKey, subscriptionRegion, executorService);
   }
 }
