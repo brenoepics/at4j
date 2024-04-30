@@ -36,7 +36,8 @@ class ProtectedLoggerTest {
     String message = "This is a secret trace message";
     Marker marker = Mockito.mock(Marker.class);
     protectedLogger.handleNormalizedLoggingCall(Level.TRACE, marker, message, null, null);
-    verify(delegate).trace(eq(marker), eq("This is a ********** trace message"), isNull(), isNull());
+    verify(delegate)
+        .trace(eq(marker), eq("This is a ********** trace message"), isNull(), isNull());
   }
 
   @Test
@@ -46,7 +47,8 @@ class ProtectedLoggerTest {
     String message = "This is a secret debug message";
     Marker marker = Mockito.mock(Marker.class);
     protectedLogger.handleNormalizedLoggingCall(Level.DEBUG, marker, message, null, null);
-    verify(delegate).debug(eq(marker), eq("This is a ********** debug message"), isNull(), isNull());
+    verify(delegate)
+        .debug(eq(marker), eq("This is a ********** debug message"), isNull(), isNull());
   }
 
   @Test
@@ -66,7 +68,8 @@ class ProtectedLoggerTest {
     String message = "This is a secret error message";
     Marker marker = Mockito.mock(Marker.class);
     protectedLogger.handleNormalizedLoggingCall(Level.ERROR, marker, message, null, null);
-    verify(delegate).error(eq(marker), eq("This is a ********** error message"), isNull(), isNull());
+    verify(delegate)
+        .error(eq(marker), eq("This is a ********** error message"), isNull(), isNull());
   }
 
   @Test
