@@ -127,7 +127,6 @@ public class AzureApiBuilder {
     return this;
   }
 
-
   /**
    * Sets the executor service for the Azure API.
    *
@@ -177,6 +176,7 @@ public class AzureApiBuilder {
       httpClient.executor(executorService);
     }
 
-    return new AzureApiImpl<>(httpClient.build(), baseURL, subscriptionKey, subscriptionRegion, executorService);
+    return new AzureApiImpl<>(
+        httpClient.build(), baseURL, subscriptionKey, subscriptionRegion, executorService);
   }
 }
