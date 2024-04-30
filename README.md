@@ -108,7 +108,7 @@ Optional Logger Dependency
 **A:** While our project is compatible with any Log4j-2-compatible logging framework, integrating one can enhance your logging experience significantly. This allows you to configure log format, log targets (console, file, database, etc.), log levels per class, and more. For further details, please visit our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency).
 
 ## 🤝 Thank You!
-- **Microsoft Azure**: Supporting our project with a generous grant of $10,000+ in Azure credits, enabling us to utilize virtual machines, document translation and other essential cloud resources for our development needs.
+- **Microsoft Azure**: Supporting our project with a generous grant of $10,000+ in Azure credits, enabling us to use virtual machines, document translation and other essential cloud resources for our development needs.
 - We extend our sincere thanks to all contributors for their invaluable contributions.
   
 ## 🧑‍💻 Contributing
