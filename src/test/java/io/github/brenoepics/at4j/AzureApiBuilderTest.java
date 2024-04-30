@@ -1,6 +1,7 @@
 package io.github.brenoepics.at4j;
 
 import io.github.brenoepics.at4j.azure.lang.Language;
+import io.github.brenoepics.at4j.core.thread.ThreadPoolImpl;
 import io.github.brenoepics.at4j.data.request.AvailableLanguagesParams;
 import org.junit.jupiter.api.Test;
 import io.github.brenoepics.at4j.azure.BaseURL;
@@ -12,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,6 +51,14 @@ class AzureApiBuilderTest {
     AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey");
     AzureApi api = builder.region("brazilsouth").build();
     assertEquals("brazilsouth", api.getSubscriptionRegion().orElse(null));
+  }
+
+  @Test
+  void shouldSetThreadPoolWhenProvided() {
+    ExecutorService executorService = ThreadPoolImpl.newAt4jDefault();
+    AzureApiBuilder builder = new AzureApiBuilder().setKey("testKey").executorService(executorService);
+    AzureApi api = builder.build();
+    assertEquals(executorService, api.getThreadPool().getExecutorService());
   }
 
   @Test
