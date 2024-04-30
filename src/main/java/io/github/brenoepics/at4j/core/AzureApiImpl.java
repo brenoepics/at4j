@@ -57,7 +57,11 @@ public class AzureApiImpl<T> implements AzureApi {
    * @param subscriptionRegion The subscription region for this instance.
    */
   public AzureApiImpl(
-          HttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion, ExecutorService executor) {
+      HttpClient httpClient,
+      BaseURL baseURL,
+      String subscriptionKey,
+      String subscriptionRegion,
+      ExecutorService executor) {
     this.httpClient = httpClient;
     this.baseURL = baseURL;
     this.subscriptionKey = subscriptionKey;
