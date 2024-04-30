@@ -2,7 +2,7 @@ package io.github.brenoepics.at4j;
 
 import io.github.brenoepics.at4j.azure.BaseURL;
 import io.github.brenoepics.at4j.core.AzureApiImpl;
-import io.github.brenoepics.at4j.util.logging.PrivacyProtectionLogger;
+import io.github.brenoepics.at4j.util.logging.ProtectedLogger;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLParameters;
@@ -52,7 +52,7 @@ public class AzureApiBuilder {
    */
   public AzureApiBuilder setKey(String subscriptionKey) {
     this.subscriptionKey = subscriptionKey;
-    PrivacyProtectionLogger.addPrivateData(subscriptionKey);
+    ProtectedLogger.addPrivateData(subscriptionKey);
     return this;
   }
 

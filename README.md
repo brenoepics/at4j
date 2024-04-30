@@ -102,11 +102,6 @@ libraryDependencies += "io.github.brenoepics" % "at4j" % "1.0.0"
 
 **A:** You can access your Azure Translator Keys through your Azure portal. Remember to keep your keys secure and refrain from sharing them publicly. If you suspect a key has been compromised, it's crucial to regenerate it promptly. For detailed instructions on generating your own keys, refer to [this guide](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-subscription). Additionally, you can explore the [Azure Free Tier](https://brenoepics.github.io/at4j/guide/azure-subscription.html#azure-free-tier) for more information.
 
-Optional Logger Dependency
-**Q:** Is there a recommended logger dependency for the project?
-
-**A:** While our project is compatible with any Log4j-2-compatible logging framework, integrating one can enhance your logging experience significantly. This allows you to configure log format, log targets (console, file, database, etc.), log levels per class, and more. For further details, please visit our [Docs](https://brenoepics.github.io/at4j/guide/installation.html#logger-dependency).
-
 ## 🤝 Thank You!
 - **Microsoft Azure**: Supporting our project with a generous grant of $10,000+ in Azure credits, enabling us to use virtual machines, document translation and other essential cloud resources for our development needs.
 - We extend our sincere thanks to all contributors for their invaluable contributions.

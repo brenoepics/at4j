@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.NullNode;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
+import org.slf4j.Logger;
+
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.Optional;
-import org.apache.logging.log4j.Logger;
-
 /** The result of a {@link RestRequest}. */
 public class RestRequestResult {
 
