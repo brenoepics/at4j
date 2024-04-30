@@ -8,6 +8,7 @@ defineProps<{
 
 <template>
   <table>
+    <caption>Error Codes</caption>
     <thead>
       <tr>
         <th>Code</th>
