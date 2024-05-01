@@ -19,6 +19,7 @@ import java.net.http.HttpClient;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 
 /**
  * This class is an implementation of the AzureApi interface. It provides methods to interact with
@@ -45,7 +46,7 @@ public class AzureApiImpl<T> implements AzureApi {
   private final RateLimitManager<T, ?, ?> ratelimitManager = new RateLimitManager<>(this);
 
   /** The thread pool which is used internally. */
-  private final ThreadPoolImpl threadPool = new ThreadPoolImpl();
+  private final ThreadPool threadPool;
 
   /**
    * Constructor for AzureApiImpl.
@@ -56,11 +57,16 @@ public class AzureApiImpl<T> implements AzureApi {
    * @param subscriptionRegion The subscription region for this instance.
    */
   public AzureApiImpl(
-      HttpClient httpClient, BaseURL baseURL, String subscriptionKey, String subscriptionRegion) {
+      HttpClient httpClient,
+      BaseURL baseURL,
+      String subscriptionKey,
+      String subscriptionRegion,
+      ExecutorService executor) {
     this.httpClient = httpClient;
     this.baseURL = baseURL;
     this.subscriptionKey = subscriptionKey;
     this.subscriptionRegion = subscriptionRegion;
+    this.threadPool = new ThreadPoolImpl(executor);
   }
 
   @Override

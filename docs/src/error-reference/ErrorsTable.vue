@@ -8,6 +8,7 @@ defineProps<{
 
 <template>
   <table>
+    <caption>Error Codes</caption>
     <thead>
       <tr>
         <th>Code</th>
@@ -28,7 +29,7 @@ defineProps<{
 
 <style scoped>
 .highlight {
-  color: var(--vp-c-yellow-soft);
+  color: var(--vp-c-brand-1);
   font-weight: bold;
 }
 </style>

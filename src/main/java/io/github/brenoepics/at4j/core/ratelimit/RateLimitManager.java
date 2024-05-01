@@ -7,6 +7,8 @@ import io.github.brenoepics.at4j.util.rest.RestRequest;
 import io.github.brenoepics.at4j.util.rest.RestRequestHandler;
 import io.github.brenoepics.at4j.util.rest.RestRequestResponseInfoImpl;
 import io.github.brenoepics.at4j.util.rest.RestRequestResult;
+import org.slf4j.Logger;
+
 import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
 import java.util.HashSet;
@@ -15,7 +17,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-import org.apache.logging.log4j.Logger;
 
 /** This class manages rate-limits and keeps track of them. */
 public class RateLimitManager<T, T3, T4> {

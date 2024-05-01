@@ -5,6 +5,8 @@ import io.github.brenoepics.at4j.AT4J;
 import io.github.brenoepics.at4j.AzureApi;
 import io.github.brenoepics.at4j.core.exceptions.AzureException;
 import io.github.brenoepics.at4j.util.logging.LoggerUtil;
+import org.slf4j.Logger;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -14,8 +16,6 @@ import java.net.http.HttpResponse;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
-
-import org.apache.logging.log4j.Logger;
 
 /** This class is used to wrap a rest request. */
 public class RestRequest {

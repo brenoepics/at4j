@@ -1,12 +1,11 @@
 package io.github.brenoepics.at4j.core.thread;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,7 +15,12 @@ class ThreadPoolImplTest {
 
   @BeforeEach
   void setUp() {
-    threadPool = new ThreadPoolImpl();
+    threadPool = new ThreadPoolImpl(null);
+  }
+
+  @AfterEach
+  void tearDown() {
+    threadPool.shutdown();
   }
 
   @Test
@@ -26,52 +30,17 @@ class ThreadPoolImplTest {
   }
 
   @Test
-  void shouldReturnScheduler() {
-    ScheduledExecutorService scheduler = threadPool.getScheduler();
-    assertNotNull(scheduler);
+  void shouldShutdownExecutorService() {
+    ExecutorService executorService = threadPool.getExecutorService();
+    assertFalse(executorService.isShutdown());
+    threadPool.shutdown();
+    assertTrue(executorService.isShutdown());
   }
 
   @Test
-  void shouldReturnDaemonScheduler() {
-    ScheduledExecutorService daemonScheduler = threadPool.getDaemonScheduler();
-    assertNotNull(daemonScheduler);
-  }
-
-  @Test
-  void shouldReturnSingleThreadExecutorService() {
-    ExecutorService singleThreadExecutorService =
-        threadPool.getSingleThreadExecutorService("TestThread");
-    assertNotNull(singleThreadExecutorService);
-  }
-
-  @Test
-  void shouldReturnSingleDaemonThreadExecutorService() {
-    ExecutorService singleDaemonThreadExecutorService =
-        threadPool.getSingleDaemonThreadExecutorService("TestDaemonThread");
-    assertNotNull(singleDaemonThreadExecutorService);
-  }
-
-  @Test
-  void shouldRemoveAndShutdownSingleThreadExecutorService() {
-    threadPool.getSingleThreadExecutorService("TestThread");
-    assertTrue(threadPool.removeAndShutdownSingleThreadExecutorService("TestThread").isPresent());
-  }
-
-  @Test
-  void shouldNotRemoveNonExistentSingleThreadExecutorService() {
-    assertFalse(
-        threadPool.removeAndShutdownSingleThreadExecutorService("NonExistentThread").isPresent());
-  }
-
-  @Test
-  void shouldRunAfterGivenDuration() {
-    Assertions.assertDoesNotThrow(() -> threadPool.runAfter(() -> null, 1, TimeUnit.SECONDS));
-  }
-
-  @Test
-  void shouldShutdownAllServices() {
-    threadPool.getSingleThreadExecutorService("TestThread");
-    threadPool.getSingleDaemonThreadExecutorService("TestDaemonThread");
-    assertDoesNotThrow(() -> threadPool.shutdown());
+  void shouldCreateNewAt4jDefault() {
+    ExecutorService executorService = ThreadPoolImpl.newAt4jDefault();
+    assertNotNull(executorService);
+    assertInstanceOf(ThreadPoolExecutor.class, executorService);
   }
 }

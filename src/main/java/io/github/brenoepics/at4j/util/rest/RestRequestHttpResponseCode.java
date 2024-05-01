@@ -1,7 +1,6 @@
 package io.github.brenoepics.at4j.util.rest;
 
 import io.github.brenoepics.at4j.core.exceptions.*;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -231,10 +230,10 @@ public enum RestRequestHttpResponseCode {
    * @param response The information about the response.
    * @return The azure exception to throw for this kind of result code.
    */
-  public Optional<? extends AzureException> getAzureException(
+  public Optional<AzureException> getAzureException(
       Exception origin, String message, RestRequestInfo request, RestRequestResponseInfo response) {
     return Optional.ofNullable(azureExceptionInstantiation)
-        .map(instantiator -> instantiator.createInstance(origin, message, request, response));
+        .map(instantiation -> instantiation.createInstance(origin, message, request, response));
   }
 
   /**
@@ -242,7 +241,7 @@ public enum RestRequestHttpResponseCode {
    *
    * @return The azure exception class to throw for this kind of result code.
    */
-  public Optional<? extends Class<? extends AzureException>> getAzureExceptionClass() {
+  public Optional<Class<? extends AzureException>> getAzureExceptionClass() {
     return Optional.ofNullable(azureExceptionClass);
   }
 }
