@@ -18,7 +18,7 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 
 ## 📝 Documentation
 
-- [VitePress Docs](https://brenoepics.github.io/at4j/)
+- [AT4J Docs](https://brenoepics.github.io/at4j/)
 - [JavaDoc](https://brenoepics.github.io/at4j/javadoc/)
 
 ## 🎉 Basic Usage
@@ -30,30 +30,29 @@ The following example translates a simple Hello World to Portuguese, Spanish and
 
 ```java
 public class ExampleTranslator {
+  public static void main(String[] args) {
+    // Insert your Azure key and region here
+    String azureKey = "<Your Azure Subscription Key>";
+    String azureRegion = "<Your Azure Subscription Region>";
+    AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
 
-		public static void main(String[] args) {
-				// Insert your Azure key and region here
-				String azureKey = "<Your Azure Subscription Key>";
-				String azureRegion = "<Your Azure Subscription Region>";
-				AzureApi api = new AzureApiBuilder().setKey(azureKey).region(azureRegion).build();
+    // Set up translation parameters
+    List < String > targetLanguages = List.of("pt", "es", "fr");
+    TranslateParams params =
+            new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
 
-				// Set up translation parameters
-				List<String> targetLanguages = List.of("pt", "es", "fr");
-				TranslateParams params =
-								new TranslateParams("Hello World!", targetLanguages).setSourceLanguage("en");
+    // Translate the text
+    Optional < TranslationResponse > translationResult = api.translate(params).join();
 
-				// Translate the text
-				Optional<TranslationResponse> translationResult = api.translate(params).join();
+    // Print the translations
+    translationResult.ifPresent(
+            response ->
+                    response.getFirstResult().getTranslations().forEach(ExampleTranslator::logLanguage));
+  }
 
-				// Print the translations
-				translationResult.ifPresent(
-								response ->
-												response.getFirstResult().getTranslations().forEach(ExampleTranslator::logLanguage));
-		}
-
-		public static void logLanguage(Translation translation) {
-				System.out.println(translation.getLanguageCode() + ": " + translation.getText());
-		}
+  public static void logLanguage(Translation translation) {
+    System.out.println(translation.getLanguageCode() + ": " + translation.getText());
+  }
 }
 ```
 
@@ -78,7 +77,7 @@ The recommended way to get AT4J is to use a build manager, like Gradle or Maven.
   <summary>Gradle</summary>
 
 ```gradle
-implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.1.0'
+implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.2.0'
 ```
 
 </details>
@@ -90,7 +89,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.1.0'
 <dependency>
     <groupId>io.github.brenoepics</groupId>
     <artifactId>at4j</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -99,7 +98,7 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: '1.1.0'
   <summary>Sbt</summary>
 
 ```sbt
-libraryDependencies += "io.github.brenoepics" % "at4j" % "1.1.0"
+libraryDependencies += "io.github.brenoepics" % "at4j" % "1.2.0"
 ```
 
 </details>
