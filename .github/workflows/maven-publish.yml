@@ -6,6 +6,23 @@ on:
 
 jobs:
   # Build job
+  update-prp:
+    runs-on: ubuntu-latest
+    permissions:
+      contents:
+        write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update PRP Files
+        uses: CIFriends/prp-preprocessor@0.1.1
+        with:
+          ignoredDirs: |
+            docs
+            target
+        env:
+          currentVersion: ${{ github.event.release.tag_name }}
+
   build:
     runs-on: ubuntu-latest
     steps:
