@@ -15,7 +15,7 @@ jobs:
         with:
           ref: "main"
       - name: Update PRP Files
-        uses: CIFriends/prp-preprocessor@0.1.1
+        uses: CIFriends/prp-preprocessor@v1
         with:
           ignoredDirs: |
             docs
