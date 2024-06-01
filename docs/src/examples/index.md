@@ -67,3 +67,8 @@ public class ExampleDetector {
 }
 ```
 
+## JSON Translator {#json}
+
+> [!IMPORTANT]
+> check [here](https://github.com/brenoepics/kt-json-i18n)
+
