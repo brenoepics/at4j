@@ -25,6 +25,8 @@ An unofficial Java library for translating text using Azure AI Cognitive Service
 
 > [!NOTE]
 > Example repository [Azure-Translator-Example](https://github.com/brenoepics/Azure-Translator-Example)
+> 
+> JSON Translator [kt-json-i18n](https://github.com/brenoepics/kt-json-i18n)
 
 The following example translates a simple Hello World to Portuguese, Spanish and French.
 
