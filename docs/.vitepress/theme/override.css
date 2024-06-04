@@ -2,4 +2,6 @@
   --vp-c-brand-1: #0080FF;
   --vp-c-brand-2: #3098fa;
   --vp-c-brand-3: #f49432;
+  --mktg-accent-primary: var(--vp-c-brand-1);
+  --mktg-accent-secondary: var(--vp-c-brand-1);
 }
