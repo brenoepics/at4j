@@ -6,6 +6,9 @@ hero:
   text: Java’s linguistic ally
   icon: 💬
   tagline: Empower Your Applications with Language Translations.
+  image:
+    src: ./image.svg
+    alt: Translate
   actions:
     - theme: brand
       text: Get Started
