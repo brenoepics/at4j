@@ -114,7 +114,7 @@ export default defineConfigWithTheme<ThemeConfig>({
       options: {
         appId: 'JEAU8WEZ73',
         apiKey: '9fa114761cc3f74ca6b3e7b88d9eb192',
-        indexName: 'at4j'
+        indexName: 'brenoepicsio'
       }
     },
 
