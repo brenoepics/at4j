@@ -113,7 +113,7 @@ export default defineConfigWithTheme<ThemeConfig>({
       provider: 'algolia',
       options: {
         appId: 'FP10W2VBUM',
-        apiKey: '08b0c44b5163ed967627ad75a01c298f,
+        apiKey: '08b0c44b5163ed967627ad75a01c298f',
         indexName: 'at4j'
       }
     },
