@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: AT4J
-  text: Empowering multilingual communication
+  text: Java’s linguistic ally
   icon: 💬
   tagline: Empower Your Applications with Language Translations.
   actions:
