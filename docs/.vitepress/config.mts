@@ -81,7 +81,16 @@ export default defineConfigWithTheme<ThemeConfig>({
   description: 'AT4J - Azure Translator for Java',
   srcDir: 'src',
   base: '/at4j/',
+  lastUpdated: true,
+  cleanUrls: true,
+  metaChunk: true,
 
+  sitemap: {
+    hostname: 'https://brenoepics.github.io/at4j/',
+    transformItems(items) {
+      return items.filter((item) => !item.url.includes('migration'))
+    }
+  },
   head: [
     ['meta', {name: 'theme-color', content: '#3c8772'}],
     ['meta', {property: 'og:url', content: 'https://github.com/brenoepics/at4j'}],
@@ -114,7 +123,6 @@ export default defineConfigWithTheme<ThemeConfig>({
         link: 'https://www.postman.com/maintenance-astronaut-2993290/workspace/brenoepics/collection/18589822-dfe7a640-9b94-47a8-b19f-46cb9cc8843e?action=share&creator=18589822'
       },
       {icon: 'github', link: 'https://github.com/brenoepics/at4j'}
-
     ],
 
     editLink: {
