@@ -112,9 +112,9 @@ export default defineConfigWithTheme<ThemeConfig>({
     search: {
       provider: 'algolia',
       options: {
-        appId: 'FP10W2VBUM',
-        apiKey: '08b0c44b5163ed967627ad75a01c298f',
-        indexName: 'at4j'
+        appId: 'OII7QZLO87',
+        apiKey: '63a55b83f6082b8a3b79b50fd2053cb7',
+        indexName: 'brenoepicsio'
       }
     },
 
