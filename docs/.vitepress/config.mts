@@ -1,5 +1,5 @@
-import {defineConfigWithTheme} from 'vitepress'
-import type {ThemeConfig} from 'vitepress-carbon'
+import { defineConfigWithTheme } from 'vitepress'
+import type { ThemeConfig } from 'vitepress-carbon'
 import baseConfig from 'vitepress-carbon/config'
 
 const nav = [
@@ -7,28 +7,28 @@ const nav = [
     text: 'Docs',
     activeMatch: `^/(guide|examples)/`,
     items: [
-      {text: 'Guide', link: '/guide/introduction'},
-      {text: 'Examples', link: '/examples/'},
-      {text: 'Error Reference', link: '/error-reference/'},
-      {text: 'JavaDoc', link: 'https://brenoepics.github.io/at4j/javadoc/'}
+      { text: 'Guide', link: '/guide/introduction' },
+      { text: 'Examples', link: '/examples/' },
+      { text: 'Error Reference', link: '/error-reference/' },
+      { text: 'JavaDoc', link: 'https://brenoepics.github.io/at4j/javadoc/' }
     ]
   },
   {
     text: 'About',
     activeMatch: `^/about/`,
     items: [
-      {text: 'FAQ', link: '/about/faq'},
-      {text: 'Releases', link: '/about/releases'},
-      {text: 'Code of Conduct', link: '/about/coc'}
+      { text: 'FAQ', link: '/about/faq' },
+      { text: 'Releases', link: '/about/releases' },
+      { text: 'Code of Conduct', link: '/about/coc' }
     ]
-  },
+  }
 ]
 const sidebar = {
   '/guide/': [
     {
       text: 'Getting Started',
       items: [
-        {text: 'Introduction', link: '/guide/introduction'},
+        { text: 'Introduction', link: '/guide/introduction' },
         {
           text: 'Download/Installation',
           link: '/guide/installation'
@@ -92,10 +92,11 @@ export default defineConfigWithTheme<ThemeConfig>({
     }
   },
   head: [
-    ['meta', {name: 'theme-color', content: '#3c8772'}],
-    ['meta', {property: 'og:url', content: 'https://github.com/brenoepics/at4j'}],
-    ['meta', {property: 'og:type', content: 'Repository'}],
-    ['meta', {property: 'og:title', content: 'AT4J'}],
+    ['link', { rel: 'icon', href: 'favicon.svg' }],
+    ['meta', { name: 'theme-color', content: '#0089D3' }],
+    ['meta', { property: 'og:url', content: 'https://github.com/brenoepics/at4j' }],
+    ['meta', { property: 'og:type', content: 'Repository' }],
+    ['meta', { property: 'og:title', content: 'AT4J' }],
     [
       'meta',
       {
@@ -104,10 +105,14 @@ export default defineConfigWithTheme<ThemeConfig>({
       }
     ]
   ],
-
   themeConfig: {
     nav,
     sidebar,
+
+    logo: {
+      alt: 'AT4J Logo',
+      src: '/favicon.svg'
+    },
 
     search: {
       provider: 'algolia',
@@ -127,7 +132,7 @@ export default defineConfigWithTheme<ThemeConfig>({
         },
         link: 'https://www.postman.com/maintenance-astronaut-2993290/workspace/brenoepics/collection/18589822-dfe7a640-9b94-47a8-b19f-46cb9cc8843e?action=share&creator=18589822'
       },
-      {icon: 'github', link: 'https://github.com/brenoepics/at4j'}
+      { icon: 'github', link: 'https://github.com/brenoepics/at4j' }
     ],
 
     editLink: {
@@ -138,5 +143,5 @@ export default defineConfigWithTheme<ThemeConfig>({
     footer: {
       message: 'Apache 2.0 Licensed'
     }
-  },
+  }
 })
