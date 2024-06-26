@@ -7,7 +7,7 @@ hero:
   icon: 💬
   tagline: Empower Your Applications with Language Translations.
   image:
-    src: ./image.svg
+    src: ./at4j.svg
     alt: Translate
   actions:
     - theme: brand
