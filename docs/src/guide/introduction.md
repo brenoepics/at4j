@@ -10,13 +10,16 @@ This documentation will help you to get started with your first Azure Translator
 
 ## What is the purpose of the AT4J library? {#purpose}
 
-The AT4J library is a Java wrapper for the Azure Translator API.
+The AT4J library is a Java wrapper for the Azure Translator API
+Using Java classes for its API like CompletableFuture for async
+requests
+and Optional for return types which may be `null`.
 It provides a simple and easy-to-use interface to interact with the Azure Translator API,
 allowing you to translate text between languages.
 
-## What is the Azure Translator? {#azure-translator-api}
+## What is the Azure Translator? {#azure-translator}
 
-The Azure Translator API,
+The Azure Translator,
 provided by Microsoft, is a cloud-based machine translation service that is part of the Microsoft Azure cloud services.
 It offers a set of APIs that allow for text translation between languages and language detection of a given text,
 among other features.

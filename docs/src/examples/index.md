@@ -1,12 +1,10 @@
 ---
 page: true
 title: Examples
-aside: false
 footer: false
-outline: false
 ---
 
-## Examples {#examples}
+# Examples {#examples}
 
 This section contains examples of how to use AT4J in different scenarios.
 
@@ -69,6 +67,9 @@ public class ExampleDetector {
 
 ## JSON Translator {#json}
 
-> [!IMPORTANT]
-> check [here](https://github.com/brenoepics/kt-json-i18n)
+Azure Translator API does not support JSON translation. However, you can use AT4J to translate JSON objects.
+
+[kt-json-i18n](https://github.com/brenoepics/kt-json-i18n) is a library
+that allows you to translate JSON objects using AT4J.
+You can use it as an example to translate JSON objects.
 
