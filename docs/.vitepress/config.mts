@@ -1,77 +1,29 @@
 import { defineConfigWithTheme } from 'vitepress'
 import type { ThemeConfig } from 'vitepress-carbon'
 import baseConfig from 'vitepress-carbon/config'
+import { version } from '../package.json'
+import { sidebar } from './sidebar.mjs'
 
-const nav = [
+const nav: NavItem[] = [
   {
-    text: 'Docs',
+    text: 'Guide',
     activeMatch: `^/(guide|examples)/`,
     items: [
-      { text: 'Guide', link: '/guide/introduction' },
+      { text: 'Introduction', link: '/guide/introduction' },
       { text: 'Examples', link: '/examples/' },
-      { text: 'Error Reference', link: '/error-reference/' },
-      { text: 'JavaDoc', link: 'https://brenoepics.github.io/at4j/javadoc/' }
+      { text: 'Error Reference', link: '/error-reference/' }
     ]
   },
   {
-    text: 'About',
-    activeMatch: `^/about/`,
-    items: [
-      { text: 'FAQ', link: '/about/faq' },
-      { text: 'Releases', link: '/about/releases' },
-      { text: 'Code of Conduct', link: '/about/coc' }
-    ]
+    text: `JavaDoc`,
+    link: 'https://brenoepics.github.io/at4j/javadoc/'
+  },
+  {
+    text: 'v' + version,
+    activeMatch: '^/$',
+    link: 'https://github.com/brenoepics/at4j/releases'
   }
 ]
-const sidebar = {
-  '/guide/': [
-    {
-      text: 'Getting Started',
-      items: [
-        { text: 'Introduction', link: '/guide/introduction' },
-        {
-          text: 'Download/Installation',
-          link: '/guide/installation'
-        },
-        {
-          text: `Generating an Azure Translator Key`,
-          link: '/guide/azure-subscription'
-        },
-        {
-          text: 'Basic Usage',
-          link: '/guide/basic-usage'
-        },
-        {
-          text: 'Threading',
-          link: '/guide/threading'
-        },
-        {
-          text: 'Examples',
-          link: '/examples/'
-        }
-      ]
-    }
-  ],
-  '/examples/': [
-    {
-      text: 'Basic',
-      items: [
-        {
-          text: 'Translate Hello World',
-          link: '/examples/#translator'
-        },
-        {
-          text: 'Detect Language',
-          link: '/examples/#detect'
-        },
-        {
-          text: 'Guide',
-          link: '/guide/introduction'
-        }
-      ]
-    }
-  ]
-}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfigWithTheme<ThemeConfig>({
@@ -92,7 +44,7 @@ export default defineConfigWithTheme<ThemeConfig>({
     }
   },
   head: [
-    ['link', { rel: 'icon', href: 'favicon.svg' }],
+    ['link', { rel: 'icon', href: '/at4j/favicon.svg' }],
     ['meta', { name: 'theme-color', content: '#0089D3' }],
     ['meta', { property: 'og:url', content: 'https://github.com/brenoepics/at4j' }],
     ['meta', { property: 'og:type', content: 'Repository' }],
