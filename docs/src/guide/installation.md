@@ -25,3 +25,4 @@ implementation group: 'io.github.brenoepics', name: 'at4j', version: 'AT4J-VERSI
 libraryDependencies += "io.github.brenoepics" % "at4j" % "AT4J-VERSION"
 ```
 :::
+

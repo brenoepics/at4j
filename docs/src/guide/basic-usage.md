@@ -76,4 +76,4 @@ Here are some brief pointers to help you get started:
 
 ## Still Got Questions? {#still-got-questions}
 
-Check out our [FAQ](/about/faq).
+Check out our [GitHub Discussions](https://github.com/brenoepics/at4j/discussions) page for more information and to ask questions.
