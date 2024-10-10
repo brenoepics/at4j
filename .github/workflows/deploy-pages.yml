@@ -56,7 +56,7 @@ jobs:
         run: |
           mvn javadoc:javadoc
           mkdir staging/javadoc
-          cp target/site/apidocs/* staging/javadoc -r
+          cp target/reports/apidocs/* staging/javadoc -r
          
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
