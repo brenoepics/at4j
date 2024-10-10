@@ -35,7 +35,7 @@ jobs:
         with:
           node-version: 20
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
       - name: Install dependencies
         working-directory: ./docs
         run: npm install
@@ -44,7 +44,7 @@ jobs:
           npm run --prefix docs build
           mkdir staging
           cp ./docs/.vitepress/dist/* staging -r
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: '11'
           distribution: 'temurin'
