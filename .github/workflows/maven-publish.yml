@@ -33,7 +33,7 @@ jobs:
       - name: mvn versions
         run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
       - name: Import GPG Key
-        uses: crazy-max/ghaction-import-gpg@v6.1.0
+        uses: crazy-max/ghaction-import-gpg@v6.2.0
         with:
           gpg_private_key: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
           passphrase: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
