@@ -36,7 +36,7 @@ jobs:
       contents: write  # If there is a protection rule on the repository, will need to grant write permission to the workflow.
     steps:
       - uses: actions/checkout@v4 # v2 minimum required
-      - uses: axel-op/googlejavaformat-action@v3
+      - uses: axel-op/googlejavaformat-action@v4
         with:
           args: "--skip-sorting-imports --replace"
           github-token: ${{ secrets.GITHUB_TOKEN }}
