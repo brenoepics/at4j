@@ -8,7 +8,7 @@
     "preview": "vitepress preview"
   },
   "dependencies": {
-    "vitepress-carbon": "^1.4.4",
+    "vitepress-carbon": "^1.5.0",
     "vitepress": "^1.4.0"
   }
 }
