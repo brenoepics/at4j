@@ -61,6 +61,10 @@ const azureItems: DefaultTheme.NavItem[] = [
     link: '/azure-reference/languages'
   },
   {
+    text: 'Datacenter List',
+    link: '/azure-reference/datacenter-list'
+  },
+  {
     text: 'Error Reference',
     link: '/error-reference/'
   }
